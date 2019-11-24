@@ -85,7 +85,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.height.equalTo(50*AutoSizeScaleX)
         }
         let passwordTextField = SkyFloatingLabelTextField()
-        passwordTextField.placeholder = "Password"
+        passwordTextField.placeholder = "Enter Password"
         passwordTextField.CustomTextField()
         passwordTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
         passwordTextField.borderStyle = UITextField.BorderStyle.none
@@ -106,11 +106,26 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
+        let forgotPwdBtn = UIButton(type: .custom)
+        forgotPwdBtn.setTitle("Forgot Password?", for: .normal)
+        forgotPwdBtn.layer.cornerRadius = 20
+        forgotPwdBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+        forgotPwdBtn.setTitleColor(UIColor.orange, for: .normal)
+        forgotPwdBtn.contentHorizontalAlignment = .left
+        forgotPwdBtn.clipsToBounds = true
+        forgotPwdBtn.addTarget(self, action:#selector(self.forgotPwdBtn), for: .touchUpInside)
+        self.configBGView.addSubview(forgotPwdBtn)
+        forgotPwdBtn.snp.makeConstraints{(make) -> Void in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(16*AutoSizeScaleX)
+            make.left.equalTo(passwordTextField)
+            make.height.equalTo(40*AutoSizeScaleX)
+            make.width.equalTo(150*AutoSizeScaleX)
+        }
         
         let loginBtn = UIButton(type: .custom)
-        loginBtn.setTitle("Login", for: .normal)
-        loginBtn.backgroundColor = UIColor.lightGray
-        loginBtn.layer.cornerRadius = 20
+        loginBtn.setTitle("Sign In", for: .normal)
+        loginBtn.backgroundColor = UIColor.black
+//        loginBtn.layer.cornerRadius = 20
         loginBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
         loginBtn.setTitleColor(UIColor.white, for: .normal)
         loginBtn.contentHorizontalAlignment = .center
@@ -119,15 +134,15 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         self.configBGView.addSubview(loginBtn)
         self.loginnBtn = loginBtn
         loginBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(30*AutoSizeScaleX)
-            make.centerX.equalTo(configBGView)
-            make.height.equalTo(40*AutoSizeScaleX)
+            make.top.equalTo(forgotPwdBtn.snp.bottom).offset(30*AutoSizeScaleX)
+            make.left.equalTo(forgotPwdBtn)
+            make.height.equalTo(50*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
         }
     }
     func configSocialMainBGView(){
     let configSocialView = UIView()
-    configSocialView.backgroundColor = UIColor.clear
+    configSocialView.backgroundColor = UIColor.red
     self.configBGView.addSubview(configSocialView)
     self.configSocialView = configSocialView
     configSocialView.snp.makeConstraints { (make) -> Void in
@@ -214,6 +229,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let registerVC = RegisterViewController()
         self.present(registerVC, animated: true, completion: nil)
 
+    }
+    @objc func forgotPwdBtn(sender:UIButton!){
+        
     }
     @objc func loginBtn(sender:UIButton!){
         if (mobileNoTextField.text?.isEmpty)! || (passwordTextField.text?.isEmpty)!{

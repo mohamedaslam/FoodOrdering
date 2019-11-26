@@ -22,15 +22,21 @@ import SnapKit
 class LoginViewController: UIViewController,UITextFieldDelegate {
     var configBGView = UIView()
     var configSocialView = UIView()
-
+    var configPwdForgotPwdView = UIView()
+    
     var mobileNoTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var loginnBtn = UIButton()
+    var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clear
         configMainBGView()
+        configPwdForgotPWdSingBtnBGView()
         configSocialMainBGView()
+        configCreateAccountBGView()
+        
     }
     
     func configMainBGView(){
@@ -66,10 +72,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let mobileNoTextField = SkyFloatingLabelTextField()
         mobileNoTextField.placeholder = "Enter Mobile Number"
         mobileNoTextField.CustomTextField()
-        mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
+        mobileNoTextField.backgroundColor = UIColor.red
+        mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 24.0*AutoSizeScaleX)
         mobileNoTextField.borderStyle = UITextField.BorderStyle.none
         mobileNoTextField.autocorrectionType = UITextAutocorrectionType.no
-        mobileNoTextField.keyboardType = UIKeyboardType.default
+        mobileNoTextField.keyboardType = UIKeyboardType.numberPad
         mobileNoTextField.returnKeyType = UIReturnKeyType.done
         mobileNoTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         mobileNoTextField.textAlignment = .left
@@ -81,13 +88,40 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         mobileNoTextField.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(titleLabel.snp_bottomMargin).offset(60*AutoSizeScaleX)
             make.left.equalTo(titleLabel)
-            make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
+            make.right.equalTo(configBGView).offset(-100*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
+        
+        let loadingImageBGView = UIView()
+        loadingImageBGView.backgroundColor = UIColor.clear
+        self.configBGView.addSubview(loadingImageBGView)
+        loadingImageBGView.snp.makeConstraints{ (make) -> Void in
+            make.top.equalTo(mobileNoTextField)
+            make.left.equalTo(mobileNoTextField.snp.right)
+            make.width.height.equalTo(50)
+        }
+
+        loadingImageBGView.addSubview(loadingIndication)
+        loadingIndication.startAnimating()
+        
+       
+    }
+    func configPwdForgotPWdSingBtnBGView(){
+        let configPwdForgotPwdView = UIView()
+        configPwdForgotPwdView.backgroundColor = UIColor.clear
+        self.configBGView.addSubview(configPwdForgotPwdView)
+        self.configPwdForgotPwdView = configPwdForgotPwdView
+        self.configPwdForgotPwdView.isHidden = true
+        configPwdForgotPwdView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self.mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
+            make.left.right.equalTo(self.configBGView)
+            make.height.equalTo(200*AutoSizeScaleX)
+        }
+        
         let passwordTextField = SkyFloatingLabelTextField()
         passwordTextField.placeholder = "Enter Password"
         passwordTextField.CustomTextField()
-        passwordTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
+        passwordTextField.font = UIFont.boldSystemFont(ofSize: 24.0*AutoSizeScaleX)
         passwordTextField.borderStyle = UITextField.BorderStyle.none
         passwordTextField.autocorrectionType = UITextAutocorrectionType.no
         passwordTextField.keyboardType = UIKeyboardType.default
@@ -97,13 +131,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         passwordTextField.textAlignment = .left
         passwordTextField.placeholderColor = UIColor.white
         passwordTextField.delegate = self
-        self.configBGView.addSubview(passwordTextField)
+        self.configPwdForgotPwdView.addSubview(passwordTextField)
         self.passwordTextField = passwordTextField
         
         passwordTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
+            make.top.equalTo(configPwdForgotPwdView)
             make.left.equalTo(mobileNoTextField)
-            make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
+            make.right.equalTo(mobileNoTextField)
             make.height.equalTo(50*AutoSizeScaleX)
         }
         let forgotPwdBtn = UIButton(type: .custom)
@@ -114,7 +148,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         forgotPwdBtn.contentHorizontalAlignment = .left
         forgotPwdBtn.clipsToBounds = true
         forgotPwdBtn.addTarget(self, action:#selector(self.forgotPwdBtn), for: .touchUpInside)
-        self.configBGView.addSubview(forgotPwdBtn)
+        self.configPwdForgotPwdView.addSubview(forgotPwdBtn)
         forgotPwdBtn.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(passwordTextField.snp.bottom).offset(16*AutoSizeScaleX)
             make.left.equalTo(passwordTextField)
@@ -125,13 +159,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let loginBtn = UIButton(type: .custom)
         loginBtn.setTitle("Sign In", for: .normal)
         loginBtn.backgroundColor = UIColor.black
-//        loginBtn.layer.cornerRadius = 20
+        //        loginBtn.layer.cornerRadius = 20
         loginBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
         loginBtn.setTitleColor(UIColor.white, for: .normal)
         loginBtn.contentHorizontalAlignment = .center
         loginBtn.clipsToBounds = true
         loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
-        self.configBGView.addSubview(loginBtn)
+        self.configPwdForgotPwdView.addSubview(loginBtn)
         self.loginnBtn = loginBtn
         loginBtn.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(forgotPwdBtn.snp.bottom).offset(30*AutoSizeScaleX)
@@ -142,13 +176,14 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     func configSocialMainBGView(){
     let configSocialView = UIView()
-    configSocialView.backgroundColor = UIColor.red
+    configSocialView.backgroundColor = UIColor.clear
     self.configBGView.addSubview(configSocialView)
     self.configSocialView = configSocialView
+    self.configSocialView.isHidden = false
     configSocialView.snp.makeConstraints { (make) -> Void in
-        make.top.equalTo(self.loginnBtn.snp.bottom).offset(40*AutoSizeScaleX)
+        make.top.equalTo(self.mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
         make.left.right.equalTo(self.configBGView)
-        make.height.equalTo(260*AutoSizeScaleX)
+        make.height.equalTo(200*AutoSizeScaleX)
     }
     
     let orContinueWithLabel = UILabel()
@@ -192,34 +227,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.top.width.height.equalTo(facebookBtn)
         }
         
+    }
+    func configCreateAccountBGView(){
         let dontHaveAccountLabel = UILabel()
         dontHaveAccountLabel.text = "I dont have an account?"
         dontHaveAccountLabel.textColor = .white
         dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
-        self.configSocialView.addSubview(dontHaveAccountLabel)
+        self.configBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(facebookBtn.snp.bottom).offset(50*AutoSizeScaleX)
-            make.left.equalTo(orContinueWithLabel.snp.left)
+            make.top.equalTo(self.configPwdForgotPwdView.snp.bottom).offset(50*AutoSizeScaleX)
+            make.left.equalTo(self.mobileNoTextField.snp.left)
             make.width.equalTo(200*AutoSizeScaleX)
             make.height.equalTo(30*AutoSizeScaleX)
         }
         
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Create Account", for: .normal)
-       // signUpBtn.backgroundColor = UIColor.green
+        // signUpBtn.backgroundColor = UIColor.green
         signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
         signUpBtn.setTitleColor(UIColor.green, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
         signUpBtn.clipsToBounds = true
         signUpBtn.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
-        self.configSocialView.addSubview(signUpBtn)
+        self.configBGView.addSubview(signUpBtn)
         signUpBtn.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(dontHaveAccountLabel)
             make.left.equalTo(dontHaveAccountLabel.snp_rightMargin)
             make.height.equalTo(32*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
         }
-        
     }
     @objc func signUpBtn(sender:UIButton!){
         //        let newViewController = CongratulationVC()
@@ -278,7 +314,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
     }
+    //MARK - UITextField Delegates
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        //For mobile numer validation
+        if textField == mobileNoTextField {
+            let currentText = textField.text ?? ""
+            
+            // attempt to read the range they are trying to change, or exit if we can't
+            guard let stringRange = Range(range, in: currentText) else { return false }
+            
+            // add their new text to the existing text
+            let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+            
+            // make sure the result is under 16 characters
+            if(updatedText.count == 10){
+                print("CALL ALI")
+                self.configSocialView.isHidden = true
+                self.configPwdForgotPwdView.isHidden = false
+                loadingIndication.stopAnimating()
+
+
+            }
+            return updatedText.count <= 10
+            
+        }
+        return true
+    }
+
 }
+
 extension SkyFloatingLabelTextField{
     
     func CustomTextField(){
@@ -296,5 +360,56 @@ extension SkyFloatingLabelTextField{
 open class Connectivity {
     class var isConnectedToInternet:Bool {
         return NetworkReachabilityManager()?.isReachable ?? false
+    }
+}
+extension String {
+    var isValidContact: Bool {
+        let phoneNumberRegex = "^[6-9]\\d{9}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneNumberRegex)
+        let isValidPhone = phoneTest.evaluate(with: self)
+        return isValidPhone
+    }
+}
+
+
+class MyIndicator: UIView {
+    
+    let imageView = UIImageView()
+    
+    init(frame: CGRect, image: UIImage) {
+        super.init(frame: frame)
+        
+        imageView.frame = bounds
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFit
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(imageView)
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
+    func startAnimating() {
+        isHidden = false
+        rotate()
+    }
+    
+    func stopAnimating() {
+        isHidden = true
+        removeRotation()
+    }
+    
+    private func rotate() {
+        let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotation.toValue = NSNumber(value: Double.pi * 2)
+        rotation.duration = 1
+        rotation.isCumulative = true
+        rotation.repeatCount = Float.greatestFiniteMagnitude
+        self.imageView.layer.add(rotation, forKey: "rotationAnimation")
+    }
+    
+    private func removeRotation() {
+        self.imageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }

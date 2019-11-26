@@ -21,6 +21,8 @@
 		182E0D2F238AA4EC00D8E27D /* facebook2.png in Resources */ = {isa = PBXBuildFile; fileRef = 182E0D2B238AA4EC00D8E27D /* facebook2.png */; };
 		182E0D31238AA73A00D8E27D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E0D30238AA73A00D8E27D /* HomeViewController.swift */; };
 		80DF961DAD2D903D673107B0 /* Pods_FoodOrderingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3550015D3CEB9DCB859D6453 /* Pods_FoodOrderingTests.framework */; };
+		A854AF53238D5577003ABA32 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF52238D5577003ABA32 /* loading.png */; };
+		A854AF55238D55F3003ABA32 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF54238D55F3003ABA32 /* loading1.png */; };
 		A8B1A673238663BB00C2D797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A672238663BB00C2D797 /* AppDelegate.swift */; };
 		A8B1A675238663BB00C2D797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A674238663BB00C2D797 /* ViewController.swift */; };
 		A8B1A678238663BB00C2D797 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8B1A676238663BB00C2D797 /* Main.storyboard */; };
@@ -81,6 +83,8 @@
 		4060B60EC1AA44BBAB463332 /* Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4E85DFC8DA8D9754B4E98997 /* Pods-FoodOrderingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrderingTests.release.xcconfig"; path = "Target Support Files/Pods-FoodOrderingTests/Pods-FoodOrderingTests.release.xcconfig"; sourceTree = "<group>"; };
 		A7F2FFBF6FA3E4F2047E77E2 /* Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A854AF52238D5577003ABA32 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
+		A854AF54238D55F3003ABA32 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
 		A8B1A66F238663BB00C2D797 /* FoodOrdering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodOrdering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8B1A672238663BB00C2D797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8B1A674238663BB00C2D797 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +222,8 @@
 				A8B1A6A0238663CC00C2D797 /* LaunchViewController.swift */,
 				1820927D238ACDC30063AB19 /* images */,
 				A8B1A6A2238663D600C2D797 /* LoginViewController.swift */,
+				A854AF52238D5577003ABA32 /* loading.png */,
+				A854AF54238D55F3003ABA32 /* loading1.png */,
 				A8B1A6A4238663E100C2D797 /* RegisterViewController.swift */,
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
 				182E0D30238AA73A00D8E27D /* HomeViewController.swift */,
@@ -359,6 +365,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A854AF53238D5577003ABA32 /* loading.png in Resources */,
 				A8B1A6B72386820E00C2D797 /* googleImagee.png in Resources */,
 				A8B1A6B9238682B200C2D797 /* googleImg.png in Resources */,
 				A8B1A67D238663BD00C2D797 /* LaunchScreen.storyboard in Resources */,
@@ -366,6 +373,7 @@
 				18055FAF238A92D50018B3DE /* foodlogo.png in Resources */,
 				A8B1A67A238663BD00C2D797 /* Assets.xcassets in Resources */,
 				A8B1A6B123867E4D00C2D797 /* GmailLogo.png in Resources */,
+				A854AF55238D55F3003ABA32 /* loading1.png in Resources */,
 				182E0D2D238AA4EC00D8E27D /* facebook1.png in Resources */,
 				A8B1A6B023867E4D00C2D797 /* FacebookLogo.png in Resources */,
 				18055FAE238A92D50018B3DE /* food2.png in Resources */,

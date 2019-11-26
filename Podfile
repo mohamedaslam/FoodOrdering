@@ -18,7 +18,6 @@ target 'FoodOrdering' do
    pod 'FasterVerificationCode'
    pod 'MBProgressHUD'
    pod 'KWVerificationCodeView'
-
   # Pods for FoodOrdering
 
   target 'FoodOrderingTests' do

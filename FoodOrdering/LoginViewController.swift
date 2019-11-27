@@ -36,7 +36,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         configPwdForgotPWdSingBtnBGView()
         configSocialMainBGView()
         configCreateAccountBGView()
-        
+        self.addDoneButtonOnKeyboard()
+
     }
     
     func configMainBGView(){
@@ -72,7 +73,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         let mobileNoTextField = SkyFloatingLabelTextField()
         mobileNoTextField.placeholder = "Enter Mobile Number"
         mobileNoTextField.CustomTextField()
-        mobileNoTextField.backgroundColor = UIColor.red
+        mobileNoTextField.backgroundColor = UIColor.clear
         mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 24.0*AutoSizeScaleX)
         mobileNoTextField.borderStyle = UITextField.BorderStyle.none
         mobileNoTextField.autocorrectionType = UITextAutocorrectionType.no
@@ -256,6 +257,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.height.equalTo(32*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
         }
+        
+        ////////////
+        let dontHaveAccountLabel = UILabel()
+        dontHaveAccountLabel.text = "I dont have an account?"
+        dontHaveAccountLabel.textColor = .white
+        dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
+        self.configBGView.addSubview(dontHaveAccountLabel)
+        dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
+            make.top.equalTo(self.configPwdForgotPwdView.snp.bottom).offset(50*AutoSizeScaleX)
+            make.left.equalTo(self.mobileNoTextField.snp.left)
+            make.width.equalTo(200*AutoSizeScaleX)
+            make.height.equalTo(30*AutoSizeScaleX)
+        }
+        
+        let signUpBtn = UIButton(type: .custom)
+        signUpBtn.setTitle("Create Account", for: .normal)
+        // signUpBtn.backgroundColor = UIColor.green
+        signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+        signUpBtn.setTitleColor(UIColor.green, for: .normal)
+        signUpBtn.contentHorizontalAlignment = .left
+        signUpBtn.clipsToBounds = true
+        signUpBtn.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
+        self.configBGView.addSubview(signUpBtn)
+        signUpBtn.snp.makeConstraints{(make) -> Void in
+            make.top.equalTo(dontHaveAccountLabel)
+            make.left.equalTo(dontHaveAccountLabel.snp_rightMargin)
+            make.height.equalTo(32*AutoSizeScaleX)
+            make.width.equalTo(130*AutoSizeScaleX)
+        }
     }
     @objc func signUpBtn(sender:UIButton!){
         //        let newViewController = CongratulationVC()
@@ -313,6 +343,28 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
+    }
+    func addDoneButtonOnKeyboard()
+    {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
+        doneToolbar.barStyle = UIBarStyle.default
+        
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneButtonAction))
+        
+        var items = [UIBarButtonItem]()
+        items.append(flexSpace)
+        items.append(done)
+        
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+        
+        self.mobileNoTextField.inputAccessoryView = doneToolbar
+        
+    }
+    @objc func doneButtonAction()
+    {
+        self.mobileNoTextField.resignFirstResponder()
     }
     //MARK - UITextField Delegates
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

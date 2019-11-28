@@ -23,6 +23,9 @@
 		80DF961DAD2D903D673107B0 /* Pods_FoodOrderingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3550015D3CEB9DCB859D6453 /* Pods_FoodOrderingTests.framework */; };
 		A854AF53238D5577003ABA32 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF52238D5577003ABA32 /* loading.png */; };
 		A854AF55238D55F3003ABA32 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF54238D55F3003ABA32 /* loading1.png */; };
+		A8AB562F238FBE2F00311FC0 /* ForgotPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */; };
+		A8AB5631238FE8F400311FC0 /* DPOTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB5630238FE8F400311FC0 /* DPOTPView.swift */; };
+		A8AB5633238FEBA900311FC0 /* ChangePwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */; };
 		A8B1A673238663BB00C2D797 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A672238663BB00C2D797 /* AppDelegate.swift */; };
 		A8B1A675238663BB00C2D797 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A674238663BB00C2D797 /* ViewController.swift */; };
 		A8B1A678238663BB00C2D797 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8B1A676238663BB00C2D797 /* Main.storyboard */; };
@@ -85,6 +88,9 @@
 		A7F2FFBF6FA3E4F2047E77E2 /* Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A854AF52238D5577003ABA32 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		A854AF54238D55F3003ABA32 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
+		A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewController.swift; sourceTree = "<group>"; };
+		A8AB5630238FE8F400311FC0 /* DPOTPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPOTPView.swift; sourceTree = "<group>"; };
+		A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePwdViewController.swift; sourceTree = "<group>"; };
 		A8B1A66F238663BB00C2D797 /* FoodOrdering.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodOrdering.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8B1A672238663BB00C2D797 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8B1A674238663BB00C2D797 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +226,7 @@
 				A8B1A672238663BB00C2D797 /* AppDelegate.swift */,
 				A8B1A674238663BB00C2D797 /* ViewController.swift */,
 				A8B1A6A0238663CC00C2D797 /* LaunchViewController.swift */,
+				A8AB5630238FE8F400311FC0 /* DPOTPView.swift */,
 				1820927D238ACDC30063AB19 /* images */,
 				A8B1A6A2238663D600C2D797 /* LoginViewController.swift */,
 				A854AF52238D5577003ABA32 /* loading.png */,
@@ -227,6 +234,8 @@
 				A8B1A6A4238663E100C2D797 /* RegisterViewController.swift */,
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
 				182E0D30238AA73A00D8E27D /* HomeViewController.swift */,
+				A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */,
+				A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */,
 				A8B1A6AA2386738C00C2D797 /* Constant.swift */,
 				A8B1A676238663BB00C2D797 /* Main.storyboard */,
 				A8B1A679238663BD00C2D797 /* Assets.xcassets */,
@@ -549,6 +558,7 @@
 			files = (
 				A8B1A6AB2386738C00C2D797 /* Constant.swift in Sources */,
 				A8B1A6A3238663D600C2D797 /* LoginViewController.swift in Sources */,
+				A8AB5633238FEBA900311FC0 /* ChangePwdViewController.swift in Sources */,
 				18055FA9238A49640018B3DE /* StringExtension.swift in Sources */,
 				A8B1A6A5238663E100C2D797 /* RegisterViewController.swift in Sources */,
 				18055FA8238A49640018B3DE /* VerificationCodeView.swift in Sources */,
@@ -556,8 +566,10 @@
 				18055FA6238A49640018B3DE /* VerificationCodeFields.swift in Sources */,
 				182E0D31238AA73A00D8E27D /* HomeViewController.swift in Sources */,
 				A8B1A6A1238663CC00C2D797 /* LaunchViewController.swift in Sources */,
+				A8AB5631238FE8F400311FC0 /* DPOTPView.swift in Sources */,
 				A8B1A6A7238663F200C2D797 /* MobileVerifyViewController.swift in Sources */,
 				A8B1A673238663BB00C2D797 /* AppDelegate.swift in Sources */,
+				A8AB562F238FBE2F00311FC0 /* ForgotPwdViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

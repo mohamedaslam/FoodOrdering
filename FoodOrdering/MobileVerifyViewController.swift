@@ -20,6 +20,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var passwordTextField = SkyFloatingLabelTextField()
    // var verificationView = VerificationCodeView()
     var containerView = UIView()
+    var txtOTPView: DPOTPView!
 
     // MARK: - Variables
     var verificationCodeView: KWVerificationCodeView?
@@ -121,18 +122,41 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         }
         
         let containerView = UIView()
-        containerView.backgroundColor = UIColor.clear
         self.view.addSubview(containerView)
         self.containerView = containerView
         containerView.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(verifyOTPLabel)
             make.width.equalTo(320*AutoSizeScaleX)
             make.height.equalTo(52)
-            make.top.equalTo(verifyOTPLabel.snp.bottom).offset(24*AutoSizeScaleX)
+            make.top.equalTo(verifyOTPLabel.snp.bottom).offset(14*AutoSizeScaleX)
         }
-        verificationCodeView = KWVerificationCodeView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
-        verificationCodeView?.digits = 5
-        containerView.addSubview(verificationCodeView!)
+//        verificationCodeView = KWVerificationCodeView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
+//        verificationCodeView?.digits = 5
+//        containerView.addSubview(verificationCodeView!)
+        
+      txtOTPView = DPOTPView()
+        txtOTPView.count = 5
+        txtOTPView.spacing = 10
+        txtOTPView.fontTextField = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(25.0))!
+        txtOTPView.dpOTPViewDelegate = self
+        txtOTPView.dismissOnLastEntry = true
+        txtOTPView.borderColorTextField = .black
+        txtOTPView.selectedBorderColorTextField = .blue
+        txtOTPView.borderWidthTextField = 2
+        txtOTPView.backGroundColorTextField = .lightGray
+        txtOTPView.cornerRadiusTextField = 8
+        txtOTPView.isCursorHidden = true
+        //        txtOTPView.isSecureTextEntry = true
+        //        txtOTPView.isBottomLineTextField = true
+        //        txtOTPView.isCircleTextField = true
+        self.containerView.addSubview(txtOTPView)
+        txtOTPView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self.containerView)
+            make.left.equalTo(self.containerView)
+            make.width.equalTo(320*AutoSizeScaleX)
+            make.height.equalTo(80*AutoSizeScaleX)
+            }
+        
         
         let loginBtn = UIButton(type: .custom)
         loginBtn.setTitle("Submit", for: .normal)
@@ -145,7 +169,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
         self.configBGView.addSubview(loginBtn)
         loginBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(containerView.snp.bottom).offset(30*AutoSizeScaleX)
+            make.top.equalTo(txtOTPView.snp.bottom).offset(20*AutoSizeScaleX)
             make.centerX.equalTo(configBGView)
             make.height.equalTo(40*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
@@ -227,3 +251,26 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 //        VerificationCodeView.showError = false
 //    }
 //}
+extension MobileVerifyViewController : DPOTPViewDelegate {
+    func dpOTPViewAddText(_ text: String, at position: Int) {
+        print("addText:- " + text + " at:- \(position)" )
+    }
+    
+    func dpOTPViewRemoveText(_ text: String, at position: Int) {
+        print("removeText:- " + text + " at:- \(position)" )
+    }
+    
+    func dpOTPViewChangePositionAt(_ position: Int) {
+        print("at:-\(position)")
+        if(position == 4){
+            let changePwdVC = ChangePwdViewController()
+             self.present(changePwdVC, animated: true, completion: nil)
+        }
+    }
+    func dpOTPViewBecomeFirstResponder() {
+        
+    }
+    func dpOTPViewResignFirstResponder() {
+        
+    }
+}

@@ -27,6 +27,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     var mobileNoTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var loginnBtn = UIButton()
+    var notRegisteredLabel = UILabel()
     var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
     
     override func viewDidLoad() {
@@ -105,6 +106,21 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         loadingImageBGView.addSubview(loadingIndication)
         loadingIndication.startAnimating()
         
+        let notRegisteredLabel = UILabel()
+        notRegisteredLabel.text = "Sorry! this number is not registered with us Please check your number again or Re-Enter"
+        notRegisteredLabel.textColor = UIColor.red
+        notRegisteredLabel.textAlignment = .left
+        notRegisteredLabel.isHidden = true
+        notRegisteredLabel.numberOfLines = 0
+        notRegisteredLabel.font = notRegisteredLabel.font.withSize(16*AutoSizeScaleX)
+        self.configBGView.addSubview(notRegisteredLabel)
+        self.notRegisteredLabel = notRegisteredLabel
+        notRegisteredLabel.snp.makeConstraints { (make) -> Void in
+        make.top.equalTo(mobileNoTextField.snp.bottom).offset(10*AutoSizeScaleX)
+        make.left.equalTo(configBGView).offset(20*AutoSizeScaleX)
+        make.right.equalTo(configBGView).offset(-40*AutoSizeScaleX)
+        make.height.equalTo(60*AutoSizeScaleX)
+        }
        
     }
     func configPwdForgotPWdSingBtnBGView(){
@@ -182,7 +198,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     self.configSocialView = configSocialView
     self.configSocialView.isHidden = false
     configSocialView.snp.makeConstraints { (make) -> Void in
-        make.top.equalTo(self.mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
+        make.top.equalTo(self.mobileNoTextField.snp.bottom).offset(50*AutoSizeScaleX)
         make.left.right.equalTo(self.configBGView)
         make.height.equalTo(200*AutoSizeScaleX)
     }
@@ -236,7 +252,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
         self.configBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(self.configPwdForgotPwdView.snp.bottom).offset(50*AutoSizeScaleX)
+            make.bottom.equalTo(self.configBGView.snp.bottom).offset(-180*AutoSizeScaleX)
             make.left.equalTo(self.mobileNoTextField.snp.left)
             make.width.equalTo(200*AutoSizeScaleX)
             make.height.equalTo(30*AutoSizeScaleX)
@@ -244,7 +260,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Create Account", for: .normal)
-        // signUpBtn.backgroundColor = UIColor.green
         signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
         signUpBtn.setTitleColor(UIColor.green, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
@@ -257,35 +272,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.height.equalTo(32*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
         }
-        
-        ////////////
-        let dontHaveAccountLabel = UILabel()
-        dontHaveAccountLabel.text = "I dont have an account?"
-        dontHaveAccountLabel.textColor = .white
-        dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
-        self.configBGView.addSubview(dontHaveAccountLabel)
-        dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(self.configPwdForgotPwdView.snp.bottom).offset(50*AutoSizeScaleX)
-            make.left.equalTo(self.mobileNoTextField.snp.left)
-            make.width.equalTo(200*AutoSizeScaleX)
+        let byCountiuingLabel = UILabel()
+        byCountiuingLabel.text = "By Continuing, you agree to the"
+        byCountiuingLabel.textColor = .white
+        byCountiuingLabel.font = dontHaveAccountLabel.font.withSize(11*AutoSizeScaleX)
+        self.configBGView.addSubview(byCountiuingLabel)
+        byCountiuingLabel.snp.makeConstraints{(make) -> Void in
+        make.bottom.equalTo(self.configBGView.snp.bottom).offset(-40*AutoSizeScaleX)
+        make.left.equalTo(self.configBGView).offset(10*AutoSizeScaleX)
+            make.width.equalTo(180*AutoSizeScaleX)
             make.height.equalTo(30*AutoSizeScaleX)
         }
-        
-        let signUpBtn = UIButton(type: .custom)
-        signUpBtn.setTitle("Create Account", for: .normal)
-        // signUpBtn.backgroundColor = UIColor.green
-        signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        signUpBtn.setTitleColor(UIColor.green, for: .normal)
-        signUpBtn.contentHorizontalAlignment = .left
-        signUpBtn.clipsToBounds = true
-        signUpBtn.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
-        self.configBGView.addSubview(signUpBtn)
-        signUpBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(dontHaveAccountLabel)
-            make.left.equalTo(dontHaveAccountLabel.snp_rightMargin)
+               
+        let termsofUse = UIButton(type: .custom)
+        termsofUse.setTitle("Terms of Use and Privacy Policy", for: .normal)
+        termsofUse.titleLabel?.font = .systemFont(ofSize:11*AutoSizeScaleX)
+        termsofUse.setTitleColor(UIColor.green, for: .normal)
+        termsofUse.contentHorizontalAlignment = .left
+        termsofUse.clipsToBounds = true
+        termsofUse.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
+        self.configBGView.addSubview(termsofUse)
+        termsofUse.snp.makeConstraints{(make) -> Void in
+            make.top.equalTo(byCountiuingLabel)
+            make.left.equalTo(byCountiuingLabel.snp_rightMargin)
             make.height.equalTo(32*AutoSizeScaleX)
-            make.width.equalTo(130*AutoSizeScaleX)
+            make.width.equalTo(180*AutoSizeScaleX)
         }
+       
     }
     @objc func signUpBtn(sender:UIButton!){
         //        let newViewController = CongratulationVC()
@@ -297,15 +310,17 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
 
     }
     @objc func forgotPwdBtn(sender:UIButton!){
-        
+         let forgotPwdVC = ForgotPwdViewController()
+        self.present(forgotPwdVC, animated: true, completion: nil)
     }
     @objc func loginBtn(sender:UIButton!){
         if (mobileNoTextField.text?.isEmpty)! || (passwordTextField.text?.isEmpty)!{
             showAlert(for: "Please fill the all details")
             
         }else{
-            let mobileVerigyVC = HomeViewController()
-            self.present(mobileVerigyVC, animated: true, completion: nil)
+           // let mobileVerigyVC = HomeViewController()
+           // self.present(mobileVerigyVC, animated: true, completion: nil)
+            loginApiCalling()
         }
     }
     @objc func facebookSignInCustomBtn(sender:UIButton!){
@@ -360,11 +375,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         doneToolbar.sizeToFit()
         
         self.mobileNoTextField.inputAccessoryView = doneToolbar
+        self.passwordTextField.inputAccessoryView = doneToolbar
         
     }
     @objc func doneButtonAction()
     {
         self.mobileNoTextField.resignFirstResponder()
+        self.passwordTextField.resignFirstResponder()
     }
     //MARK - UITextField Delegates
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -384,15 +401,74 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 self.configSocialView.isHidden = true
                 self.configPwdForgotPwdView.isHidden = false
                 loadingIndication.stopAnimating()
-
-
+            }
+            if(updatedText.count < 10){
+                self.configSocialView.isHidden = false
+                self.configPwdForgotPwdView.isHidden = true
             }
             return updatedText.count <= 10
             
         }
         return true
     }
-
+    func loginApiCalling(){
+         let parameters: Parameters=[
+            "mobileNumber": "9632845812",
+            "password": "Aslam123"
+         ]
+         let headers: HTTPHeaders = ["Content-Type": "application/json"]
+         Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parameters,encoding: URLEncoding.default, headers: headers).responseJSON
+             {
+                 response in
+                 switch response.result {
+                 case .success:
+                     print(response)
+                     if let result = response.result.value{
+                         let swiftyJsonVar = JSON(result)
+                         if let getemail = swiftyJsonVar["StatusMessage"].string{
+                             if(getemail == "Login sucessfull"){
+                                 //let newViewController = TabBarViewController()
+                                // self.present(newViewController, animated: false, completion: nil)
+                             }else{
+                                 self.showAlert(for: getemail)
+                             }
+                             MBProgressHUD.hide(for: self.view, animated: true)
+                         }
+                         if let getuserr = swiftyJsonVar["User"].dictionary{
+                             if let getToken = getuserr["AccessToken"]!.string{
+                                 let keychain = KeychainSwift()
+                                 MBProgressHUD.hide(for: self.view, animated: true)
+                                 keychain.set(getToken, forKey: "Token")
+                             }
+                             if let getUserId = getuserr["UserKey"]!.string{
+                                 let keychain = KeychainSwift()
+                                 keychain.set(getUserId, forKey: "UserKey")
+                             }
+                         }
+                     }
+                 case .failure(let error):
+                     let message : String
+                     if let httpStatusCode = response.response?.statusCode {
+                         switch(httpStatusCode) {
+                         case 400:
+                             message = "Username or password not provided."
+                         case 401:
+                             message = "Incorrect password for user."
+                         default:
+                             print(httpStatusCode)
+                             print("DEhttpStatusCode")
+                             self.showAlert(for: "Server Down")
+                             return
+                         }
+                     } else {
+                         message = error.localizedDescription
+                         print(message)
+                         print("messagemessage DEhttpStatusCode")
+                         self.showAlert(for: "Server Down")
+                     }
+                 }
+         }
+     }
 }
 
 extension SkyFloatingLabelTextField{

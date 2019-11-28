@@ -28,6 +28,8 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         super.viewDidLoad()
         configMainBGView()
         configSocialMainBGView()
+        self.addDoneButtonOnKeyboard()
+
         // Do any additional setup after loading the view.
     }
     
@@ -66,7 +68,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
         mobileNoTextField.borderStyle = UITextField.BorderStyle.none
         mobileNoTextField.autocorrectionType = UITextAutocorrectionType.no
-        mobileNoTextField.keyboardType = UIKeyboardType.default
+        mobileNoTextField.keyboardType = UIKeyboardType.numberPad
         mobileNoTextField.returnKeyType = UIReturnKeyType.done
         mobileNoTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         mobileNoTextField.textAlignment = .left
@@ -201,6 +203,8 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
             showAlert(for: "Please fill the all details")
 
         }else{
+           // signupApiCalling()
+
             let mobileVerigyVC = MobileVerifyViewController()
             mobileVerigyVC.mobileNumberLabel.text = mobileNoTextField.text
             mobileVerigyVC.userNameLabel.text = fullNameTextField.text
@@ -212,6 +216,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
     }
 
     @objc func signInBtn(sender:UIButton!){
+      //  signupApiCalling()
         let loginVC = LoginViewController()
         self.present(loginVC, animated: true, completion: nil)
         
@@ -232,4 +237,129 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
     }
+    func addDoneButtonOnKeyboard()
+      {
+          let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
+          doneToolbar.barStyle = UIBarStyle.default
+          
+          let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+          let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(doneButtonAction))
+          
+          var items = [UIBarButtonItem]()
+          items.append(flexSpace)
+          items.append(done)
+          
+          doneToolbar.items = items
+          doneToolbar.sizeToFit()
+          
+          self.mobileNoTextField.inputAccessoryView = doneToolbar
+          self.fullNameTextField.inputAccessoryView = doneToolbar
+          self.passwordTextField.inputAccessoryView = doneToolbar
+
+      }
+    @objc func doneButtonAction()
+      {
+          self.mobileNoTextField.resignFirstResponder()
+        self.passwordTextField.resignFirstResponder()
+        self.fullNameTextField.resignFirstResponder()
+
+      }
+      func signupApiCalling(){
+       
+            let parameters: Parameters=[
+                "mobileNumber": "9632845812",
+                "password": "Aslam123",
+                "fullName": "Aslam"
+            ]
+            Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                {
+                    response in
+                    switch response.result {
+                    case .success:
+                        print(response)
+                        if let result = response.result.value{
+                            print(result)
+                            print("result")
+                            let swiftyJsonVar = JSON(result)
+                            print(swiftyJsonVar)
+                            print("swiftyJsonVar")
+                            if (swiftyJsonVar).boolValue {
+                                print(swiftyJsonVar)
+                                print("SEND OTP")
+                                MBProgressHUD.hide(for: self.view, animated: true)
+                                self.sendOTPApiCalling()
+                            }
+                        }
+                    case .failure(let error):
+                        let message : String
+                        if let httpStatusCode = response.response?.statusCode {
+                            switch(httpStatusCode) {
+                            case 400:
+                                message = "Username or password not provided."
+                            case 401:
+                                message = "Incorrect password for user."
+                            default:
+                                print(httpStatusCode)
+                                print("DEhttpStatusCode")
+                                self.showAlert(for: "Server Down")
+                                return
+                            }
+                        } else {
+                            message = error.localizedDescription
+                            print(message)
+                            print("messagemessage DEhttpStatusCode")
+                            self.showAlert(for: "Server Down")
+                        }
+                    }
+            }
+    }
+    func sendOTPApiCalling(){
+          
+               let parameters: Parameters=[
+                   "mobileNumber": "+919632845812"
+               ]
+        Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: URLEncoding.default, headers: nil).responseJSON
+                   {
+                       response in
+                       switch response.result {
+                       case .success:
+                           print(response)
+                           if let result = response.result.value{
+                               print(result)
+                               print("result")
+                               let swiftyJsonVar = JSON(result)
+                               print(swiftyJsonVar)
+                               print("swiftyJsonVar")
+                               if (swiftyJsonVar).boolValue {
+                                   print(swiftyJsonVar)
+                                   print("GETOTPgetemail")
+                                   MBProgressHUD.hide(for: self.view, animated: true)
+                               }
+                           }
+                       case .failure(let error):
+                        print(response)
+                        print("ERROR response")
+
+                           let message : String
+                           if let httpStatusCode = response.response?.statusCode {
+                               switch(httpStatusCode) {
+                               case 400:
+                                   message = "Username or password not provided."
+                               case 401:
+                                   message = "Incorrect password for user."
+                               default:
+                                   print(httpStatusCode)
+                                   print("DEhttpStatusCode")
+                                   self.showAlert(for: "Server Down")
+                                   return
+                               }
+                           } else {
+                               message = error.localizedDescription
+                               print(message)
+                               print("messagemessage DEhttpStatusCode")
+                               self.showAlert(for: "Server Down")
+                           }
+                       }
+               }
+       }
 }

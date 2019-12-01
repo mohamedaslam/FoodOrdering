@@ -61,7 +61,7 @@ protocol DPOTPViewDelegate {
     @IBInspectable var cornerRadiusTextField: CGFloat = 0.0
     
     /** Tint/cursor color for the TextField */
-    @IBInspectable var tintColorTextField: UIColor = UIColor.systemBlue
+    //@IBInspectable var tintColorTextField: UIColor = UIColor.systemBlue
     
     /** Shadow Radius for the TextField */
     @IBInspectable var shadowRadiusTextField: CGFloat = 0.0
@@ -145,7 +145,7 @@ protocol DPOTPViewDelegate {
             textField.dpOTPView = self
             textField.borderStyle = .none
             textField.tag = i * 1000
-            textField.tintColor = tintColorTextField
+          //  textField.tintColor = tintColorTextField
             textField.layer.backgroundColor = backGroundColorTextField.cgColor
             textField.isSecureTextEntry = isSecureTextEntry
             textField.font = fontTextField

@@ -203,13 +203,13 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
             showAlert(for: "Please fill the all details")
 
         }else{
-           // signupApiCalling()
+            signupApiCalling()
 
-            let mobileVerigyVC = MobileVerifyViewController()
-            mobileVerigyVC.mobileNumberLabel.text = mobileNoTextField.text
-            mobileVerigyVC.userNameLabel.text = fullNameTextField.text
-            mobileVerigyVC.passwordTextField.text = passwordTextField.text
-            self.present(mobileVerigyVC, animated: true, completion: nil)
+//            let mobileVerigyVC = MobileVerifyViewController()
+//            mobileVerigyVC.mobileNumberLabel.text = mobileNoTextField.text
+//            mobileVerigyVC.userNameLabel.text = fullNameTextField.text
+//            mobileVerigyVC.passwordTextField.text = passwordTextField.text
+//            self.present(mobileVerigyVC, animated: true, completion: nil)
         }
         
        
@@ -283,12 +283,31 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
                             let swiftyJsonVar = JSON(result)
                             print(swiftyJsonVar)
                             print("swiftyJsonVar")
-                            if (swiftyJsonVar).boolValue {
-                                print(swiftyJsonVar)
-                                print("SEND OTP")
+                            let someString = swiftyJsonVar.string
+                            print(someString)
+                            print("someString")
+                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: nil, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                    UIAlertAction in
+                let mobileVerigyVC = MobileVerifyViewController()
+                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                mobileVerigyVC.userNameLabel.text = self.fullNameTextField.text
+                mobileVerigyVC.passwordTextField.text = self.passwordTextField.text
+              self.present(mobileVerigyVC, animated: true, completion: nil)
+                                    
+                                }
+                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                                    UIAlertAction in
+                                    NSLog("Cancel Pressed")
+                                }
+                                
+                                // Add the actions
+                                alertController.addAction(okAction)
+                                alertController.addAction(cancelAction)
+                                self.present(alertController, animated: true, completion: nil)
                                 MBProgressHUD.hide(for: self.view, animated: true)
-                                self.sendOTPApiCalling()
-                            }
+
+                            
                         }
                     case .failure(let error):
                         let message : String

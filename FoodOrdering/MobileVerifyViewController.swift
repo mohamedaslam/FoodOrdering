@@ -7,9 +7,15 @@
 //
 
 import UIKit
-import SkyFloatingLabelTextField
 import FasterVerificationCode
 import KWVerificationCodeView
+import Alamofire
+import SwiftyJSON
+import KeychainSwift
+import SkyFloatingLabelTextField
+import MBProgressHUD
+import SystemConfiguration
+import SnapKit
 
 class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var configBGView = UIView()
@@ -21,6 +27,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
    // var verificationView = VerificationCodeView()
     var containerView = UIView()
     var txtOTPView: DPOTPView!
+    var getOTPStr : String = ""
 
     // MARK: - Variables
     var verificationCodeView: KWVerificationCodeView?
@@ -135,7 +142,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 //        containerView.addSubview(verificationCodeView!)
         
       txtOTPView = DPOTPView()
-        txtOTPView.count = 5
+        txtOTPView.count = 4
         txtOTPView.spacing = 10
         txtOTPView.fontTextField = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(25.0))!
         txtOTPView.dpOTPViewDelegate = self
@@ -225,7 +232,94 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         
     }
     @objc func loginBtn(sender:UIButton!){
+        verifyOTPApi()
+//        {
+//            "mobileNumber": "string",
+//            "otp": "string"
+//        }
+                  //  let changePwdVC = ChangePwdViewController()
+                  //  self.present(changePwdVC, animated: true, completion: nil)
+    }
+    func verifyOTPApi(){
         
+        let parameters: Parameters=[
+            "mobileNumber": "9632845812",
+            "otp": self.getOTPStr
+        ]
+        
+        Alamofire.request(URL_USER_VERIFY_OTP, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
+            {
+                response in
+                switch response.result {
+                case .success:
+                    print(response)
+                    if let result = response.result.value{
+                        print(result)
+                        print("result")
+                        let swiftyJsonVar = JSON(result)
+                        print(swiftyJsonVar)
+                        print("swiftyJsonVar")
+                        let someString = swiftyJsonVar.string
+                        print(someString)
+                        print("someString")
+                        let alertController = UIAlertController(title: "OTP SUCCESSFULL", message: nil, preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                            UIAlertAction in
+                            let homeVC = HomeViewController()
+                            self.present(homeVC, animated: true, completion: nil)
+                            
+                        }
+                        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                            UIAlertAction in
+                            NSLog("Cancel Pressed")
+                        }
+                        
+                        // Add the actions
+                        alertController.addAction(okAction)
+                        alertController.addAction(cancelAction)
+                        self.present(alertController, animated: true, completion: nil)
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                        
+                        
+                    }
+                case .failure(let error):
+                    let message : String
+                    if let httpStatusCode = response.response?.statusCode {
+                        switch(httpStatusCode) {
+                        case 400:
+                            message = "Username or password not provided."
+                        case 401:
+                            message = "Incorrect password for user."
+                        default:
+                            print(httpStatusCode)
+                            print("DEhttpStatusCode")
+                            self.showAlert(for: "Server Down")
+                            return
+                        }
+                    } else {
+                        message = error.localizedDescription
+                        print(message)
+                        print("messagemessage DEhttpStatusCode")
+                        self.showAlert(for: "Server Down")
+                    }
+                }
+        }
+    }
+    func showAlert(for alert: String) {
+        let alertController = UIAlertController(title: alert, message: "", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+            UIAlertAction in
+            NSLog("Cancel Pressed")
+        }
+        
+        // Add the actions
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }
@@ -254,6 +348,8 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 extension MobileVerifyViewController : DPOTPViewDelegate {
     func dpOTPViewAddText(_ text: String, at position: Int) {
         print("addText:- " + text + " at:- \(position)" )
+        getOTPStr = text
+        
     }
     
     func dpOTPViewRemoveText(_ text: String, at position: Int) {
@@ -262,9 +358,11 @@ extension MobileVerifyViewController : DPOTPViewDelegate {
     
     func dpOTPViewChangePositionAt(_ position: Int) {
         print("at:-\(position)")
+        print("dfdsfs:-\(txtOTPView.text ?? "<#default value#>")")
+
         if(position == 4){
-            let changePwdVC = ChangePwdViewController()
-             self.present(changePwdVC, animated: true, completion: nil)
+//            let changePwdVC = ChangePwdViewController()
+//             self.present(changePwdVC, animated: true, completion: nil)
         }
     }
     func dpOTPViewBecomeFirstResponder() {

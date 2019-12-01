@@ -21,6 +21,7 @@ class ForgotPwdViewController: UIViewController {
     var configGetBGView = UIView()
     var configVerifyBGView = UIView()
     var txtOTPView: DPOTPView!
+    var mobileNoTextField = SkyFloatingLabelTextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,7 @@ class ForgotPwdViewController: UIViewController {
         }
         
         txtOTPView = DPOTPView()
-        txtOTPView.count = 5
+        txtOTPView.count = 4
         txtOTPView.spacing = 10
         txtOTPView.fontTextField = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(25.0))!
         txtOTPView.dpOTPViewDelegate = self

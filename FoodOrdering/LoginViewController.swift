@@ -17,12 +17,11 @@ import MBProgressHUD
 import SystemConfiguration
 import SnapKit
 
-
-
 class LoginViewController: UIViewController,UITextFieldDelegate {
     var configBGView = UIView()
     var configSocialView = UIView()
     var configPwdForgotPwdView = UIView()
+    var tickImageView = UIImageView()
     
     var mobileNoTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
@@ -102,9 +101,16 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             make.left.equalTo(mobileNoTextField.snp.right)
             make.width.height.equalTo(50)
         }
+        tickImageView = UIImageView()
+        tickImageView.image = UIImage(named: "tickmark")
+        tickImageView.isHidden = true
+        loadingImageBGView.addSubview(tickImageView)
+        tickImageView.snp.makeConstraints { (make) -> Void in
+            make.top.bottom.left.right.equalTo(loadingImageBGView)
+        }
 
         loadingImageBGView.addSubview(loadingIndication)
-        loadingIndication.startAnimating()
+        loadingIndication.isHidden = true
         
         let notRegisteredLabel = UILabel()
         notRegisteredLabel.text = "Sorry! this number is not registered with us Please check your number again or Re-Enter"
@@ -300,6 +306,63 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         }
        
     }
+    func deleteApiCalling(){
+        
+  
+        Alamofire.request(URL_USER_DELETE, method: .post, parameters: nil,encoding: JSONEncoding.default, headers: nil).responseJSON
+            {
+                response in
+                switch response.result {
+                case .success:
+                    print(response)
+                    if let result = response.result.value{
+                        print(result)
+                        print("result")
+                        let swiftyJsonVar = JSON(result)
+                        print(swiftyJsonVar)
+                        print("swiftyJsonVar")
+                       
+//                            let alertController = UIAlertController(title: "Registration Success", message: "swiftyJsonVar", preferredStyle: .alert)
+//                            let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+//                                UIAlertAction in
+//                                
+//                            }
+//                            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+//                                UIAlertAction in
+//                                NSLog("Cancel Pressed")
+//                            }
+//                            
+//                            // Add the actions
+//                            alertController.addAction(okAction)
+//                            alertController.addAction(cancelAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            MBProgressHUD.hide(for: self.view, animated: true)
+//                            
+                        
+                    }
+                case .failure(let error):
+                    let message : String
+                    if let httpStatusCode = response.response?.statusCode {
+                        switch(httpStatusCode) {
+                        case 400:
+                            message = "Username or password not provided."
+                        case 401:
+                            message = "Incorrect password for user."
+                        default:
+                            print(httpStatusCode)
+                            print("DEhttpStatusCode")
+                            self.showAlert(for: "Server Down")
+                            return
+                        }
+                    } else {
+                        message = error.localizedDescription
+                        print(message)
+                        print("messagemessage DEhttpStatusCode")
+                        self.showAlert(for: "Server Down")
+                    }
+                }
+        }
+    }
     @objc func signUpBtn(sender:UIButton!){
         //        let newViewController = CongratulationVC()
         //        self.present(newViewController, animated: true, completion: nil)
@@ -311,6 +374,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     @objc func forgotPwdBtn(sender:UIButton!){
          let forgotPwdVC = ForgotPwdViewController()
+        
         self.present(forgotPwdVC, animated: true, completion: nil)
     }
     @objc func loginBtn(sender:UIButton!){
@@ -324,6 +388,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         }
     }
     @objc func facebookSignInCustomBtn(sender:UIButton!){
+        deleteApiCalling()
         if Connectivity.isConnectedToInternet {
            
         }else{
@@ -396,20 +461,55 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
             
             // make sure the result is under 16 characters
-            if(updatedText.count == 10){
+            if(updatedText.count == 11){
                 print("CALL ALI")
-                self.configSocialView.isHidden = true
-                self.configPwdForgotPwdView.isHidden = false
-                loadingIndication.stopAnimating()
+                checkMobileNumberApi()
+               
             }
             if(updatedText.count < 10){
                 self.configSocialView.isHidden = false
                 self.configPwdForgotPwdView.isHidden = true
+                self.tickImageView.isHidden = true
+
             }
             return updatedText.count <= 10
             
         }
         return true
+    }
+    func checkMobileNumberApi(){
+         print(self.mobileNoTextField.text!)
+        loadingIndication.startAnimating()
+ Alamofire.request("http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/GetUser?mobileno=\(self.mobileNoTextField.text!)", method: .get,encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+           // debugPrint(response)
+            switch response.result {
+            case .success:
+                if let result = response.result.value{
+                    print(result)
+
+                    let swiftyJsonVar = JSON(result)
+                    print(swiftyJsonVar)
+                    self.tickImageView.isHidden = false
+                    self.loadingIndication.stopAnimating()
+                    self.configSocialView.isHidden = true
+                    self.configPwdForgotPwdView.isHidden = false
+//                    if let getStatusMsg = swiftyJsonVar["StatusMessage"].string{
+//                        if(getStatusMsg == "Success!"){
+//
+//                        }else{
+//                            self.showAlert(for: getStatusMsg)
+//                        }
+//                        MBProgressHUD.hide(for: self.view, animated: true)
+//                    }
+                    
+                }
+            case .failure(let error):
+                print("FAILURE")
+                print(response.response)
+               
+            }
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
     }
     func loginApiCalling(){
          let parameters: Parameters=[

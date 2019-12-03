@@ -267,9 +267,10 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
       func signupApiCalling(){
        
             let parameters: Parameters=[
-                "mobileNumber": "9632845812",
+                "fullName": "Aslam",
+                "mobileNumber": self.mobileNoTextField.text,
                 "password": "Aslam123",
-                "fullName": "Aslam"
+                "isSocialSignUp" : false
             ]
             Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
                 {
@@ -281,34 +282,45 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
                             print(result)
                             print("result")
                             let swiftyJsonVar = JSON(result)
-                            print(swiftyJsonVar)
-                            print("swiftyJsonVar")
-                            let someString = swiftyJsonVar.string
-                            print(someString)
-                            print("someString")
-                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: nil, preferredStyle: .alert)
-                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
-                                    UIAlertAction in
-                let mobileVerigyVC = MobileVerifyViewController()
-                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
-                mobileVerigyVC.userNameLabel.text = self.fullNameTextField.text
-                mobileVerigyVC.passwordTextField.text = self.passwordTextField.text
-              self.present(mobileVerigyVC, animated: true, completion: nil)
-                                    
-                                }
-                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
-                                    UIAlertAction in
-                                    NSLog("Cancel Pressed")
-                                }
-                                
-                                // Add the actions
-                                alertController.addAction(okAction)
-                                alertController.addAction(cancelAction)
-                                self.present(alertController, animated: true, completion: nil)
-                                MBProgressHUD.hide(for: self.view, animated: true)
 
-                            
+                            if let status = swiftyJsonVar["status"].bool{
+                                                       ///LOGIN SUCCESS
+                            if(status){
+                            let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                            UIAlertAction in
+                            let mobileVerigyVC = MobileVerifyViewController()
+                            mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                            mobileVerigyVC.userNameLabel.text = self.fullNameTextField.text
+                            mobileVerigyVC.passwordTextField.text = self.passwordTextField.text
+                            self.present(mobileVerigyVC, animated: true, completion: nil)
+                                        }
+                            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                                        UIAlertAction in
+                                        NSLog("Cancel Pressed")
+                            }
+                                        // Add the actions
+                                    alertController.addAction(okAction)
+                                    alertController.addAction(cancelAction)
+                                    self.present(alertController, animated: true, completion: nil)
+                                    MBProgressHUD.hide(for: self.view, animated: true)
+                            }else{
+                             self.showAlert(for: "User already Exists")
+
+                                }
+                                //LOGIN FAIL
+//                            if(statusMessage == "Please enter correct password"){
+//                            self.showAlert(for: statusMessage)
+//                            }
+                            MBProgressHUD.hide(for: self.view, animated: true)
                         }
+//                            if let statusValue = swiftyJsonVar["status"].int{
+//                                if(statusValue = 400){
+//                                    self.showAlert(for: "User already Exists")
+//
+//                                }
+//                            }
+                    }
                     case .failure(let error):
                         let message : String
                         if let httpStatusCode = response.response?.statusCode {
@@ -332,6 +344,25 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
                     }
             }
     }
+    //MARK - UITextField Delegates
+       func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+           //For mobile numer validation
+           if textField == mobileNoTextField {
+               let currentText = textField.text ?? ""
+               
+               // attempt to read the range they are trying to change, or exit if we can't
+               guard let stringRange = Range(range, in: currentText) else { return false }
+               
+               // add their new text to the existing text
+               let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+               
+               // make sure the result is under 16 characters
+               
+               return updatedText.count <= 10
+               
+           }
+           return true
+       }
     func sendOTPApiCalling(){
           
                let parameters: Parameters=[
@@ -382,3 +413,21 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
                }
        }
 }
+/*
+ {
+   "status": true,
+   "statusMessage": "User creation successful.8751"
+ }
+ 
+ {
+   "type" : "https:\/\/tools.ietf.org\/html\/rfc7231#section-6.5.1",
+   "traceId" : "|4c3d33e1-470bb6ddd3f18e21.",
+   "status" : 400,
+   "title" : "One or more validation errors occurred.",
+   "errors" : {
+     "MobileNumber" : [
+       "User already Exists"
+     ]
+   }
+ }
+ */

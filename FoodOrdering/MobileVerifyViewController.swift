@@ -243,7 +243,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     func verifyOTPApi(){
         
         let parameters: Parameters=[
-            "mobileNumber": "9632845812",
+            "mobileNumber": mobileNumberLabel.text,
             "otp": self.getOTPStr
         ]
         
@@ -257,27 +257,31 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                         print(result)
                         print("result")
                         let swiftyJsonVar = JSON(result)
-                        print(swiftyJsonVar)
-                        print("swiftyJsonVar")
-                        let someString = swiftyJsonVar.string
-                        print(someString)
-                        print("someString")
-                        let alertController = UIAlertController(title: "OTP SUCCESSFULL", message: nil, preferredStyle: .alert)
-                        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
-                            UIAlertAction in
-                            let homeVC = HomeViewController()
-                            self.present(homeVC, animated: true, completion: nil)
-                            
+                       if let statusMessage = swiftyJsonVar["statusMessage"].string{
+                           ///LOGIN SUCCESS
+                            if(statusMessage == "Invalid OTP"){
+                               let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                               let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                               UIAlertAction in
+//                              let homeVC = HomeViewController()
+//                               self.present(homeVC, animated: true, completion: nil)
+                               }
+                         alertController.addAction(okAction)
+                         self.present(alertController, animated: true, completion: nil)
+                            }
+                           //LOGIN FAIL
+                           if(statusMessage == "OTP Verified Successfully"){
+                               let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                                                              let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                              UIAlertAction in
+                                            let homeVC = HomeViewController()
+                                            self.present(homeVC, animated: true, completion: nil)
+                                                              }
+                                                        alertController.addAction(okAction)
+                                                        self.present(alertController, animated: true, completion: nil)                           }
+                            MBProgressHUD.hide(for: self.view, animated: true)
                         }
-                        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
-                            UIAlertAction in
-                            NSLog("Cancel Pressed")
-                        }
-                        
-                        // Add the actions
-                        alertController.addAction(okAction)
-                        alertController.addAction(cancelAction)
-                        self.present(alertController, animated: true, completion: nil)
+                       
                         MBProgressHUD.hide(for: self.view, animated: true)
                         
                         
@@ -372,3 +376,9 @@ extension MobileVerifyViewController : DPOTPViewDelegate {
         
     }
 }
+/*
+ SUCCESS: {
+     status = 1;
+     statusMessage = "OTP Verified Successfully";
+ }
+ */

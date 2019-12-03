@@ -21,7 +21,9 @@ class ForgotPwdViewController: UIViewController {
     var configGetBGView = UIView()
     var configVerifyBGView = UIView()
     var txtOTPView: DPOTPView!
+    var mobileNoStr : String = ""
     var mobileNoTextField = SkyFloatingLabelTextField()
+    var getOTPStr : String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,8 +147,8 @@ class ForgotPwdViewController: UIViewController {
               
     }
      @objc func getOTPBtn(sender:UIButton!){
-           self.configVerifyBGView.isHidden = false
-            self.configGetBGView.isHidden = true
+        reSendverifyOTPApi()
+
         }
     func configCreateAccountBGView(){
         let dontHaveAccountLabel = UILabel()
@@ -208,10 +210,212 @@ class ForgotPwdViewController: UIViewController {
           self.present(registerVC, animated: true, completion: nil)
 
       }
+     func reSendverifyOTPApi(){
+            
+            let parameters: Parameters=[
+                "mobileNumber": "9632845812"
+            ]
+            
+            Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
+                {
+                    response in
+                    switch response.result {
+                    case .success:
+                        print(response)
+                        if let result = response.result.value{
+                            print(result)
+                            print("result")
+                            let swiftyJsonVar = JSON(result)
+                            if let status = swiftyJsonVar["status"].bool{
+                                if(status){
+//                           if let statusMessage = swiftyJsonVar["statusMessage"].string{
+//                               ///LOGIN SUCCESS
+//                                if(statusMessage == "Invalid OTP"){
+                                   let alertController = UIAlertController(title: "OTP send to Registered Mobile Number", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+                                   let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                   UIAlertAction in
+                                    self.configVerifyBGView.isHidden = false
+                                    self.configGetBGView.isHidden = true
+                                   }
+                             alertController.addAction(okAction)
+                             self.present(alertController, animated: true, completion: nil)
+                                }else{
+                               //LOGIN FAIL
+                                   let alertController = UIAlertController(title: "Invalid OTP", message: nil, preferredStyle: .alert)
+                                                                  let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                                  UIAlertAction in
+                                                  // self.configVerifyBGView.isHidden = false
+                                                // self.configGetBGView.isHidden = true
+                                                                  }
+                                                            alertController.addAction(okAction)
+                                                            self.present(alertController, animated: true, completion: nil)                           }
+                                MBProgressHUD.hide(for: self.view, animated: true)
+                            }
+                           
+                            MBProgressHUD.hide(for: self.view, animated: true)
+                            
+                            
+                        }
+                    case .failure(let error):
+                        let message : String
+                        if let httpStatusCode = response.response?.statusCode {
+                            switch(httpStatusCode) {
+                            case 400:
+                                message = "Username or password not provided."
+                            case 401:
+                                message = "Incorrect password for user."
+                            default:
+                                print(httpStatusCode)
+                                print("DEhttpStatusCode")
+                              //  self.showAlert(for: "Server Down")
+                                return
+                            }
+                        } else {
+                            message = error.localizedDescription
+                            print(message)
+                            print("messagemessage DEhttpStatusCode")
+                            //self.showAlert(for: "Server Down")
+                        }
+                    }
+            }
+        }
+    let SCREEN_WIDTH = UIScreen.main.bounds.size.width
+    let SCREEN_HEIGHT = UIScreen.main.bounds.size.height
+    func buttonAction() {
+        let textView = UITextView()
+        textView.frame = CGRect(x: 10, y: 50, width: SCREEN_WIDTH - 20, height: SCREEN_HEIGHT * 2)
+        let lab = UILabel(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH - 20, height: textView.contentSize.height))
+        lab.backgroundColor = UIColor.white
+        lab.font = textView.font
+        lab.textColor = UIColor.black
+        lab.numberOfLines = 0
+        lab.text = textView.text
+        textView.addSubview(lab)
+
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: SCREEN_WIDTH - 20, height: textView.contentSize.height), _: true, _: 1)
+        if let context = UIGraphicsGetCurrentContext() {
+            lab.layer.render(in: context)
+        }
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        textView.frame = CGRect(x: 10, y: 50, width: SCREEN_WIDTH - 20, height: SCREEN_HEIGHT * 2)
+        lab.removeFromSuperview()
+
+    }
+  
+
+   func forgotPwdApi(){
+               
+                 let parameters: Parameters=[
+                     "mobileNumber": mobileNoStr,
+                     "otp": getOTPStr,
+                     "newPassword": ""
+                 ]
+                 
+                 Alamofire.request(URL_USER_FORGOT_PWD, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
+                     {
+                         response in
+                         switch response.result {
+                         case .success:
+                             print(response)
+                             if let result = response.result.value{
+                                 print(result)
+                                 print("result")
+                                 let swiftyJsonVar = JSON(result)
+                                if let statusMessage = swiftyJsonVar["statusMessage"].string{
+                                    ///LOGIN SUCCESS
+                                     if(statusMessage == "Invalid OTP"){
+                                        let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                                        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                        UIAlertAction in
+         //                              let homeVC = HomeViewController()
+         //                               self.present(homeVC, animated: true, completion: nil)
+                                        }
+                                  alertController.addAction(okAction)
+                                  self.present(alertController, animated: true, completion: nil)
+                                     }
+                                    //LOGIN FAIL
+                                    if(statusMessage == "OTP Verified Successfully"){
+                                        let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                                                                       let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                                       UIAlertAction in
+                                                     let homeVC = HomeViewController()
+                                                     self.present(homeVC, animated: true, completion: nil)
+                                                                       }
+                                                                 alertController.addAction(okAction)
+                                                                 self.present(alertController, animated: true, completion: nil)
+                                    }
+                                    //LOGIN FAIL
+                                    if(statusMessage == "New password created Successfully"){
+                                        let alertController = UIAlertController(title: "OTP Verified Successfully", message: nil, preferredStyle: .alert)
+                                                                       let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                                       UIAlertAction in
+                                                     let changeVC = ChangePwdViewController()
+                                                                        changeVC.getMobileNo = self.mobileNoStr
+                                                                        changeVC.getOTPStr = self.getOTPStr
+                                                     self.present(changeVC, animated: true, completion: nil)
+                                                                       }
+                                                                 alertController.addAction(okAction)
+                                                                 self.present(alertController, animated: true, completion: nil)
+                                    }
+                                     MBProgressHUD.hide(for: self.view, animated: true)
+                                 }
+                                
+                                 MBProgressHUD.hide(for: self.view, animated: true)
+                                 
+                                 
+                             }
+                         case .failure(let error):
+                             let message : String
+                             if let httpStatusCode = response.response?.statusCode {
+                                 switch(httpStatusCode) {
+                                 case 400:
+                                     message = "Username or password not provided."
+                                 case 401:
+                                     message = "Incorrect password for user."
+                                 default:
+                                     print(httpStatusCode)
+                                     print("DEhttpStatusCode")
+                                     self.showAlert(for: "Server Down")
+                                     return
+                                 }
+                             } else {
+                                 message = error.localizedDescription
+                                 print(message)
+                                 print("messagemessage DEhttpStatusCode")
+                                 self.showAlert(for: "Server Down")
+                             }
+                         }
+                 }
+             }
+    func showAlert(for alert: String) {
+                 let alertController = UIAlertController(title: alert, message: "", preferredStyle: .alert)
+                 let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                     UIAlertAction in
+                     
+                 }
+                 let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                     UIAlertAction in
+                     NSLog("Cancel Pressed")
+                 }
+                 
+                 // Add the actions
+                 alertController.addAction(okAction)
+                 alertController.addAction(cancelAction)
+                 self.present(alertController, animated: true, completion: nil)
+             }
 }
 extension ForgotPwdViewController : DPOTPViewDelegate {
     func dpOTPViewAddText(_ text: String, at position: Int) {
         print("addText:- " + text + " at:- \(position)" )
+        getOTPStr = text
+         if(position == 3){
+                    forgotPwdApi()
+        //            let changePwdVC = ChangePwdViewController()
+        //            changePwdVC.getOTPStr = getOTPStr
+        //            changePwdVC.getMobileNo = mobileNoStr
+        //             self.present(changePwdVC, animated: true, completion: nil)
+                }
     }
     
     func dpOTPViewRemoveText(_ text: String, at position: Int) {
@@ -221,8 +425,11 @@ extension ForgotPwdViewController : DPOTPViewDelegate {
     func dpOTPViewChangePositionAt(_ position: Int) {
         print("at:-\(position)")
         if(position == 4){
-            let changePwdVC = ChangePwdViewController()
-             self.present(changePwdVC, animated: true, completion: nil)
+            forgotPwdApi()
+//            let changePwdVC = ChangePwdViewController()
+//            changePwdVC.getOTPStr = getOTPStr
+//            changePwdVC.getMobileNo = mobileNoStr
+//             self.present(changePwdVC, animated: true, completion: nil)
         }
     }
     func dpOTPViewBecomeFirstResponder() {

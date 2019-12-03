@@ -9,6 +9,7 @@
 import UIKit
 import GoogleSignIn
 import FBSDKCoreKit
+import FBSDKLoginKit
 import Alamofire
 import SwiftyJSON
 import KeychainSwift
@@ -17,12 +18,13 @@ import MBProgressHUD
 import SystemConfiguration
 import SnapKit
 
-class LoginViewController: UIViewController,UITextFieldDelegate {
+class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDelegate {
     var configBGView = UIView()
     var configSocialView = UIView()
     var configPwdForgotPwdView = UIView()
     var tickImageView = UIImageView()
-    
+    var dict : [String : AnyObject]!
+
     var mobileNoTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var loginnBtn = UIButton()
@@ -374,7 +376,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     @objc func forgotPwdBtn(sender:UIButton!){
          let forgotPwdVC = ForgotPwdViewController()
-        
+        forgotPwdVC.mobileNoStr = self.mobileNoTextField.text!
         self.present(forgotPwdVC, animated: true, completion: nil)
     }
     @objc func loginBtn(sender:UIButton!){
@@ -387,16 +389,16 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
             loginApiCalling()
         }
     }
-    @objc func facebookSignInCustomBtn(sender:UIButton!){
-        deleteApiCalling()
-        if Connectivity.isConnectedToInternet {
-           
-        }else{
-            MBProgressHUD.hide(for: self.view, animated: true)
-            showAlert(for: "Not connected")
-        }
-        
-    }
+//    @objc func facebookSignInCustomBtn(sender:UIButton!){
+//        deleteApiCalling()
+//        if Connectivity.isConnectedToInternet {
+//
+//        }else{
+//            MBProgressHUD.hide(for: self.view, animated: true)
+//            showAlert(for: "Not connected")
+//        }
+//
+//    }
     @objc func gmailSignInBtn(sender: UIButton!) {
         if Connectivity.isConnectedToInternet {
             let loadingNotification = MBProgressHUD.showAdded(to: view, animated: true)
@@ -470,6 +472,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                 self.configSocialView.isHidden = false
                 self.configPwdForgotPwdView.isHidden = true
                 self.tickImageView.isHidden = true
+                self.notRegisteredLabel.isHidden = true
 
             }
             return updatedText.count <= 10
@@ -489,18 +492,24 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
 
                     let swiftyJsonVar = JSON(result)
                     print(swiftyJsonVar)
-                    self.tickImageView.isHidden = false
-                    self.loadingIndication.stopAnimating()
-                    self.configSocialView.isHidden = true
-                    self.configPwdForgotPwdView.isHidden = false
-//                    if let getStatusMsg = swiftyJsonVar["StatusMessage"].string{
-//                        if(getStatusMsg == "Success!"){
-//
-//                        }else{
-//                            self.showAlert(for: getStatusMsg)
-//                        }
-//                        MBProgressHUD.hide(for: self.view, animated: true)
-//                    }
+
+                    if let getStatusMsg = swiftyJsonVar["statusMessage"].string{
+                        if(getStatusMsg == "Sorry! this number is not registered with us Please check your number again or Re-Ented"){
+                            self.tickImageView.isHidden = true
+                            self.loadingIndication.stopAnimating()
+                            self.configSocialView.isHidden = false
+                            self.configPwdForgotPwdView.isHidden = true
+                            self.notRegisteredLabel.isHidden = false
+                        }else{
+                           self.tickImageView.isHidden = false
+                           self.loadingIndication.stopAnimating()
+                           self.configSocialView.isHidden = true
+                           self.configPwdForgotPwdView.isHidden = false
+                           self.notRegisteredLabel.isHidden = true
+
+                        }
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    }
                     
                 }
             case .failure(let error):
@@ -513,11 +522,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     }
     func loginApiCalling(){
          let parameters: Parameters=[
-            "mobileNumber": "9632845812",
-            "password": "Aslam123"
+            "mobileNumber": self.mobileNoTextField.text,
+            "password": self.passwordTextField.text
          ]
          let headers: HTTPHeaders = ["Content-Type": "application/json"]
-         Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parameters,encoding: URLEncoding.default, headers: headers).responseJSON
+         Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: headers).responseJSON
              {
                  response in
                  switch response.result {
@@ -525,26 +534,30 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                      print(response)
                      if let result = response.result.value{
                          let swiftyJsonVar = JSON(result)
-                         if let getemail = swiftyJsonVar["StatusMessage"].string{
-                             if(getemail == "Login sucessfull"){
-                                 //let newViewController = TabBarViewController()
-                                // self.present(newViewController, animated: false, completion: nil)
-                             }else{
-                                 self.showAlert(for: getemail)
+                         if let statusMessage = swiftyJsonVar["statusMessage"].string{
+                            ///LOGIN SUCCESS
+                             if(statusMessage == "Login Successfull!"){
+                                if let getuserr = swiftyJsonVar["user"].dictionary{
+                                    if let getToken = getuserr["accessToken"]!.string{
+                                        let keychain = KeychainSwift()
+                                        MBProgressHUD.hide(for: self.view, animated: true)
+                                        keychain.set(getToken, forKey: "Token")
+                                    }
+                                    if let getUserId = getuserr["userKey"]!.string{
+                                        let keychain = KeychainSwift()
+                                        keychain.set(getUserId, forKey: "UserKey")
+                                    }
+                                }
+                                 let homeVC = HomeViewController()
+                                 self.present(homeVC, animated: false, completion: nil)
                              }
+                            //LOGIN FAIL
+                            if(statusMessage == "Please enter correct password"){
+                                self.showAlert(for: statusMessage)
+                            }
                              MBProgressHUD.hide(for: self.view, animated: true)
                          }
-                         if let getuserr = swiftyJsonVar["User"].dictionary{
-                             if let getToken = getuserr["AccessToken"]!.string{
-                                 let keychain = KeychainSwift()
-                                 MBProgressHUD.hide(for: self.view, animated: true)
-                                 keychain.set(getToken, forKey: "Token")
-                             }
-                             if let getUserId = getuserr["UserKey"]!.string{
-                                 let keychain = KeychainSwift()
-                                 keychain.set(getUserId, forKey: "UserKey")
-                             }
-                         }
+                         
                      }
                  case .failure(let error):
                      let message : String
@@ -569,6 +582,68 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
                  }
          }
      }
+    @objc func facebookSignInCustomBtn(sender:UIButton!){
+        let facebookgmailVC = FacebookGmailMobileVC()
+        self.present(facebookgmailVC, animated: true, completion: nil)
+//         if Connectivity.isConnectedToInternet {
+//             let loadingNotification = MBProgressHUD.showAdded(to: view, animated: true)
+//             loadingNotification.mode = MBProgressHUDMode.indeterminate
+//             loadingNotification.label.text = "Loading"
+//            let fbLoginManager : LoginManager = LoginManager()
+//            fbLoginManager.logIn(permissions: ["email"], from: self, handler: { (result, error) -> Void in
+//                 if error != nil{
+//                 } else if (result?.isCancelled)! {
+//                     MBProgressHUD.hide(for: self.view, animated: true)
+//                 }
+//                 else{
+//                    let loginResult : LoginManagerLoginResult = result!
+//                     if loginResult.grantedPermissions == nil{
+//                         return
+//                     }
+//                     if (loginResult.grantedPermissions.contains("email")){
+//                        self.getFBUserData()
+//                         fbLoginManager.logOut()
+//                     }
+//                 }
+//             })
+//         }else{
+//             MBProgressHUD.hide(for: self.view, animated: true)
+//             showAlert(for: "Not connected")
+//         }
+    
+     }
+    func getFBUserData(){
+        if((AccessToken.current) != nil){
+            
+            GraphRequest(graphPath: "me", parameters: ["fields": "id, name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
+                   if (error == nil){
+                       self.dict = (result as! [String : AnyObject])
+                       let swiftyJsonVar = JSON(result as! [String : AnyObject])
+                       if let getemail = swiftyJsonVar["email"].string{
+                           print(getemail)
+                           //self.getEmail = getemail
+                       }
+                       if let getname = swiftyJsonVar["name"].string{
+                           print(getname)
+                           //self.getUserName = getname
+                          // self.signupApiCalling()
+                       }
+                   }
+               })
+           }
+       }
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+           print("Did log out of facebook")
+       }
+       
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+           if error != nil {
+            print(error as Any)
+               return
+           }
+           
+           print("Successfully logged in with facebook...")
+       }
 }
 
 extension SkyFloatingLabelTextField{
@@ -641,3 +716,34 @@ class MyIndicator: UIView {
         self.imageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }
+/*
+ let parameters: Parameters=[
+    "mobileNumber": "9632845812",
+    "password": "Aslam123"
+ ]
+ 
+                              SUCCESS: {
+                                  status = 0;
+                                  statusMessage = "Please enter correct password";
+                              }
+                              */
+                             
+                             /*
+                              {
+                                "type" : "https:\/\/tools.ietf.org\/html\/rfc7231#section-6.5.1",
+                                "traceId" : "|4c3d33e1-470bb6ddd3f18e21.",
+                                "status" : 400,
+                                "title" : "One or more validation errors occurred.",
+                                "errors" : {
+                                  "MobileNumber" : [
+                                    "User already Exists"
+                                  ]
+                                }
+                              }
+                              status = 1;
+                              statusMessage = "Login Successfull!";
+                              user =     {
+                                  accessToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ikk5aE5NNno2VjgtMTUxMTVQMWtFeGciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE1NzUzNTIyMDYsImV4cCI6MTU3NTM1NTgwNiwiaXNzIjoiaHR0cDovL2lkZW50aXR5c2VydmVyLWRldi5hcC1zb3V0aC0xLmVsYXN0aWNiZWFuc3RhbGsuY29tIiwiYXVkIjoiYXBpMSIsImNsaWVudF9pZCI6ImNsaWVudCIsInNjb3BlIjpbImFwaTEiXX0.iEJvRx09XQZjF_Idn8Vwg8gv9iK4A1yLFzkZmXcQPIfhSYMaUbCcuaBfA4OlOlXlWrAKAY3exnST4uyeVODKwAKmBPROmX0Zp7PBg-VxmmcJa0Cp0pLl8lWyXsOXgM5MkzoEwxnkm3i5DC04u2qzbrnWQl_AlQKB9haSdz-s_CwQHmrMgQhtpqtyr2NBmX_dDuu7x1b3ugIaRntiZmUi30BxojwegXlrVRSSZXZEGmEgnGD1rQlSCQi54EceM-fOtkRT1zSY9ihVI-WbnH2-VfIFAhSfZ0Y3v_YsClmtO9XP7PQ2cyhmQDHMalTa3mGJPWZHMzvfTSod3UU2_88O8w";
+                                  userKey = "a939b505-7782-4092-968a-0d811b58bb69";
+                              };
+                              */

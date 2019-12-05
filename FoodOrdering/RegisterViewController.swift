@@ -22,7 +22,8 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
     var mobileNoTextField = SkyFloatingLabelTextField()
     var fullNameTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
-    
+
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
             make.left.right.bottom.top.equalTo(self.view)
         }
         let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "LoginBackground")
+        bgImageView.image = UIImage(named: "Numbervalidation")
         self.configBGView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.configBGView)
@@ -52,7 +53,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         }
         let titleLabel = UILabel()
         titleLabel.text = "Quisiera"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 36.0*AutoSizeScaleX)
         configBGView.addSubview(titleLabel)
@@ -162,7 +163,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         
         let noteOTPLabel = UILabel()
         noteOTPLabel.text = "Note:-OTP will be sent to the above mentioned number."
-        noteOTPLabel.textColor = .white
+        noteOTPLabel.textColor = .black
         noteOTPLabel.font = noteOTPLabel.font.withSize(13*AutoSizeScaleX)
         self.configGetOTPBGView.addSubview(noteOTPLabel)
         noteOTPLabel.snp.makeConstraints{(make) -> Void in
@@ -173,7 +174,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         }
         let dontHaveAccountLabel = UILabel()
         dontHaveAccountLabel.text = "Already have an account?"
-        dontHaveAccountLabel.textColor = .white
+        dontHaveAccountLabel.textColor = .black
         dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
         self.configGetOTPBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
@@ -186,7 +187,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Sign In", for: .normal)
         signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        signUpBtn.setTitleColor(UIColor.green, for: .normal)
+        signUpBtn.setTitleColor(UIColor.black, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
         signUpBtn.clipsToBounds = true
         signUpBtn.addTarget(self, action:#selector(self.signInBtn), for: .touchUpInside)
@@ -368,7 +369,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
                let parameters: Parameters=[
                    "mobileNumber": "+919632845812"
                ]
-        Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: URLEncoding.default, headers: nil).responseJSON
+        Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
                    {
                        response in
                        switch response.result {

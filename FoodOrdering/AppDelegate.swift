@@ -12,7 +12,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
  
 
     var window: UIWindow?
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootVC = LoginViewController()
         //let navController = UINavigationController(rootViewController: rootVC)
         window?.rootViewController = rootVC
-        
+        GIDSignIn.sharedInstance().clientID = "6359015885-ta1id9oaphn7ui8kki0606hjctd51833.apps.googleusercontent.com"
         // Facebook sign-in.
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions);
         return true
@@ -54,9 +54,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            
         let  facebookhandled = ApplicationDelegate.shared.application(app, open: url, sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?, annotation: options[UIApplication.OpenURLOptionsKey.annotation])
            
+        let  googlehandled = GIDSignIn.sharedInstance().handle(url)
+
       
-           
-           return facebookhandled
+           return facebookhandled || googlehandled
        }
        
       
@@ -78,14 +79,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                let givenName = user.profile.givenName
                let familyName = user.profile.familyName
                let email = user.profile.email
-               // ...
+          //      ...
                
-               //            print(userId!)
-               //            print("idToken")
-               //            print(fullName!)
-               //            print(givenName!)
-               //            print(familyName!)
-               //            print(email!)
+                           print(userId!)
+                           print("idToken")
+                           print(fullName!)
+                           print(givenName!)
+                           print(familyName!)
+                           print(email!)
            }
        }
        

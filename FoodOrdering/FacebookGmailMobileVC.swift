@@ -18,8 +18,10 @@ import SnapKit
 class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
     var configBGView = UIView()
     var configGetOTPBGView = UIView()
+    var userNameLabel = UILabel()
     
     var mobileNoTextField = SkyFloatingLabelTextField()
+    var getUserName : String = ""
 
     
     override func viewDidLoad() {
@@ -36,7 +38,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
             make.left.right.bottom.top.equalTo(self.view)
         }
         let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "LoginBackground")
+        bgImageView.image = UIImage(named: "Numbervalidation")
         self.configBGView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.configBGView)
@@ -46,7 +48,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         }
         let titleLabel = UILabel()
         titleLabel.text = "Quisiera"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0*AutoSizeScaleX)
         configBGView.addSubview(titleLabel)
@@ -56,10 +58,10 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
             make.height.equalTo(40*AutoSizeScaleX)
         }
         let userNameLabel = UILabel()
-        userNameLabel.text = "Mohammed Aslam"
-        userNameLabel.textColor = UIColor.white
+        userNameLabel.text = self.getUserName
+        userNameLabel.textColor = UIColor.black
         userNameLabel.textAlignment = .left
-        userNameLabel.font = UIFont.boldSystemFont(ofSize: 34.0*AutoSizeScaleX)
+        userNameLabel.font = UIFont.boldSystemFont(ofSize: 32.0*AutoSizeScaleX)
         configBGView.addSubview(userNameLabel)
         userNameLabel.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(titleLabel.snp.bottom).offset(30*AutoSizeScaleX)
@@ -68,10 +70,10 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         }
         let youAreOneStepLabel = UILabel()
         youAreOneStepLabel.text = "You are one step away to get your Quality Food Experience"
-        youAreOneStepLabel.textColor = UIColor.white
+        youAreOneStepLabel.textColor = UIColor.black
         youAreOneStepLabel.textAlignment = .left
         youAreOneStepLabel.numberOfLines = 0
-        youAreOneStepLabel.font = UIFont.boldSystemFont(ofSize: 38.0*AutoSizeScaleX)
+        youAreOneStepLabel.font = UIFont.boldSystemFont(ofSize: 35.0*AutoSizeScaleX)
         configBGView.addSubview(youAreOneStepLabel)
         youAreOneStepLabel.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(userNameLabel.snp.bottom).offset(24*AutoSizeScaleX)
@@ -133,12 +135,93 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                
                // add their new text to the existing text
                let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-               
+               if(updatedText.count == 11){
+                              print("CALL ALI")
+                              sendOTPApiCalling()
+                             
+                          }
            
                return updatedText.count <= 10
                
            }
            return true
+       }
+    func sendOTPApiCalling(){
+             
+                  let parameters: Parameters=[
+                    "mobileNumber": self.mobileNoTextField.text!
+                  ]
+        print(parameters)
+           Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                      {
+                          response in
+                          switch response.result {
+                          case .success:
+                              print(response)
+                              if let result = response.result.value{
+                                  print(result)
+                                  print("result")
+                                  let swiftyJsonVar = JSON(result)
+                                  print(swiftyJsonVar)
+                                  print("swiftyJsonVar")
+                                  if (swiftyJsonVar).boolValue {
+                                      print(swiftyJsonVar)
+                                      print("GETOTPgetemail")
+                                      MBProgressHUD.hide(for: self.view, animated: true)
+                                  }
+                                 if let status = swiftyJsonVar["status"].bool{
+                                    if(status){
+                             let mobileVerigyVC = MobileVerifyViewController()
+                                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                                mobileVerigyVC.userNameLabel.text = self.getUserName
+                               // mobileVerigyVC.passwordTextField.text = self.passwordTextField.text
+                                self.present(mobileVerigyVC, animated: true, completion: nil)
+                                    }else{
+                                        print("INVAIDE OTP")
+                                    }
+                                }
+                              }
+                          case .failure(let error):
+                           print(response)
+                           print("ERROR response")
+
+                              let message : String
+                              if let httpStatusCode = response.response?.statusCode {
+                                  switch(httpStatusCode) {
+                                  case 400:
+                                      message = "Username or password not provided."
+                                  case 401:
+                                      message = "Incorrect password for user."
+                                  default:
+                                      print(httpStatusCode)
+                                      print("DEhttpStatusCode")
+                                      self.showAlert(for: "Server Down")
+                                      return
+                                  }
+                              } else {
+                                  message = error.localizedDescription
+                                  print(message)
+                                  print("messagemessage DEhttpStatusCode")
+                                  self.showAlert(for: "Server Down")
+                              }
+                          }
+                  }
+          }
+    func showAlert(for alert: String) {
+           let alertController = UIAlertController(title: alert, message: "", preferredStyle: .alert)
+           let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+               UIAlertAction in
+               
+           }
+           let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+               UIAlertAction in
+               NSLog("Cancel Pressed")
+           }
+           
+           // Add the actions
+           alertController.addAction(okAction)
+           alertController.addAction(cancelAction)
+           self.present(alertController, animated: true, completion: nil)
        }
     /*
     // MARK: - Navigation

@@ -25,6 +25,10 @@
 		A854AF53238D5577003ABA32 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF52238D5577003ABA32 /* loading.png */; };
 		A854AF55238D55F3003ABA32 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF54238D55F3003ABA32 /* loading1.png */; };
 		A882852F23969AAA0044E0DC /* FacebookGmailMobileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */; };
+		A8A70EAA2398DA27004EE9F9 /* LoginScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */; };
+		A8A70EAC2398F736004EE9F9 /* Number validation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EAB2398F736004EE9F9 /* Number validation.jpg */; };
+		A8A70EAE2398F792004EE9F9 /* Numbervalidation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EAD2398F792004EE9F9 /* Numbervalidation.jpg */; };
+		A8A70EB02399170D004EE9F9 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EAF2399170D004EE9F9 /* credentials.plist */; };
 		A8AB562F238FBE2F00311FC0 /* ForgotPwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */; };
 		A8AB5631238FE8F400311FC0 /* DPOTPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB5630238FE8F400311FC0 /* DPOTPView.swift */; };
 		A8AB5633238FEBA900311FC0 /* ChangePwdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */; };
@@ -92,6 +96,10 @@
 		A854AF52238D5577003ABA32 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		A854AF54238D55F3003ABA32 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
 		A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookGmailMobileVC.swift; sourceTree = "<group>"; };
+		A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoginScreen.jpg; sourceTree = "<group>"; };
+		A8A70EAB2398F736004EE9F9 /* Number validation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Number validation.jpg"; sourceTree = "<group>"; };
+		A8A70EAD2398F792004EE9F9 /* Numbervalidation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Numbervalidation.jpg; sourceTree = "<group>"; };
+		A8A70EAF2399170D004EE9F9 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPwdViewController.swift; sourceTree = "<group>"; };
 		A8AB5630238FE8F400311FC0 /* DPOTPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPOTPView.swift; sourceTree = "<group>"; };
 		A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePwdViewController.swift; sourceTree = "<group>"; };
@@ -228,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				A8B1A672238663BB00C2D797 /* AppDelegate.swift */,
+				A8A70EAF2399170D004EE9F9 /* credentials.plist */,
 				A8B1A674238663BB00C2D797 /* ViewController.swift */,
 				A8B1A6A0238663CC00C2D797 /* LaunchViewController.swift */,
 				A8AB5630238FE8F400311FC0 /* DPOTPView.swift */,
@@ -235,7 +244,10 @@
 				A8B1A6A2238663D600C2D797 /* LoginViewController.swift */,
 				A854AF52238D5577003ABA32 /* loading.png */,
 				18588BA82393903B0014F5FB /* tickmark.png */,
+				A8A70EAB2398F736004EE9F9 /* Number validation.jpg */,
 				A854AF54238D55F3003ABA32 /* loading1.png */,
+				A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */,
+				A8A70EAD2398F792004EE9F9 /* Numbervalidation.jpg */,
 				A8B1A6A4238663E100C2D797 /* RegisterViewController.swift */,
 				A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */,
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
@@ -385,10 +397,12 @@
 				A8B1A6B9238682B200C2D797 /* googleImg.png in Resources */,
 				A8B1A67D238663BD00C2D797 /* LaunchScreen.storyboard in Resources */,
 				182E0D2E238AA4EC00D8E27D /* facebook3.png in Resources */,
+				A8A70EAC2398F736004EE9F9 /* Number validation.jpg in Resources */,
 				18055FAF238A92D50018B3DE /* foodlogo.png in Resources */,
 				A8B1A67A238663BD00C2D797 /* Assets.xcassets in Resources */,
 				A8B1A6B123867E4D00C2D797 /* GmailLogo.png in Resources */,
 				A854AF55238D55F3003ABA32 /* loading1.png in Resources */,
+				A8A70EAE2398F792004EE9F9 /* Numbervalidation.jpg in Resources */,
 				182E0D2D238AA4EC00D8E27D /* facebook1.png in Resources */,
 				A8B1A6B023867E4D00C2D797 /* FacebookLogo.png in Resources */,
 				18055FAE238A92D50018B3DE /* food2.png in Resources */,
@@ -400,8 +414,10 @@
 				182E0D2F238AA4EC00D8E27D /* facebook2.png in Resources */,
 				18055FB0238A92D50018B3DE /* food.png in Resources */,
 				A8B1A6BB2386834300C2D797 /* facebookImg.png in Resources */,
+				A8A70EAA2398DA27004EE9F9 /* LoginScreen.jpg in Resources */,
 				182E0D2C238AA4EC00D8E27D /* facebook4.png in Resources */,
 				18055FA7238A49640018B3DE /* VerificationCodeView.xib in Resources */,
+				A8A70EB02399170D004EE9F9 /* credentials.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

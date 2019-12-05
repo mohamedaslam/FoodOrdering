@@ -37,7 +37,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
             make.left.right.bottom.top.equalTo(self.view)
         }
         let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "LoginBackground")
+        bgImageView.image = UIImage(named: "Numbervalidation")
         self.configBGView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.configBGView)

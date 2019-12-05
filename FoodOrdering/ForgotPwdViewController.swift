@@ -43,7 +43,7 @@ class ForgotPwdViewController: UIViewController {
                make.left.right.bottom.top.equalTo(self.view)
            }
            let bgImageView = UIImageView()
-           bgImageView.image = UIImage(named: "LoginBackground")
+           bgImageView.image = UIImage(named: "Numbervalidation")
            self.configBGView.addSubview(bgImageView)
            bgImageView.snp.makeConstraints { (make) -> Void in
                make.top.equalTo(self.configBGView)
@@ -54,7 +54,7 @@ class ForgotPwdViewController: UIViewController {
            
            let titleLabel = UILabel()
            titleLabel.text = "Quisiera"
-           titleLabel.textColor = UIColor.white
+           titleLabel.textColor = UIColor.black
            titleLabel.textAlignment = .left
            titleLabel.font = UIFont.boldSystemFont(ofSize: 36.0*AutoSizeScaleX)
            configBGView.addSubview(titleLabel)
@@ -134,7 +134,7 @@ class ForgotPwdViewController: UIViewController {
               
               let noteOTPLabel = UILabel()
               noteOTPLabel.text = "Note:-OTP will be sent to the above mentioned number."
-              noteOTPLabel.textColor = .white
+              noteOTPLabel.textColor = .black
               noteOTPLabel.font = noteOTPLabel.font.withSize(13*AutoSizeScaleX)
               self.configGetBGView.addSubview(noteOTPLabel)
               noteOTPLabel.snp.makeConstraints{(make) -> Void in
@@ -153,7 +153,7 @@ class ForgotPwdViewController: UIViewController {
     func configCreateAccountBGView(){
         let dontHaveAccountLabel = UILabel()
         dontHaveAccountLabel.text = "I dont have an account?"
-        dontHaveAccountLabel.textColor = .white
+        dontHaveAccountLabel.textColor = .black
         dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
         self.configBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
@@ -166,7 +166,7 @@ class ForgotPwdViewController: UIViewController {
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Create Account", for: .normal)
         signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        signUpBtn.setTitleColor(UIColor.green, for: .normal)
+        signUpBtn.setTitleColor(UIColor.black, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
         signUpBtn.clipsToBounds = true
         signUpBtn.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
@@ -179,7 +179,7 @@ class ForgotPwdViewController: UIViewController {
         }
         let byCountiuingLabel = UILabel()
         byCountiuingLabel.text = "By Continuing, you agree to the"
-        byCountiuingLabel.textColor = .white
+        byCountiuingLabel.textColor = .black
         byCountiuingLabel.font = dontHaveAccountLabel.font.withSize(11*AutoSizeScaleX)
         self.configBGView.addSubview(byCountiuingLabel)
         byCountiuingLabel.snp.makeConstraints{(make) -> Void in

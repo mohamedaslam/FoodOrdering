@@ -18,13 +18,14 @@ import MBProgressHUD
 import SystemConfiguration
 import SnapKit
 
-class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDelegate {
+class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDelegate,GIDSignInDelegate {
     var configBGView = UIView()
     var configSocialView = UIView()
     var configPwdForgotPwdView = UIView()
     var tickImageView = UIImageView()
     var dict : [String : AnyObject]!
-
+    var getFullName : String = ""
+    var getEmailId : String = ""
     var mobileNoTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var loginnBtn = UIButton()
@@ -34,6 +35,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.clear
+        ////////GMAIL
+         GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+       // GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+
         configMainBGView()
         configPwdForgotPWdSingBtnBGView()
         configSocialMainBGView()
@@ -51,7 +57,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
             make.left.right.bottom.top.equalTo(self.view)
         }
         let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "LoginBackground")
+        bgImageView.image = UIImage(named: "Numbervalidation")
         self.configBGView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.configBGView)
@@ -62,12 +68,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         
         let titleLabel = UILabel()
         titleLabel.text = "Quisiera"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 36.0*AutoSizeScaleX)
         configBGView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(configBGView).offset(70*AutoSizeScaleX)
+            make.top.equalTo(configBGView).offset(60*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -83,13 +89,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         mobileNoTextField.returnKeyType = UIReturnKeyType.done
         mobileNoTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         mobileNoTextField.textAlignment = .left
-        mobileNoTextField.placeholderColor = UIColor.white
+        mobileNoTextField.placeholderColor = UIColor.lightGray
         mobileNoTextField.delegate = self
         self.configBGView.addSubview(mobileNoTextField)
         self.mobileNoTextField = mobileNoTextField
         
         mobileNoTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(titleLabel.snp_bottomMargin).offset(60*AutoSizeScaleX)
+            make.top.equalTo(titleLabel.snp_bottomMargin).offset(50*AutoSizeScaleX)
             make.left.equalTo(titleLabel)
             make.right.equalTo(configBGView).offset(-100*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
@@ -154,7 +160,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         passwordTextField.isSecureTextEntry = true
         passwordTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         passwordTextField.textAlignment = .left
-        passwordTextField.placeholderColor = UIColor.white
+        passwordTextField.placeholderColor = UIColor.lightGray
         passwordTextField.delegate = self
         self.configPwdForgotPwdView.addSubview(passwordTextField)
         self.passwordTextField = passwordTextField
@@ -213,9 +219,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     
     let orContinueWithLabel = UILabel()
     orContinueWithLabel.text = "Or Continue with"
-    orContinueWithLabel.textColor = UIColor.white
+    orContinueWithLabel.textColor = UIColor.black
     orContinueWithLabel.textAlignment = .left
-    orContinueWithLabel.font = orContinueWithLabel.font.withSize(16*AutoSizeScaleX)
+    orContinueWithLabel.font = orContinueWithLabel.font.withSize(15*AutoSizeScaleX)
     configSocialView.addSubview(orContinueWithLabel)
     orContinueWithLabel.snp.makeConstraints { (make) -> Void in
     make.top.equalTo(configSocialView).offset(20*AutoSizeScaleX)
@@ -234,7 +240,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         self.configSocialView.addSubview(facebookBtn)
         facebookBtn.snp.makeConstraints{(make) -> Void in
             make.left.equalTo(orContinueWithLabel).offset(-6*AutoSizeScaleX)
-            make.top.equalTo(orContinueWithLabel).offset(40*AutoSizeScaleX)
+            make.top.equalTo(orContinueWithLabel).offset(50*AutoSizeScaleX)
             make.height.width.equalTo(40*AutoSizeScaleX)
         }
         
@@ -256,33 +262,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     func configCreateAccountBGView(){
         let dontHaveAccountLabel = UILabel()
         dontHaveAccountLabel.text = "I dont have an account?"
-        dontHaveAccountLabel.textColor = .white
-        dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
+        dontHaveAccountLabel.textColor = .black
+        dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(16*AutoSizeScaleX)
         self.configBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
             make.bottom.equalTo(self.configBGView.snp.bottom).offset(-180*AutoSizeScaleX)
             make.left.equalTo(self.mobileNoTextField.snp.left)
-            make.width.equalTo(200*AutoSizeScaleX)
+            make.width.equalTo(180*AutoSizeScaleX)
             make.height.equalTo(30*AutoSizeScaleX)
         }
         
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Create Account", for: .normal)
-        signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        signUpBtn.setTitleColor(UIColor.green, for: .normal)
+        signUpBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
+        signUpBtn.setTitleColor(UIColor.black, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
         signUpBtn.clipsToBounds = true
         signUpBtn.addTarget(self, action:#selector(self.createAccountBtn), for: .touchUpInside)
         self.configBGView.addSubview(signUpBtn)
         signUpBtn.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(dontHaveAccountLabel)
-            make.left.equalTo(dontHaveAccountLabel.snp_rightMargin)
+            make.left.equalTo(dontHaveAccountLabel.snp.right)
             make.height.equalTo(32*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
         }
         let byCountiuingLabel = UILabel()
         byCountiuingLabel.text = "By Continuing, you agree to the"
-        byCountiuingLabel.textColor = .white
+        byCountiuingLabel.textColor = .black
         byCountiuingLabel.font = dontHaveAccountLabel.font.withSize(11*AutoSizeScaleX)
         self.configBGView.addSubview(byCountiuingLabel)
         byCountiuingLabel.snp.makeConstraints{(make) -> Void in
@@ -306,6 +312,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
             make.height.equalTo(32*AutoSizeScaleX)
             make.width.equalTo(180*AutoSizeScaleX)
         }
+ 
        
     }
     func deleteApiCalling(){
@@ -583,33 +590,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
          }
      }
     @objc func facebookSignInCustomBtn(sender:UIButton!){
-        let facebookgmailVC = FacebookGmailMobileVC()
-        self.present(facebookgmailVC, animated: true, completion: nil)
-//         if Connectivity.isConnectedToInternet {
-//             let loadingNotification = MBProgressHUD.showAdded(to: view, animated: true)
-//             loadingNotification.mode = MBProgressHUDMode.indeterminate
-//             loadingNotification.label.text = "Loading"
-//            let fbLoginManager : LoginManager = LoginManager()
-//            fbLoginManager.logIn(permissions: ["email"], from: self, handler: { (result, error) -> Void in
-//                 if error != nil{
-//                 } else if (result?.isCancelled)! {
-//                     MBProgressHUD.hide(for: self.view, animated: true)
-//                 }
-//                 else{
-//                    let loginResult : LoginManagerLoginResult = result!
-//                     if loginResult.grantedPermissions == nil{
-//                         return
-//                     }
-//                     if (loginResult.grantedPermissions.contains("email")){
-//                        self.getFBUserData()
-//                         fbLoginManager.logOut()
-//                     }
-//                 }
-//             })
-//         }else{
-//             MBProgressHUD.hide(for: self.view, animated: true)
-//             showAlert(for: "Not connected")
-//         }
+       // let facebookgmailVC = FacebookGmailMobileVC()
+       // self.present(facebookgmailVC, animated: true, completion: nil)
+         if Connectivity.isConnectedToInternet {
+             let loadingNotification = MBProgressHUD.showAdded(to: view, animated: true)
+             loadingNotification.mode = MBProgressHUDMode.indeterminate
+             loadingNotification.label.text = "Loading"
+            let fbLoginManager : LoginManager = LoginManager()
+            fbLoginManager.logIn(permissions: ["email"], from: self, handler: { (result, error) -> Void in
+                 if error != nil{
+                 } else if (result?.isCancelled)! {
+                     MBProgressHUD.hide(for: self.view, animated: true)
+                 }
+                 else{
+                    let loginResult : LoginManagerLoginResult = result!
+                     if loginResult.grantedPermissions == nil{
+                         return
+                     }
+                     if (loginResult.grantedPermissions.contains("email")){
+                        self.getFBUserData()
+                         fbLoginManager.logOut()
+                     }
+                 }
+             })
+         }else{
+             MBProgressHUD.hide(for: self.view, animated: true)
+             showAlert(for: "Not connected")
+         }
     
      }
     func getFBUserData(){
@@ -621,12 +628,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
                        let swiftyJsonVar = JSON(result as! [String : AnyObject])
                        if let getemail = swiftyJsonVar["email"].string{
                            print(getemail)
-                           //self.getEmail = getemail
+                           self.getEmailId = getemail
+                           
                        }
                        if let getname = swiftyJsonVar["name"].string{
                            print(getname)
-                           //self.getUserName = getname
-                          // self.signupApiCalling()
+                           self.getFullName = getname
+                           self.signupApiCalling()
                        }
                    }
                })
@@ -644,19 +652,146 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
            
            print("Successfully logged in with facebook...")
        }
+    private func signInWillDispatch(signIn: GIDSignIn!, error: NSError!) {
+        //   UIActivityIndicatorView.stopAnimating()
+    }
+    
+    private func signIn(signIn: GIDSignIn!,presentViewController viewController: UIViewController!) {
+        self.present(viewController, animated: true, completion: nil)
+    }
+    
+  
+    private func signIn(signIn: GIDSignIn!,
+                        dismissViewController viewController: UIViewController!) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let error = error {
+            print("\(error.localizedDescription)")
+            print("CANCEL")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+        } else {
+            // Perform any operations on signed in user here.
+            let userId = user.userID                  // For client-side use only!
+            let idToken = user.authentication.idToken // Safe to send to the server
+            let fullName = user.profile.name
+            let givenName = user.profile.givenName
+            let familyName = user.profile.familyName
+            let email = user.profile.email
+            getEmailId = email!
+            getFullName = fullName!
+            signupApiCalling()
+            print(userId!)
+            print(idToken!)
+            print(fullName!)
+            print(givenName!)
+            print(familyName!)
+            print(email!)
+            print("USER")
+            
+            
+        }
+    }
+     func signupApiCalling(){
+           
+                let parameters: Parameters=[
+                    "fullName": self.getFullName,
+                    "mobileNumber": "",
+                    "email": self.getEmailId,
+                    "password": "",
+                    "isSocialSignUp" : true
+                ]
+                Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                    {
+                        response in
+                        switch response.result {
+                        case .success:
+                            print(response)
+                            if let result = response.result.value{
+                                print(result)
+                                print("result")
+                                let swiftyJsonVar = JSON(result)
+
+                                if let status = swiftyJsonVar["status"].bool{
+                                                           ///LOGIN SUCCESS
+                                if(status){
+                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                UIAlertAction in
+                                let mobileVerigyVC = MobileVerifyViewController()
+                                    mobileVerigyVC.userNameLabel.text = self.getFullName
+                                self.present(mobileVerigyVC, animated: true, completion: nil)
+                                            }
+                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                                            UIAlertAction in
+                                            NSLog("Cancel Pressed")
+                                }
+                                            // Add the actions
+                                        alertController.addAction(okAction)
+                                        alertController.addAction(cancelAction)
+                                        self.present(alertController, animated: true, completion: nil)
+                                        MBProgressHUD.hide(for: self.view, animated: true)
+                                }else{
+
+                                    }
+                                    //LOGIN FAIL
+    //                            if(statusMessage == "Please enter correct password"){
+    //                            self.showAlert(for: statusMessage)
+    //                            }
+                                MBProgressHUD.hide(for: self.view, animated: true)
+                                }else{
+                                    let facebookandGmailVerifyVC = FacebookGmailMobileVC()
+                                   facebookandGmailVerifyVC.getUserName = self.getFullName
+                                   self.present(facebookandGmailVerifyVC, animated: true, completion: nil)
+                                   // self.showAlert(for: "Please enter valid mobile Number")
+
+                                }
+    //                            if let statusValue = swiftyJsonVar["status"].int{
+    //                                if(statusValue = 400){
+    //                                    self.showAlert(for: "User already Exists")
+    //
+    //                                }
+    //                            }
+                        }
+                        case .failure(let error):
+                            let message : String
+                            if let httpStatusCode = response.response?.statusCode {
+                                switch(httpStatusCode) {
+                                case 400:
+                                    message = "Username or password not provided."
+                                case 401:
+                                    message = "Incorrect password for user."
+                                default:
+                                    print(httpStatusCode)
+                                    print("DEhttpStatusCode")
+                                    self.showAlert(for: "Server Down")
+                                    return
+                                }
+                            } else {
+                                message = error.localizedDescription
+                                print(message)
+                                print("messagemessage DEhttpStatusCode")
+                                self.showAlert(for: "Server Down")
+                            }
+                        }
+                }
+        }
 }
 
 extension SkyFloatingLabelTextField{
     
     func CustomTextField(){
-        
+        lineHeight = 0
+        selectedLineHeight = 0
         tintColor = overcastBlueColor // the color of the blinking cursor
         textColor = whiteSmokeColor
         //lineColor = lightGreyColor
         selectedTitleColor = overcastBlueColor
-        selectedLineColor = overcastBlueColor
+       // selectedLineColor = overcastBlueColor
        // lineHeight = 1.0*AutoSizeScaleX // bottom line height in points
-        selectedLineHeight = 2.0*AutoSizeScaleX
+       // selectedLineHeight = 2.0*AutoSizeScaleX
         
     }
 }

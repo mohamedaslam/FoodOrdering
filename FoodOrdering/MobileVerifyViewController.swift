@@ -28,9 +28,12 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var containerView = UIView()
     var txtOTPView: DPOTPView!
     var getOTPStr : String = ""
-
+    //////////TIMER
+    var count = 60  // 60sec if you want
+    var resendTimer = Timer()
     // MARK: - Variables
     var verificationCodeView: KWVerificationCodeView?
+    var resendBtn = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +54,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
             make.left.right.bottom.top.equalTo(self.view)
         }
         let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "LoginBackground")
+        bgImageView.image = UIImage(named: "Numbervalidation")
         self.configBGView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.configBGView)
@@ -61,7 +64,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         }
         let titleLabel = UILabel()
         titleLabel.text = "Quisiera"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .left
         titleLabel.font = titleLabel.font.withSize(36)
         configBGView.addSubview(titleLabel)
@@ -73,7 +76,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         
         let mobileNumberLabel = UILabel()
         mobileNumberLabel.text = self.mobileNumberLabel.text
-        mobileNumberLabel.textColor = UIColor.white
+        mobileNumberLabel.textColor = UIColor.black
         mobileNumberLabel.textAlignment = .left
        // mobileNumberLabel.font = mobileNumberLabel.font.withSize(36)
         mobileNumberLabel.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
@@ -85,7 +88,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         }
         let userNameLabel = UILabel()
         userNameLabel.text = self.userNameLabel.text
-        userNameLabel.textColor = UIColor.white
+        userNameLabel.textColor = UIColor.black
         userNameLabel.textAlignment = .left
         userNameLabel.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
         configBGView.addSubview(userNameLabel)
@@ -95,7 +98,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
             make.height.equalTo(40*AutoSizeScaleX)
         }
         let passwordTextField = SkyFloatingLabelTextField()
-        passwordTextField.placeholder = "Password"
+        passwordTextField.placeholder = ""
         passwordTextField.CustomTextField()
         passwordTextField.text = self.passwordTextField.text
         passwordTextField.font = UIFont.systemFont(ofSize: 32*AutoSizeScaleX)
@@ -106,7 +109,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         passwordTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         passwordTextField.textAlignment = .left
         passwordTextField.isSecureTextEntry = true
-        passwordTextField.placeholderColor = UIColor.white
+        passwordTextField.placeholderColor = UIColor.black
         passwordTextField.delegate = self
         self.configBGView.addSubview(passwordTextField)
         
@@ -118,7 +121,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         }
         let verifyOTPLabel = UILabel()
         verifyOTPLabel.text = "Verify OTP"
-        verifyOTPLabel.textColor = UIColor.white
+        verifyOTPLabel.textColor = UIColor.black
         verifyOTPLabel.textAlignment = .left
         verifyOTPLabel.font = mobileNumberLabel.font.withSize(32)
         configBGView.addSubview(verifyOTPLabel)
@@ -164,6 +167,25 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
             make.height.equalTo(80*AutoSizeScaleX)
             }
         
+      
+        resendTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        let resendBtn = UIButton(type: .custom)
+               resendBtn.setTitle("0:0", for: .normal)
+               resendBtn.backgroundColor = UIColor.lightGray
+              // resendBtn.layer.cornerRadius = 20
+               resendBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               resendBtn.setTitleColor(UIColor.white, for: .normal)
+               resendBtn.contentHorizontalAlignment = .center
+               resendBtn.clipsToBounds = true
+               resendBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               self.configBGView.addSubview(resendBtn)
+        self.resendBtn = resendBtn
+               resendBtn.snp.makeConstraints{(make) -> Void in
+                   make.top.equalTo(txtOTPView.snp.bottom).offset(10*AutoSizeScaleX)
+                   make.centerX.equalTo(configBGView)
+                   make.height.equalTo(40*AutoSizeScaleX)
+                   make.width.equalTo(150*AutoSizeScaleX)
+               }
         
         let loginBtn = UIButton(type: .custom)
         loginBtn.setTitle("Submit", for: .normal)
@@ -176,7 +198,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
         self.configBGView.addSubview(loginBtn)
         loginBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(txtOTPView.snp.bottom).offset(20*AutoSizeScaleX)
+            make.top.equalTo(resendBtn.snp.bottom).offset(20*AutoSizeScaleX)
             make.centerX.equalTo(configBGView)
             make.height.equalTo(40*AutoSizeScaleX)
             make.width.equalTo(130*AutoSizeScaleX)
@@ -185,7 +207,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         
         let dontHaveAccountLabel = UILabel()
         dontHaveAccountLabel.text = "Already have an account?"
-        dontHaveAccountLabel.textColor = .white
+        dontHaveAccountLabel.textColor = .black
         dontHaveAccountLabel.font = dontHaveAccountLabel.font.withSize(18*AutoSizeScaleX)
         self.configBGView.addSubview(dontHaveAccountLabel)
         dontHaveAccountLabel.snp.makeConstraints{(make) -> Void in
@@ -198,7 +220,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         let signUpBtn = UIButton(type: .custom)
         signUpBtn.setTitle("Sign In", for: .normal)
         signUpBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        signUpBtn.setTitleColor(UIColor.green, for: .normal)
+        signUpBtn.setTitleColor(UIColor.black, for: .normal)
         signUpBtn.contentHorizontalAlignment = .left
         signUpBtn.clipsToBounds = true
         signUpBtn.addTarget(self, action:#selector(self.signInBtn), for: .touchUpInside)
@@ -226,6 +248,18 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 //        }
         
     }
+    @objc func update() {
+        if(count > 0) {
+            count = count - 1
+            print(count)
+            self.resendBtn.setTitle("\(count) Resend Otp", for: .normal)
+        }
+        else {
+            resendTimer.invalidate()
+            print("call your api")
+            // if you want to reset the time make count = 60 and resendTime.fire()
+        }
+    }
     @objc func signInBtn(sender:UIButton!){
         let loginVC = LoginViewController()
         self.present(loginVC, animated: true, completion: nil)
@@ -243,10 +277,10 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     func verifyOTPApi(){
         
         let parameters: Parameters=[
-            "mobileNumber": mobileNumberLabel.text,
+            "mobileNumber": mobileNumberLabel.text!,
             "otp": self.getOTPStr
         ]
-        
+        print(parameters)
         Alamofire.request(URL_USER_VERIFY_OTP, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
             {
                 response in

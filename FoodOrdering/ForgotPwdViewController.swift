@@ -24,7 +24,11 @@ class ForgotPwdViewController: UIViewController {
     var mobileNoStr : String = ""
     var mobileNoTextField = SkyFloatingLabelTextField()
     var getOTPStr : String = ""
-
+    //////////TIMER
+      var count = 180  // 60sec if you want
+      var resendTimer = Timer()
+      // MARK: - Variables
+      var resendBtn = UIButton()
     override func viewDidLoad() {
         super.viewDidLoad()
         configMainBGView()
@@ -99,8 +103,90 @@ class ForgotPwdViewController: UIViewController {
             make.left.right.equalTo(self.configBGView)
             make.height.equalTo(100*AutoSizeScaleX)
             }
+       
         
     }
+    @objc func resendOTPBtn(sender:UIButton!){
+                  sendOTPApiCalling()
+       }
+    func timeString(time: TimeInterval) -> String {
+           let hour = Int(time) / 3600
+           let minute = Int(time) / 60 % 60
+           let second = Int(time) % 60
+
+           // return formated string
+           return String(format: "%02i:%02i", minute, second)
+       }
+       @objc func update() {
+           if(count > 0) {
+               count = count - 1
+               print(count)
+               self.resendBtn.setTitle("\(timeString(time: TimeInterval(count)))", for: .normal)
+           }
+           else {
+               resendTimer.invalidate()
+               print("call your api")
+               self.resendBtn.setTitle("Resend Otp", for: .normal)
+               // if you want to reset the time make count = 60 and resendTime.fire()
+           }
+       }
+    func sendOTPApiCalling(){
+                   count = 180
+                        let parameters: Parameters=[
+                           "mobileNumber": mobileNoStr
+                        ]
+              print(parameters)
+                 Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                            {
+                                response in
+                                switch response.result {
+                                case .success:
+                                    print(response)
+                                    if let result = response.result.value{
+                                        print(result)
+                                        print("result")
+                                        let swiftyJsonVar = JSON(result)
+                                        print(swiftyJsonVar)
+                                        print("swiftyJsonVar")
+                                        if (swiftyJsonVar).boolValue {
+                                            print(swiftyJsonVar)
+                                            print("GETOTPgetemail")
+                                            MBProgressHUD.hide(for: self.view, animated: true)
+                                        }
+                                       if let status = swiftyJsonVar["status"].bool{
+                                          if(status){
+                                               print(" OTP RECIVED")
+                                          }else{
+                                              print("INVAIDE OTP")
+                                          }
+                                      }
+                                    }
+                                case .failure(let error):
+                                 print(response)
+                                 print("ERROR response")
+
+                                    let message : String
+                                    if let httpStatusCode = response.response?.statusCode {
+                                        switch(httpStatusCode) {
+                                        case 400:
+                                            message = "Username or password not provided."
+                                        case 401:
+                                            message = "Incorrect password for user."
+                                        default:
+                                            print(httpStatusCode)
+                                            print("DEhttpStatusCode")
+                                            self.showAlert(for: "Server Down")
+                                            return
+                                        }
+                                    } else {
+                                        message = error.localizedDescription
+                                        print(message)
+                                        print("messagemessage DEhttpStatusCode")
+                                        self.showAlert(for: "Server Down")
+                                    }
+                                }
+                        }
+                }
     func ConfigGetOTPBGmethod(){
         let configGetBGView = UIView()
         configGetBGView.backgroundColor = UIColor.clear
@@ -236,6 +322,24 @@ class ForgotPwdViewController: UIViewController {
                                    UIAlertAction in
                                     self.configVerifyBGView.isHidden = false
                                     self.configGetBGView.isHidden = true
+                                    self.resendTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+                                                let resendBtn = UIButton(type: .custom)
+                                                       resendBtn.setTitle("0:0", for: .normal)
+                                                       resendBtn.backgroundColor = UIColor.lightGray
+                                                      // resendBtn.layer.cornerRadius = 20
+                                                       resendBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+                                                       resendBtn.setTitleColor(UIColor.white, for: .normal)
+                                                       resendBtn.contentHorizontalAlignment = .center
+                                                       resendBtn.clipsToBounds = true
+                                                       resendBtn.addTarget(self, action:#selector(self.resendOTPBtn), for: .touchUpInside)
+                                                       self.configBGView.addSubview(resendBtn)
+                                                self.resendBtn = resendBtn
+                                                       resendBtn.snp.makeConstraints{(make) -> Void in
+                                                        make.top.equalTo(self.txtOTPView.snp.bottom).offset(10*AutoSizeScaleX)
+                                                        make.centerX.equalTo(self.configBGView)
+                                                           make.height.equalTo(40*AutoSizeScaleX)
+                                                           make.width.equalTo(150*AutoSizeScaleX)
+                                                       }
                                    }
                              alertController.addAction(okAction)
                              self.present(alertController, animated: true, completion: nil)
@@ -424,7 +528,7 @@ extension ForgotPwdViewController : DPOTPViewDelegate {
     
     func dpOTPViewChangePositionAt(_ position: Int) {
         print("at:-\(position)")
-        if(position == 4){
+        if(position == 3){
             forgotPwdApi()
 //            let changePwdVC = ChangePwdViewController()
 //            changePwdVC.getOTPStr = getOTPStr

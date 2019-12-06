@@ -529,8 +529,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     }
     func loginApiCalling(){
          let parameters: Parameters=[
-            "mobileNumber": self.mobileNoTextField.text,
-            "password": self.passwordTextField.text
+            "mobileNumber": self.mobileNoTextField.text!,
+            "password": self.passwordTextField.text!
          ]
          let headers: HTTPHeaders = ["Content-Type": "application/json"]
          Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: headers).responseJSON

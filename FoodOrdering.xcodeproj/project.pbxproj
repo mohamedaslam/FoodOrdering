@@ -24,6 +24,7 @@
 		80DF961DAD2D903D673107B0 /* Pods_FoodOrderingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3550015D3CEB9DCB859D6453 /* Pods_FoodOrderingTests.framework */; };
 		A854AF53238D5577003ABA32 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF52238D5577003ABA32 /* loading.png */; };
 		A854AF55238D55F3003ABA32 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF54238D55F3003ABA32 /* loading1.png */; };
+		A862D353239A9194001B94A0 /* MainScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A862D352239A9194001B94A0 /* MainScreen.jpg */; };
 		A882852F23969AAA0044E0DC /* FacebookGmailMobileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */; };
 		A8A70EAA2398DA27004EE9F9 /* LoginScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */; };
 		A8A70EAC2398F736004EE9F9 /* Number validation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EAB2398F736004EE9F9 /* Number validation.jpg */; };
@@ -95,6 +96,7 @@
 		A7F2FFBF6FA3E4F2047E77E2 /* Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A854AF52238D5577003ABA32 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		A854AF54238D55F3003ABA32 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
+		A862D352239A9194001B94A0 /* MainScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MainScreen.jpg; sourceTree = "<group>"; };
 		A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookGmailMobileVC.swift; sourceTree = "<group>"; };
 		A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoginScreen.jpg; sourceTree = "<group>"; };
 		A8A70EAB2398F736004EE9F9 /* Number validation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Number validation.jpg"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				A854AF54238D55F3003ABA32 /* loading1.png */,
 				A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */,
 				A8A70EAD2398F792004EE9F9 /* Numbervalidation.jpg */,
+				A862D352239A9194001B94A0 /* MainScreen.jpg */,
 				A8B1A6A4238663E100C2D797 /* RegisterViewController.swift */,
 				A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */,
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
@@ -416,6 +419,7 @@
 				A8B1A6BB2386834300C2D797 /* facebookImg.png in Resources */,
 				A8A70EAA2398DA27004EE9F9 /* LoginScreen.jpg in Resources */,
 				182E0D2C238AA4EC00D8E27D /* facebook4.png in Resources */,
+				A862D353239A9194001B94A0 /* MainScreen.jpg in Resources */,
 				18055FA7238A49640018B3DE /* VerificationCodeView.xib in Resources */,
 				A8A70EB02399170D004EE9F9 /* credentials.plist in Resources */,
 			);

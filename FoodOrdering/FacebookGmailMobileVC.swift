@@ -22,8 +22,9 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
     
     var mobileNoTextField = SkyFloatingLabelTextField()
     var getUserName : String = ""
-
-    
+    var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
+    var tickImageView = UIImageView()
+    var notRegisteredLabel = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
         configMainBGView()
@@ -102,7 +103,40 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
             make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
-       
+       let loadingImageBGView = UIView()
+              loadingImageBGView.backgroundColor = UIColor.clear
+              self.configBGView.addSubview(loadingImageBGView)
+              loadingImageBGView.snp.makeConstraints{ (make) -> Void in
+                  make.top.equalTo(mobileNoTextField)
+                  make.left.equalTo(mobileNoTextField.snp.right)
+                  make.width.height.equalTo(50)
+              }
+              tickImageView = UIImageView()
+              tickImageView.image = UIImage(named: "tickmark")
+              tickImageView.isHidden = true
+              loadingImageBGView.addSubview(tickImageView)
+              tickImageView.snp.makeConstraints { (make) -> Void in
+                  make.top.bottom.left.right.equalTo(loadingImageBGView)
+              }
+
+              loadingImageBGView.addSubview(loadingIndication)
+              loadingIndication.isHidden = true
+              
+              let notRegisteredLabel = UILabel()
+              notRegisteredLabel.text = "Sorry! this number is not registered with us Please check your number again or Re-Enter"
+              notRegisteredLabel.textColor = UIColor.red
+              notRegisteredLabel.textAlignment = .left
+              notRegisteredLabel.isHidden = true
+              notRegisteredLabel.numberOfLines = 0
+              notRegisteredLabel.font = notRegisteredLabel.font.withSize(16*AutoSizeScaleX)
+              self.configBGView.addSubview(notRegisteredLabel)
+              self.notRegisteredLabel = notRegisteredLabel
+              notRegisteredLabel.snp.makeConstraints { (make) -> Void in
+              make.top.equalTo(mobileNoTextField.snp.bottom).offset(10*AutoSizeScaleX)
+              make.left.equalTo(configBGView).offset(20*AutoSizeScaleX)
+              make.right.equalTo(configBGView).offset(-40*AutoSizeScaleX)
+              make.height.equalTo(60*AutoSizeScaleX)
+              }
         let letGetStartBtn = UIButton(type: .custom)
         // facebookBtn.setBackgroundImage(UIImage(named: "facebookImg"), for: .normal)
         letGetStartBtn.setTitle("Let`s Get Started", for: .normal)
@@ -115,7 +149,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         self.configBGView.addSubview(letGetStartBtn)
         letGetStartBtn.snp.makeConstraints{(make) -> Void in
             make.left.equalTo(mobileNoTextField)
-            make.top.equalTo(mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
+            make.top.equalTo(notRegisteredLabel.snp.bottom).offset(30*AutoSizeScaleX)
             make.width.equalTo(180*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
@@ -137,6 +171,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
                if(updatedText.count == 11){
                               print("CALL ALI")
+                            checkMobileNumberApi()
                               sendOTPApiCalling()
                              
                           }
@@ -145,6 +180,42 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                
            }
            return true
+       }
+     func checkMobileNumberApi(){
+            print(self.mobileNoTextField.text!)
+           loadingIndication.startAnimating()
+    Alamofire.request("http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/GetUser?mobileno=\(self.mobileNoTextField.text!)", method: .get,encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+              // debugPrint(response)
+               switch response.result {
+               case .success:
+                   if let result = response.result.value{
+                       print(result)
+
+                       let swiftyJsonVar = JSON(result)
+                       print(swiftyJsonVar)
+
+                       if let getStatusMsg = swiftyJsonVar["statusMessage"].string{
+                           if(getStatusMsg == "Sorry! this number is not registered with us Please check your number again or Re-Ented"){
+                               self.tickImageView.isHidden = true
+                               self.loadingIndication.stopAnimating()
+                               self.notRegisteredLabel.isHidden = false
+                           }else{
+                              self.tickImageView.isHidden = false
+                              self.loadingIndication.stopAnimating()
+                              self.notRegisteredLabel.isHidden = true
+
+                           }
+                           MBProgressHUD.hide(for: self.view, animated: true)
+                       }
+                       
+                   }
+               case .failure(let error):
+                   print("FAILURE")
+                   print(response.response)
+                  
+               }
+               MBProgressHUD.hide(for: self.view, animated: true)
+           }
        }
     func sendOTPApiCalling(){
              

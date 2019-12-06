@@ -29,7 +29,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var txtOTPView: DPOTPView!
     var getOTPStr : String = ""
     //////////TIMER
-    var count = 60  // 60sec if you want
+    var count = 180  // 60sec if you want
     var resendTimer = Timer()
     // MARK: - Variables
     var verificationCodeView: KWVerificationCodeView?
@@ -69,7 +69,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         titleLabel.font = titleLabel.font.withSize(36)
         configBGView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(configBGView).offset(70*AutoSizeScaleX)
+            make.top.equalTo(configBGView).offset(50*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -82,7 +82,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         mobileNumberLabel.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
         configBGView.addSubview(mobileNumberLabel)
         mobileNumberLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(titleLabel).offset(80*AutoSizeScaleX)
+            make.top.equalTo(titleLabel).offset(60*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -126,7 +126,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         verifyOTPLabel.font = mobileNumberLabel.font.withSize(32)
         configBGView.addSubview(verifyOTPLabel)
         verifyOTPLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(60*AutoSizeScaleX)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(40*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -177,7 +177,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                resendBtn.setTitleColor(UIColor.white, for: .normal)
                resendBtn.contentHorizontalAlignment = .center
                resendBtn.clipsToBounds = true
-               resendBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               resendBtn.addTarget(self, action:#selector(self.resendOTPBtn), for: .touchUpInside)
                self.configBGView.addSubview(resendBtn)
         self.resendBtn = resendBtn
                resendBtn.snp.makeConstraints{(make) -> Void in
@@ -248,17 +248,29 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 //        }
         
     }
+    func timeString(time: TimeInterval) -> String {
+        let hour = Int(time) / 3600
+        let minute = Int(time) / 60 % 60
+        let second = Int(time) % 60
+
+        // return formated string
+        return String(format: "%02i:%02i", minute, second)
+    }
     @objc func update() {
         if(count > 0) {
             count = count - 1
             print(count)
-            self.resendBtn.setTitle("\(count) Resend Otp", for: .normal)
+            self.resendBtn.setTitle("\(timeString(time: TimeInterval(count)))", for: .normal)
         }
         else {
             resendTimer.invalidate()
             print("call your api")
+            self.resendBtn.setTitle("Resend Otp", for: .normal)
             // if you want to reset the time make count = 60 and resendTime.fire()
         }
+    }
+    @objc func resendOTPBtn(sender:UIButton!){
+               sendOTPApiCalling()
     }
     @objc func signInBtn(sender:UIButton!){
         let loginVC = LoginViewController()
@@ -288,6 +300,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                 case .success:
                     print(response)
                     if let result = response.result.value{
+                        self.resendTimer.invalidate()
                         print(result)
                         print("result")
                         let swiftyJsonVar = JSON(result)
@@ -322,6 +335,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                     }
                 case .failure(let error):
                     let message : String
+                    self.resendTimer.invalidate()
                     if let httpStatusCode = response.response?.statusCode {
                         switch(httpStatusCode) {
                         case 400:
@@ -343,6 +357,63 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                 }
         }
     }
+    func sendOTPApiCalling(){
+                count = 180
+                     let parameters: Parameters=[
+                        "mobileNumber": self.mobileNumberLabel.text!
+                     ]
+           print(parameters)
+              Alamofire.request(URL_USER_RESEND_OTP, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                         {
+                             response in
+                             switch response.result {
+                             case .success:
+                                 print(response)
+                                 if let result = response.result.value{
+                                     print(result)
+                                     print("result")
+                                     let swiftyJsonVar = JSON(result)
+                                     print(swiftyJsonVar)
+                                     print("swiftyJsonVar")
+                                     if (swiftyJsonVar).boolValue {
+                                         print(swiftyJsonVar)
+                                         print("GETOTPgetemail")
+                                         MBProgressHUD.hide(for: self.view, animated: true)
+                                     }
+                                    if let status = swiftyJsonVar["status"].bool{
+                                       if(status){
+                                            print(" OTP RECIVED")
+                                       }else{
+                                           print("INVAIDE OTP")
+                                       }
+                                   }
+                                 }
+                             case .failure(let error):
+                              print(response)
+                              print("ERROR response")
+
+                                 let message : String
+                                 if let httpStatusCode = response.response?.statusCode {
+                                     switch(httpStatusCode) {
+                                     case 400:
+                                         message = "Username or password not provided."
+                                     case 401:
+                                         message = "Incorrect password for user."
+                                     default:
+                                         print(httpStatusCode)
+                                         print("DEhttpStatusCode")
+                                         self.showAlert(for: "Server Down")
+                                         return
+                                     }
+                                 } else {
+                                     message = error.localizedDescription
+                                     print(message)
+                                     print("messagemessage DEhttpStatusCode")
+                                     self.showAlert(for: "Server Down")
+                                 }
+                             }
+                     }
+             }
     func showAlert(for alert: String) {
         let alertController = UIAlertController(title: alert, message: "", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {

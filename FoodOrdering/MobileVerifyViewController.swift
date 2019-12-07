@@ -23,6 +23,8 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     
     let mobileNumberLabel = UILabel()
     let userNameLabel = UILabel()
+    var mobileNoTextField = SkyFloatingLabelTextField()
+    var fullNameTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
    // var verificationView = VerificationCodeView()
     var containerView = UIView()
@@ -69,36 +71,47 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         titleLabel.font = titleLabel.font.withSize(36)
         configBGView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(configBGView).offset(50*AutoSizeScaleX)
+            make.top.equalTo(configBGView).offset(60*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
         
-        let mobileNumberLabel = UILabel()
-        mobileNumberLabel.text = self.mobileNumberLabel.text
-        mobileNumberLabel.textColor = UIColor.black
-        mobileNumberLabel.textAlignment = .left
-       // mobileNumberLabel.font = mobileNumberLabel.font.withSize(36)
-        mobileNumberLabel.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
-        configBGView.addSubview(mobileNumberLabel)
-        mobileNumberLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(titleLabel).offset(60*AutoSizeScaleX)
+         let mobileNoTextField = SkyFloatingLabelTextField()
+        mobileNoTextField.text = self.mobileNumberLabel.text
+        mobileNoTextField.CustomTextField()
+        mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 26.0*AutoSizeScaleX)
+        mobileNoTextField.borderStyle = UITextField.BorderStyle.none
+        mobileNoTextField.autocorrectionType = UITextAutocorrectionType.no
+        mobileNoTextField.keyboardType = UIKeyboardType.numberPad
+        mobileNoTextField.returnKeyType = UIReturnKeyType.done
+        mobileNoTextField.clearButtonMode = UITextField.ViewMode.whileEditing
+        mobileNoTextField.textAlignment = .left
+        configBGView.addSubview(mobileNoTextField)
+        mobileNoTextField.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(titleLabel.snp.bottom).offset(40*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
-        let userNameLabel = UILabel()
-        userNameLabel.text = self.userNameLabel.text
-        userNameLabel.textColor = UIColor.black
-        userNameLabel.textAlignment = .left
-        userNameLabel.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
-        configBGView.addSubview(userNameLabel)
-        userNameLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(mobileNumberLabel).offset(60*AutoSizeScaleX)
+        
+        let fullNameTextField = SkyFloatingLabelTextField()
+        fullNameTextField.text = self.userNameLabel.text
+        fullNameTextField.CustomTextField()
+        fullNameTextField.font = UIFont.boldSystemFont(ofSize: 26.0*AutoSizeScaleX)
+        fullNameTextField.borderStyle = UITextField.BorderStyle.none
+        fullNameTextField.autocorrectionType = UITextAutocorrectionType.no
+        fullNameTextField.keyboardType = UIKeyboardType.default
+        fullNameTextField.returnKeyType = UIReturnKeyType.done
+        fullNameTextField.clearButtonMode = UITextField.ViewMode.whileEditing
+        fullNameTextField.textAlignment = .left
+        configBGView.addSubview(fullNameTextField)
+        fullNameTextField.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(mobileNoTextField.snp.bottom).offset(30*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
         let passwordTextField = SkyFloatingLabelTextField()
         passwordTextField.placeholder = ""
+       // passwordTextField.backgroundColor = .red
         passwordTextField.CustomTextField()
         passwordTextField.text = self.passwordTextField.text
         passwordTextField.font = UIFont.systemFont(ofSize: 32*AutoSizeScaleX)
@@ -111,14 +124,31 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         passwordTextField.isSecureTextEntry = true
         passwordTextField.placeholderColor = UIColor.black
         passwordTextField.delegate = self
+        self.passwordTextField = passwordTextField
         self.configBGView.addSubview(passwordTextField)
         
         passwordTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(userNameLabel.snp.bottom).offset(20*AutoSizeScaleX)
-            make.left.equalTo(userNameLabel)
-            make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
+            make.top.equalTo(fullNameTextField.snp.bottom).offset(30*AutoSizeScaleX)
+            make.left.equalTo(fullNameTextField)
+            make.width.equalTo(200*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
+        let pwdViewBtn = UIButton(type: .custom)
+               pwdViewBtn.setTitle("View", for: .normal)
+               pwdViewBtn.backgroundColor = UIColor.clear
+              // loginBtn.layer.cornerRadius = 20
+               pwdViewBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               pwdViewBtn.setTitleColor(UIColor.black, for: .normal)
+               pwdViewBtn.contentHorizontalAlignment = .left
+               pwdViewBtn.clipsToBounds = true
+               pwdViewBtn.addTarget(self, action:#selector(self.viewPwdBtn), for: .touchUpInside)
+               self.configBGView.addSubview(pwdViewBtn)
+               pwdViewBtn.snp.makeConstraints{(make) -> Void in
+                make.top.equalTo(passwordTextField.snp.centerY)
+                   make.left.equalTo(passwordTextField.snp.right)
+                   make.height.equalTo(50*AutoSizeScaleX)
+                   make.width.equalTo(80*AutoSizeScaleX)
+               }
         let verifyOTPLabel = UILabel()
         verifyOTPLabel.text = "Verify OTP"
         verifyOTPLabel.textColor = UIColor.black
@@ -126,7 +156,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         verifyOTPLabel.font = mobileNumberLabel.font.withSize(32)
         configBGView.addSubview(verifyOTPLabel)
         verifyOTPLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(40*AutoSizeScaleX)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(30*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -146,15 +176,17 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         
       txtOTPView = DPOTPView()
         txtOTPView.count = 4
+        txtOTPView.isBottomLineTextField = true
+        txtOTPView.borderColorTextField = .black
+        txtOTPView.borderWidthTextField = 3
+        txtOTPView.selectedBorderColorTextField = .blue
+        txtOTPView.dismissOnLastEntry = true
+        txtOTPView.selectedBorderWidthTextField = 4
         txtOTPView.spacing = 10
         txtOTPView.fontTextField = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(25.0))!
         txtOTPView.dpOTPViewDelegate = self
         txtOTPView.dismissOnLastEntry = true
-        txtOTPView.borderColorTextField = .black
-        txtOTPView.selectedBorderColorTextField = .blue
-        txtOTPView.borderWidthTextField = 2
-        txtOTPView.backGroundColorTextField = .lightGray
-        txtOTPView.cornerRadiusTextField = 8
+   
         txtOTPView.isCursorHidden = true
         //        txtOTPView.isSecureTextEntry = true
         //        txtOTPView.isBottomLineTextField = true
@@ -267,6 +299,13 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
             print("call your api")
             self.resendBtn.setTitle("Resend Otp", for: .normal)
             // if you want to reset the time make count = 60 and resendTime.fire()
+        }
+    }
+    @objc func viewPwdBtn(sender:UIButton!){
+        if(self.passwordTextField.isSecureTextEntry == true){
+        self.passwordTextField.isSecureTextEntry = false
+        }else{
+        self.passwordTextField.isSecureTextEntry = true
         }
     }
     @objc func resendOTPBtn(sender:UIButton!){

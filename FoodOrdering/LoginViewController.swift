@@ -181,7 +181,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         forgotPwdBtn.addTarget(self, action:#selector(self.forgotPwdBtn), for: .touchUpInside)
         self.configPwdForgotPwdView.addSubview(forgotPwdBtn)
         forgotPwdBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(16*AutoSizeScaleX)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(8*AutoSizeScaleX)
             make.left.equalTo(passwordTextField)
             make.height.equalTo(40*AutoSizeScaleX)
             make.width.equalTo(150*AutoSizeScaleX)
@@ -790,7 +790,7 @@ extension SkyFloatingLabelTextField{
         lineHeight = 0
         selectedLineHeight = 0
         tintColor = overcastBlueColor // the color of the blinking cursor
-        textColor = whiteSmokeColor
+        textColor = .black
         //lineColor = lightGreyColor
         selectedTitleColor = overcastBlueColor
        // selectedLineColor = overcastBlueColor

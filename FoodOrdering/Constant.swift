@@ -13,6 +13,8 @@ let SCREEN_HEIGHT = UIScreen.main.bounds.height
 let SCREEN_WIDTH = UIScreen.main.bounds.width
 let IPHONE_4_7_INCH_WIDTH = 375.0
 let IPHONE_4_7_INCH_HEIGHT = 667.0
+let titleSpaceFromTop = 60
+let mobileTextFieldScapefromTitle = 50.0
 
 let AutoSizeScaleX = SCREEN_WIDTH/CGFloat(IPHONE_4_7_INCH_WIDTH)
 let AutoSizeScaleY = SCREEN_HEIGHT/CGFloat(IPHONE_4_7_INCH_HEIGHT)

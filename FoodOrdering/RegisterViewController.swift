@@ -58,7 +58,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 36.0*AutoSizeScaleX)
         configBGView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(configBGView).offset(70*AutoSizeScaleX)
+            make.top.equalTo(configBGView).offset(60*AutoSizeScaleX)
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
@@ -66,7 +66,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         let mobileNoTextField = SkyFloatingLabelTextField()
         mobileNoTextField.placeholder = "Enter Mobile Number"
         mobileNoTextField.CustomTextField()
-        mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
+        mobileNoTextField.font = UIFont.boldSystemFont(ofSize: 26.0*AutoSizeScaleX)
         mobileNoTextField.borderStyle = UITextField.BorderStyle.none
         mobileNoTextField.autocorrectionType = UITextAutocorrectionType.no
         mobileNoTextField.keyboardType = UIKeyboardType.numberPad
@@ -79,7 +79,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         self.mobileNoTextField = mobileNoTextField
         
         mobileNoTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(titleLabel.snp_bottomMargin).offset(60*AutoSizeScaleX)
+            make.top.equalTo(titleLabel.snp_bottomMargin).offset(50*AutoSizeScaleX)
             make.left.equalTo(titleLabel)
             make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
@@ -87,7 +87,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         let fullNameTextField = SkyFloatingLabelTextField()
         fullNameTextField.placeholder = "Full Name"
         fullNameTextField.CustomTextField()
-        fullNameTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
+        fullNameTextField.font = UIFont.boldSystemFont(ofSize: 26.0*AutoSizeScaleX)
         fullNameTextField.borderStyle = UITextField.BorderStyle.none
         fullNameTextField.autocorrectionType = UITextAutocorrectionType.no
         fullNameTextField.keyboardType = UIKeyboardType.default
@@ -100,7 +100,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         self.fullNameTextField = fullNameTextField
         
         fullNameTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(mobileNoTextField.snp_bottomMargin).offset(60*AutoSizeScaleX)
+            make.top.equalTo(mobileNoTextField.snp_bottomMargin).offset(30*AutoSizeScaleX)
             make.left.equalTo(mobileNoTextField)
             make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
@@ -109,7 +109,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         let passwordTextField = SkyFloatingLabelTextField()
         passwordTextField.placeholder = "Password"
         passwordTextField.CustomTextField()
-        passwordTextField.font = UIFont.boldSystemFont(ofSize: 28.0*AutoSizeScaleX)
+        passwordTextField.font = UIFont.boldSystemFont(ofSize: 26.0*AutoSizeScaleX)
         passwordTextField.borderStyle = UITextField.BorderStyle.none
         passwordTextField.autocorrectionType = UITextAutocorrectionType.no
         passwordTextField.keyboardType = UIKeyboardType.default
@@ -123,7 +123,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         self.passwordTextField = passwordTextField
         
         passwordTextField.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(fullNameTextField.snp_bottomMargin).offset(60*AutoSizeScaleX)
+            make.top.equalTo(fullNameTextField.snp_bottomMargin).offset(30*AutoSizeScaleX)
             make.left.equalTo(fullNameTextField)
             make.right.equalTo(configBGView).offset(-20*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
@@ -146,7 +146,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         // facebookBtn.setBackgroundImage(UIImage(named: "facebookImg"), for: .normal)
         getOTPBtn.setTitle("Get OTP", for: .normal)
         getOTPBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
-        getOTPBtn.setTitleColor(whiteSmokeColor, for: .normal)
+        getOTPBtn.setTitleColor(.white, for: .normal)
         getOTPBtn.backgroundColor = UIColor.black
         getOTPBtn.contentHorizontalAlignment = .center
         getOTPBtn.clipsToBounds = true
@@ -155,7 +155,7 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
         getOTPBtn.snp.makeConstraints{(make) -> Void in
             make.left.equalTo(configGetOTPBGView).offset(20*AutoSizeScaleX)
             make.top.equalTo(configGetOTPBGView).offset(20*AutoSizeScaleX)
-            make.width.equalTo(80*AutoSizeScaleX)
+            make.width.equalTo(100*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
         
@@ -269,9 +269,10 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
        
             let parameters: Parameters=[
                 "fullName": "Aslam",
-                "mobileNumber": self.mobileNoTextField.text,
+                "mobileNumber": self.mobileNoTextField.text!,
                 "password": "Aslam123",
-                "isSocialSignUp" : false
+                "isSocialSignUp" : false,
+                "email": ""
             ]
             Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
                 {

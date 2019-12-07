@@ -84,15 +84,16 @@ class ForgotPwdViewController: UIViewController {
         
         txtOTPView = DPOTPView()
         txtOTPView.count = 4
+               txtOTPView.isBottomLineTextField = true
+        txtOTPView.borderColorTextField = .black
+        txtOTPView.borderWidthTextField = 3
+        txtOTPView.selectedBorderColorTextField = .blue
+        txtOTPView.dismissOnLastEntry = true
+        txtOTPView.selectedBorderWidthTextField = 4
         txtOTPView.spacing = 10
         txtOTPView.fontTextField = UIFont(name: "HelveticaNeue-Bold", size: CGFloat(25.0))!
         txtOTPView.dpOTPViewDelegate = self
         txtOTPView.dismissOnLastEntry = true
-        txtOTPView.borderColorTextField = .black
-        txtOTPView.selectedBorderColorTextField = .blue
-        txtOTPView.borderWidthTextField = 2
-        txtOTPView.backGroundColorTextField = .lightGray
-        txtOTPView.cornerRadiusTextField = 8
         txtOTPView.isCursorHidden = true
         //        txtOTPView.isSecureTextEntry = true
         //        txtOTPView.isBottomLineTextField = true

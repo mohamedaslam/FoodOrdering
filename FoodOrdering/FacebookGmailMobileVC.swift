@@ -156,8 +156,87 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         
     }
   @objc func letgetStartBtn(sender:UIButton!){
-    
+    signupApiCalling()
+
     }
+    func signupApiCalling(){
+           
+                let parameters: Parameters=[
+                    "fullName": self.getUserName,
+                    "mobileNumber": self.mobileNoTextField.text!,
+                    "password": "Aslam123",
+                    "isSocialSignUp" : false
+                ]
+                Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
+                    {
+                        response in
+                        switch response.result {
+                        case .success:
+                            print(response)
+                            if let result = response.result.value{
+                                print(result)
+                                print("result")
+                                let swiftyJsonVar = JSON(result)
+
+                                if let status = swiftyJsonVar["status"].bool{
+                                                           ///LOGIN SUCCESS
+                                if(status){
+                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                                UIAlertAction in
+                                let mobileVerigyVC = MobileVerifyViewController()
+                                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                                self.present(mobileVerigyVC, animated: true, completion: nil)
+                                            }
+                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+                                            UIAlertAction in
+                                            NSLog("Cancel Pressed")
+                                }
+                                            // Add the actions
+                                        alertController.addAction(okAction)
+                                        alertController.addAction(cancelAction)
+                                        self.present(alertController, animated: true, completion: nil)
+                                        MBProgressHUD.hide(for: self.view, animated: true)
+                                }else{
+                                 self.showAlert(for: "User already Exists")
+
+                                    }
+                                    //LOGIN FAIL
+    //                            if(statusMessage == "Please enter correct password"){
+    //                            self.showAlert(for: statusMessage)
+    //                            }
+                                MBProgressHUD.hide(for: self.view, animated: true)
+                            }
+    //                            if let statusValue = swiftyJsonVar["status"].int{
+    //                                if(statusValue = 400){
+    //                                    self.showAlert(for: "User already Exists")
+    //
+    //                                }
+    //                            }
+                        }
+                        case .failure(let error):
+                            let message : String
+                            if let httpStatusCode = response.response?.statusCode {
+                                switch(httpStatusCode) {
+                                case 400:
+                                    message = "Username or password not provided."
+                                case 401:
+                                    message = "Incorrect password for user."
+                                default:
+                                    print(httpStatusCode)
+                                    print("DEhttpStatusCode")
+                                    self.showAlert(for: "Server Down")
+                                    return
+                                }
+                            } else {
+                                message = error.localizedDescription
+                                print(message)
+                                print("messagemessage DEhttpStatusCode")
+                                self.showAlert(for: "Server Down")
+                            }
+                        }
+                }
+        }
     //MARK - UITextField Delegates
        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
            //For mobile numer validation
@@ -171,9 +250,8 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
                if(updatedText.count == 11){
                               print("CALL ALI")
-                            checkMobileNumberApi()
-                              sendOTPApiCalling()
-                             
+                            //checkMobileNumberApi()
+                self.mobileNoTextField.resignFirstResponder()
                           }
            
                return updatedText.count <= 10

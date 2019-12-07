@@ -714,24 +714,30 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
                                 print("result")
                                 let swiftyJsonVar = JSON(result)
 
-                                if let status = swiftyJsonVar["status"].bool{
+                                if let status = swiftyJsonVar["status"].int{
                                                            ///LOGIN SUCCESS
-                                if(status){
-                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
-                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
-                                                UIAlertAction in
-                                let mobileVerigyVC = MobileVerifyViewController()
-                                    mobileVerigyVC.userNameLabel.text = self.getFullName
-                                self.present(mobileVerigyVC, animated: true, completion: nil)
-                                            }
-                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
-                                            UIAlertAction in
-                                            NSLog("Cancel Pressed")
-                                }
-                                            // Add the actions
-                                        alertController.addAction(okAction)
-                                        alertController.addAction(cancelAction)
-                                        self.present(alertController, animated: true, completion: nil)
+                                if(status == 0){
+                                    if(swiftyJsonVar["statusMessage"].string == "Mobile Number Invalid"){
+                                        let facebookandGmailVerifyVC = FacebookGmailMobileVC()
+                                        facebookandGmailVerifyVC.getUserName = self.getFullName
+                                        self.present(facebookandGmailVerifyVC, animated: true, completion: nil)
+                                    }
+                                    
+//                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+//                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+//                                                UIAlertAction in
+//                                let mobileVerigyVC = MobileVerifyViewController()
+//                                    mobileVerigyVC.userNameLabel.text = self.getFullName
+//                                self.present(mobileVerigyVC, animated: true, completion: nil)
+//                                            }
+//                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+//                                            UIAlertAction in
+//                                            NSLog("Cancel Pressed")
+//                                }
+//                                            // Add the actions
+//                                        alertController.addAction(okAction)
+//                                        alertController.addAction(cancelAction)
+//                                        self.present(alertController, animated: true, completion: nil)
                                         MBProgressHUD.hide(for: self.view, animated: true)
                                 }else{
 
@@ -742,9 +748,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     //                            }
                                 MBProgressHUD.hide(for: self.view, animated: true)
                                 }else{
-                                    let facebookandGmailVerifyVC = FacebookGmailMobileVC()
-                                   facebookandGmailVerifyVC.getUserName = self.getFullName
-                                   self.present(facebookandGmailVerifyVC, animated: true, completion: nil)
+                                    
                                    // self.showAlert(for: "Please enter valid mobile Number")
 
                                 }

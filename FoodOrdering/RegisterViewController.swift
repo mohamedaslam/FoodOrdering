@@ -268,9 +268,9 @@ class RegisterViewController: UIViewController,UITextFieldDelegate {
       func signupApiCalling(){
        
             let parameters: Parameters=[
-                "fullName": "Aslam",
+                "fullName": self.fullNameTextField.text!,
                 "mobileNumber": self.mobileNoTextField.text!,
-                "password": "Aslam123",
+                "password": self.passwordTextField.text!,
                 "isSocialSignUp" : false,
                 "email": ""
             ]

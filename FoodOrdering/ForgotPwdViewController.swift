@@ -82,12 +82,24 @@ class ForgotPwdViewController: UIViewController {
                 make.height.equalTo(250*AutoSizeScaleX)
         }
         
+        let verifyOTPLabel = UILabel()
+        verifyOTPLabel.text = "Verify OTP"
+        verifyOTPLabel.textColor = UIColor.black
+        verifyOTPLabel.textAlignment = .left
+        verifyOTPLabel.font = UIFont.boldSystemFont(ofSize: 28*AutoSizeScaleX)
+        configVerifyBGView.addSubview(verifyOTPLabel)
+        verifyOTPLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(configVerifyBGView)
+            make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
+            make.height.equalTo(40*AutoSizeScaleX)
+        }
+        
         txtOTPView = DPOTPView()
         txtOTPView.count = 4
                txtOTPView.isBottomLineTextField = true
-        txtOTPView.borderColorTextField = .black
+        txtOTPView.borderColorTextField = .blue
         txtOTPView.borderWidthTextField = 3
-        txtOTPView.selectedBorderColorTextField = .blue
+        txtOTPView.selectedBorderColorTextField = .green
         txtOTPView.dismissOnLastEntry = true
         txtOTPView.selectedBorderWidthTextField = 4
         txtOTPView.spacing = 10
@@ -100,9 +112,10 @@ class ForgotPwdViewController: UIViewController {
         //        txtOTPView.isCircleTextField = true
         self.configVerifyBGView.addSubview(txtOTPView)
         txtOTPView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.configVerifyBGView).offset(40*AutoSizeScaleX)
-            make.left.right.equalTo(self.configBGView)
-            make.height.equalTo(100*AutoSizeScaleX)
+            make.top.equalTo(self.configVerifyBGView).offset(50*AutoSizeScaleX)
+            make.left.equalTo(self.configVerifyBGView).offset(20*AutoSizeScaleX)
+            make.width.equalTo(250*AutoSizeScaleX)
+            make.height.equalTo(80*AutoSizeScaleX)
             }
        
         
@@ -127,7 +140,7 @@ class ForgotPwdViewController: UIViewController {
            else {
                resendTimer.invalidate()
                print("call your api")
-               self.resendBtn.setTitle("Resend Otp", for: .normal)
+            self.resendBtn.setTitle("\(timeString(time: TimeInterval(count)))", for: .normal)
                // if you want to reset the time make count = 60 and resendTime.fire()
            }
        }
@@ -203,8 +216,8 @@ class ForgotPwdViewController: UIViewController {
         let getOTPBtn = UIButton(type: .custom)
               // facebookBtn.setBackgroundImage(UIImage(named: "facebookImg"), for: .normal)
               getOTPBtn.setTitle("Get OTP", for: .normal)
-              getOTPBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
-              getOTPBtn.setTitleColor(whiteSmokeColor, for: .normal)
+              getOTPBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18*AutoSizeScaleX)
+              getOTPBtn.setTitleColor(.white, for: .normal)
               getOTPBtn.backgroundColor = UIColor.black
               getOTPBtn.contentHorizontalAlignment = .center
               getOTPBtn.clipsToBounds = true
@@ -220,7 +233,7 @@ class ForgotPwdViewController: UIViewController {
             
               
               let noteOTPLabel = UILabel()
-              noteOTPLabel.text = "Note:-OTP will be sent to the above mentioned number."
+              noteOTPLabel.text = "Note:-OTP will be sent to the registered number."
               noteOTPLabel.textColor = .black
               noteOTPLabel.font = noteOTPLabel.font.withSize(13*AutoSizeScaleX)
               self.configGetBGView.addSubview(noteOTPLabel)
@@ -324,24 +337,23 @@ class ForgotPwdViewController: UIViewController {
                                     self.configVerifyBGView.isHidden = false
                                     self.configGetBGView.isHidden = true
                                     self.resendTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-                                                let resendBtn = UIButton(type: .custom)
-                                                       resendBtn.setTitle("0:0", for: .normal)
-                                                       resendBtn.backgroundColor = UIColor.lightGray
-                                                      // resendBtn.layer.cornerRadius = 20
-                                                       resendBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-                                                       resendBtn.setTitleColor(UIColor.white, for: .normal)
-                                                       resendBtn.contentHorizontalAlignment = .center
-                                                       resendBtn.clipsToBounds = true
-                                                       resendBtn.addTarget(self, action:#selector(self.resendOTPBtn), for: .touchUpInside)
-                                                       self.configBGView.addSubview(resendBtn)
-                                                self.resendBtn = resendBtn
-                                                       resendBtn.snp.makeConstraints{(make) -> Void in
-                                                        make.top.equalTo(self.txtOTPView.snp.bottom).offset(10*AutoSizeScaleX)
-                                                        make.centerX.equalTo(self.configBGView)
-                                                           make.height.equalTo(40*AutoSizeScaleX)
-                                                           make.width.equalTo(150*AutoSizeScaleX)
-                                                       }
-                                   }
+                    let resendBtn = UIButton(type: .custom)
+                    resendBtn.setTitle("0:0", for: .normal)
+                    // resendBtn.layer.cornerRadius = 20
+                    resendBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20*AutoSizeScaleX)
+                    resendBtn.setTitleColor(UIColor.black, for: .normal)
+                    resendBtn.contentHorizontalAlignment = .left
+                    resendBtn.clipsToBounds = true
+                    resendBtn.addTarget(self, action:#selector(self.resendOTPBtn), for: .touchUpInside)
+                    self.configBGView.addSubview(resendBtn)
+                    self.resendBtn = resendBtn
+                    resendBtn.snp.makeConstraints{(make) -> Void in
+                make.top.equalTo(self.txtOTPView.snp.bottom).offset(10*AutoSizeScaleX)
+                make.left.equalTo(self.configVerifyBGView).offset(20*AutoSizeScaleX)
+                make.height.equalTo(40*AutoSizeScaleX)
+                make.width.equalTo(120*AutoSizeScaleX)
+                    }
+                }
                              alertController.addAction(okAction)
                              self.present(alertController, animated: true, completion: nil)
                                 }else{
@@ -514,8 +526,10 @@ extension ForgotPwdViewController : DPOTPViewDelegate {
     func dpOTPViewAddText(_ text: String, at position: Int) {
         print("addText:- " + text + " at:- \(position)" )
         getOTPStr = text
-         if(position == 3){
-                    forgotPwdApi()
+       if(position == 3){
+                  //  forgotPwdApi()
+        verifyOTPApi()
+
         //            let changePwdVC = ChangePwdViewController()
         //            changePwdVC.getOTPStr = getOTPStr
         //            changePwdVC.getMobileNo = mobileNoStr
@@ -530,7 +544,7 @@ extension ForgotPwdViewController : DPOTPViewDelegate {
     func dpOTPViewChangePositionAt(_ position: Int) {
         print("at:-\(position)")
         if(position == 3){
-            forgotPwdApi()
+//            forgotPwdApi()
 //            let changePwdVC = ChangePwdViewController()
 //            changePwdVC.getOTPStr = getOTPStr
 //            changePwdVC.getMobileNo = mobileNoStr
@@ -542,5 +556,88 @@ extension ForgotPwdViewController : DPOTPViewDelegate {
     }
     func dpOTPViewResignFirstResponder() {
         
+    }
+    func verifyOTPApi(){
+        
+        let parameters: Parameters=[
+            "mobileNumber": self.mobileNoStr,
+            "otp": self.getOTPStr
+        ]
+        print(parameters)
+        Alamofire.request(URL_USER_VERIFY_OTP, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
+            {
+                response in
+                switch response.result {
+                case .success:
+                    print(response)
+                    if let result = response.result.value{
+                        self.resendTimer.invalidate()
+                        print(result)
+                        print("result")
+                        let swiftyJsonVar = JSON(result)
+                        if let statusMessage = swiftyJsonVar["statusMessage"].string{
+                            ///LOGIN SUCCESS
+                            if(statusMessage == "Invalid OTP"){
+                                let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                    UIAlertAction in
+                                    //                              let homeVC = HomeViewController()
+                                    //                               self.present(homeVC, animated: true, completion: nil)
+                                }
+                                alertController.addAction(okAction)
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                            //LOGIN FAIL
+                            if(statusMessage == "OTP Verified Successfully"){
+                                let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
+                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                                    UIAlertAction in
+                                    if let getuserr = swiftyJsonVar["user"].dictionary{
+                                        if let getToken = getuserr["token"]!.string{
+                                            let keychain = KeychainSwift()
+                                            MBProgressHUD.hide(for: self.view, animated: true)
+                                            keychain.set(getToken, forKey: "Token")
+                                        }
+                                        if let getUserId = getuserr["userKey"]!.string{
+                                            let keychain = KeychainSwift()
+                                            keychain.set(getUserId, forKey: "UserKey")
+                                        }
+                                    }
+                                    let changeVC = ChangePwdViewController()
+                                    changeVC.getMobileNo = self.mobileNoStr
+                                    self.present(changeVC, animated: true, completion: nil)
+                                }
+                                alertController.addAction(okAction)
+                                self.present(alertController, animated: true, completion: nil)                           }
+                            MBProgressHUD.hide(for: self.view, animated: true)
+                        }
+                        
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                        
+                        
+                    }
+                case .failure(let error):
+                    let message : String
+                    self.resendTimer.invalidate()
+                    if let httpStatusCode = response.response?.statusCode {
+                        switch(httpStatusCode) {
+                        case 400:
+                            message = "Username or password not provided."
+                        case 401:
+                            message = "Incorrect password for user."
+                        default:
+                            print(httpStatusCode)
+                            print("DEhttpStatusCode")
+                            self.showAlert(for: "Server Down")
+                            return
+                        }
+                    } else {
+                        message = error.localizedDescription
+                        print(message)
+                        print("messagemessage DEhttpStatusCode")
+                        self.showAlert(for: "Server Down")
+                    }
+                }
+        }
     }
 }

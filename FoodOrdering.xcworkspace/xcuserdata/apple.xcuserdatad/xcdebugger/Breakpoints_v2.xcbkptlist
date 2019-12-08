@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodOrdering/LoginViewController.swift"
-            timestampString = "596289529.120899"
+            filePath = "FoodOrdering/ForgotPwdViewController.swift"
+            timestampString = "597426494.8458689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "configSocialMainBGView()"
+            startingLineNumber = "438"
+            endingLineNumber = "438"
+            landmarkName = "forgotPwdApi()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodOrdering/LoginViewController.swift"
-            timestampString = "596289529.12149"
+            filePath = "FoodOrdering/ForgotPwdViewController.swift"
+            timestampString = "597426494.84699"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "configSocialMainBGView()"
+            startingLineNumber = "432"
+            endingLineNumber = "432"
+            landmarkName = "forgotPwdApi()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FoodOrdering/ChangePwdViewController.swift"
+            timestampString = "597426494.847111"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
+            landmarkName = "forgotPwdApi()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FoodOrdering/LoginViewController.swift"
-            timestampString = "596289529.121933"
+            timestampString = "597426494.847515"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "configSocialMainBGView()"
-            landmarkType = "7">
+            startingLineNumber = "730"
+            endingLineNumber = "730"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -57,29 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FoodOrdering/MobileVerifyViewController.swift"
-            timestampString = "596289529.122323"
+            filePath = "FoodOrdering/FacebookGmailMobileVC.swift"
+            timestampString = "597426494.847816"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "configMainBGView()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FoodOrdering/RegisterViewController.swift"
-            timestampString = "596301402.783689"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "configSocialMainBGView()"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "signupApiCalling()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

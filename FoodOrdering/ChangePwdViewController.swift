@@ -30,7 +30,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
     
     func configMainBGView(){
         let configBGView = UIView()
-        configBGView.backgroundColor = UIColor.white
+        configBGView.backgroundColor = UIColor.clear
         self.view.addSubview(configBGView)
         self.configBGView = configBGView
         configBGView.snp.makeConstraints { (make) -> Void in
@@ -47,7 +47,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         }
         let titleLabel = UILabel()
         titleLabel.text = "Quisiera"
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.boldSystemFont(ofSize: 36.0*AutoSizeScaleX)
         configBGView.addSubview(titleLabel)
@@ -65,6 +65,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         passwordTextField.autocorrectionType = UITextAutocorrectionType.no
         passwordTextField.keyboardType = UIKeyboardType.default
         passwordTextField.returnKeyType = UIReturnKeyType.done
+        passwordTextField.isSecureTextEntry = true
         passwordTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         passwordTextField.textAlignment = .left
         passwordTextField.placeholderColor = UIColor.lightGray
@@ -86,6 +87,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         repasswordTextField.autocorrectionType = UITextAutocorrectionType.no
         repasswordTextField.keyboardType = UIKeyboardType.default
         repasswordTextField.returnKeyType = UIReturnKeyType.done
+        repasswordTextField.isSecureTextEntry = true
         repasswordTextField.clearButtonMode = UITextField.ViewMode.whileEditing
         repasswordTextField.textAlignment = .left
         repasswordTextField.placeholderColor = UIColor.lightGray
@@ -102,7 +104,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         let createPwdBtn = UIButton(type: .custom)
         createPwdBtn.setTitle("Create Password", for: .normal)
         createPwdBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
-        createPwdBtn.setTitleColor(whiteSmokeColor, for: .normal)
+        createPwdBtn.setTitleColor(.white, for: .normal)
         createPwdBtn.backgroundColor = UIColor.black
         createPwdBtn.contentHorizontalAlignment = .center
         createPwdBtn.clipsToBounds = true
@@ -118,7 +120,7 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         let willCreateLaterBtn = UIButton(type: .custom)
         willCreateLaterBtn.setTitle("Will Create Later", for: .normal)
         willCreateLaterBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
-        willCreateLaterBtn.setTitleColor(.white, for: .normal)
+        willCreateLaterBtn.setTitleColor(.black, for: .normal)
         willCreateLaterBtn.backgroundColor = UIColor.clear
         willCreateLaterBtn.contentHorizontalAlignment = .center
         willCreateLaterBtn.clipsToBounds = true
@@ -133,14 +135,25 @@ class ChangePwdViewController: UIViewController,UITextFieldDelegate {
         
     }
   func forgotPwdApi(){
-                
+    let keychain = KeychainSwift()
+    var getaccessToken = String()
+    var getUserKey = String()
+    if let tokenValue = keychain.get("Token"){
+        getaccessToken = tokenValue
+    }
+    if let userKeyValue = keychain.get("UserKey") {
+        getUserKey = userKeyValue
+    }
                   let parameters: Parameters=[
                       "mobileNumber": getMobileNo,
-                      "otp": getOTPStr,
-                      "newPassword": passwordTextField.text
+                      "newPassword": passwordTextField.text!
                   ]
-                  
-                  Alamofire.request(URL_USER_FORGOT_PWD, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: nil).responseJSON
+    let headers = [
+        "Authorization": "bearer " + getaccessToken,
+        "Accept": "application/json"
+    ]
+    
+                  Alamofire.request(URL_USER_FORGOT_PWD, method: .post, parameters: parameters,encoding:JSONEncoding.default, headers: headers).responseJSON
                       {
                           response in
                           switch response.result {

@@ -22,6 +22,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
     
     var mobileNoTextField = SkyFloatingLabelTextField()
     var getUserName : String = ""
+    var getEmail : String = ""
     var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
     var tickImageView = UIImageView()
     var notRegisteredLabel = UILabel()
@@ -62,7 +63,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         userNameLabel.text = self.getUserName
         userNameLabel.textColor = UIColor.black
         userNameLabel.textAlignment = .left
-        userNameLabel.font = UIFont.boldSystemFont(ofSize: 32.0*AutoSizeScaleX)
+        userNameLabel.font = UIFont.boldSystemFont(ofSize: 30.0*AutoSizeScaleX)
         configBGView.addSubview(userNameLabel)
         userNameLabel.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(titleLabel.snp.bottom).offset(30*AutoSizeScaleX)
@@ -74,7 +75,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
         youAreOneStepLabel.textColor = UIColor.black
         youAreOneStepLabel.textAlignment = .left
         youAreOneStepLabel.numberOfLines = 0
-        youAreOneStepLabel.font = UIFont.boldSystemFont(ofSize: 35.0*AutoSizeScaleX)
+        youAreOneStepLabel.font = UIFont.boldSystemFont(ofSize: 32.0*AutoSizeScaleX)
         configBGView.addSubview(youAreOneStepLabel)
         youAreOneStepLabel.snp.makeConstraints { (make) -> Void in
                 make.top.equalTo(userNameLabel.snp.bottom).offset(24*AutoSizeScaleX)
@@ -164,8 +165,9 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                 let parameters: Parameters=[
                     "fullName": self.getUserName,
                     "mobileNumber": self.mobileNoTextField.text!,
-                    "password": "Aslam123",
-                    "isSocialSignUp" : false
+                    "password": "",
+                    "email": self.getEmail,
+                    "isSocialSignUp" : true
                 ]
                 Alamofire.request(URL_USER_REGISTER, method: .post, parameters: parameters,encoding: JSONEncoding.default, headers: nil).responseJSON
                     {
@@ -177,15 +179,34 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                                 print(result)
                                 print("result")
                                 let swiftyJsonVar = JSON(result)
-
+                                if(swiftyJsonVar["statusMessage"].string == "Already exists"){
+                                    if let getuserr = swiftyJsonVar["user"].dictionary{
+                                        if let getToken = getuserr["token"]!.string{
+                                            let keychain = KeychainSwift()
+                                            MBProgressHUD.hide(for: self.view, animated: true)
+                                            keychain.set(getToken, forKey: "Token")
+                                        }
+                                        if let getUserId = getuserr["userKey"]!.string{
+                                            let keychain = KeychainSwift()
+                                            keychain.set(getUserId, forKey: "UserKey")
+                                        }
+                                    }
+                                    let homeVC = HomeViewController()
+                                    self.present(homeVC, animated: false, completion: nil)
+                                }
+                                
+                                
+                                  
                                 if let status = swiftyJsonVar["status"].bool{
                                                            ///LOGIN SUCCESS
                                 if(status){
-                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+                                    
+                                let alertController = UIAlertController(title: " ", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
                                 let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
                                                 UIAlertAction in
                                 let mobileVerigyVC = MobileVerifyViewController()
                                 mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                                mobileVerigyVC.userNameLabel.text = self.getUserName
                                 self.present(mobileVerigyVC, animated: true, completion: nil)
                                             }
                                 let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
@@ -198,8 +219,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                                         self.present(alertController, animated: true, completion: nil)
                                         MBProgressHUD.hide(for: self.view, animated: true)
                                 }else{
-                                 self.showAlert(for: "User already Exists")
-
+                                   
                                     }
                                     //LOGIN FAIL
     //                            if(statusMessage == "Please enter correct password"){

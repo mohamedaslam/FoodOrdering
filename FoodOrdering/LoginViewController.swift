@@ -30,7 +30,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
     var passwordTextField = SkyFloatingLabelTextField()
     var loginnBtn = UIButton()
     var notRegisteredLabel = UILabel()
-    var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
+    var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 8, width: 52 , height: 36), image: UIImage(named: "Unchecked")!)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,11 +110,15 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
             make.width.height.equalTo(50)
         }
         tickImageView = UIImageView()
-        tickImageView.image = UIImage(named: "tickmark")
+        tickImageView.image = UIImage(named: "check")
+        tickImageView.contentMode = .scaleAspectFit
         tickImageView.isHidden = true
         loadingImageBGView.addSubview(tickImageView)
         tickImageView.snp.makeConstraints { (make) -> Void in
-            make.top.bottom.left.right.equalTo(loadingImageBGView)
+            make.left.equalTo(loadingImageBGView)
+            make.top.equalTo(8)
+            make.height.equalTo(26)
+            make.width.equalTo(56)
         }
 
         loadingImageBGView.addSubview(loadingIndication)
@@ -231,7 +235,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         
         let facebookBtn = UIButton(type: .custom)
        // facebookBtn.setImage(UIImage(named: "facebook1"), for: .normal)
-        facebookBtn.setBackgroundImage(UIImage(named: "facebook1"), for: .normal)
+        facebookBtn.setBackgroundImage(UIImage(named: "facebook"), for: .normal)
         facebookBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
         facebookBtn.setTitleColor(UIColor.white, for: .normal)
         facebookBtn.contentHorizontalAlignment = .center
@@ -246,7 +250,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
         
         let gmailBtn = UIButton(type: .custom)
         //gmailBtn.setImage(UIImage(named: "googleImagee"), for: .normal)
-        gmailBtn.setBackgroundImage(UIImage(named: "googleImg"), for: .normal)
+        gmailBtn.setBackgroundImage(UIImage(named: "google"), for: .normal)
         gmailBtn.titleLabel?.font = .systemFont(ofSize:16*AutoSizeScaleX)
         gmailBtn.setTitleColor(UIColor.white, for: .normal)
         gmailBtn.contentHorizontalAlignment = .center
@@ -545,7 +549,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
                             ///LOGIN SUCCESS
                              if(statusMessage == "Login Successfull!"){
                                 if let getuserr = swiftyJsonVar["user"].dictionary{
-                                    if let getToken = getuserr["accessToken"]!.string{
+                                    if let getToken = getuserr["token"]!.string{
                                         let keychain = KeychainSwift()
                                         MBProgressHUD.hide(for: self.view, animated: true)
                                         keychain.set(getToken, forKey: "Token")
@@ -720,6 +724,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
                                     if(swiftyJsonVar["statusMessage"].string == "Mobile Number Invalid"){
                                         let facebookandGmailVerifyVC = FacebookGmailMobileVC()
                                         facebookandGmailVerifyVC.getUserName = self.getFullName
+                                        facebookandGmailVerifyVC.getEmail = self.getEmailId
                                         self.present(facebookandGmailVerifyVC, animated: true, completion: nil)
                                     }
                                     
@@ -740,7 +745,21 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
 //                                        self.present(alertController, animated: true, completion: nil)
                                         MBProgressHUD.hide(for: self.view, animated: true)
                                 }else{
-
+                                    if(swiftyJsonVar["statusMessage"].string == "Already exists"){
+                                        if let getuserr = swiftyJsonVar["user"].dictionary{
+                                            if let getToken = getuserr["token"]!.string{
+                                                let keychain = KeychainSwift()
+                                                MBProgressHUD.hide(for: self.view, animated: true)
+                                                keychain.set(getToken, forKey: "Token")
+                                            }
+                                            if let getUserId = getuserr["userKey"]!.string{
+                                                let keychain = KeychainSwift()
+                                                keychain.set(getUserId, forKey: "UserKey")
+                                            }
+                                        }
+                                        let homeVC = HomeViewController()
+                                        self.present(homeVC, animated: false, completion: nil)
+                                    }
                                     }
                                     //LOGIN FAIL
     //                            if(statusMessage == "Please enter correct password"){
@@ -761,6 +780,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
                         }
                         case .failure(let error):
                             let message : String
+                            MBProgressHUD.hide(for: self.view, animated: true)
+
                             if let httpStatusCode = response.response?.statusCode {
                                 switch(httpStatusCode) {
                                 case 400:

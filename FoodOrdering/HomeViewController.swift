@@ -41,9 +41,28 @@ class HomeViewController: UIViewController {
             make.left.right.equalTo(configBGView).offset(20*AutoSizeScaleX)
             make.height.equalTo(40*AutoSizeScaleX)
         }
+                let loginBtn = UIButton(type: .custom)
+                loginBtn.setTitle("BACK", for: .normal)
+                loginBtn.backgroundColor = UIColor.lightGray
+                loginBtn.layer.cornerRadius = 20
+                loginBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+                loginBtn.setTitleColor(UIColor.white, for: .normal)
+                loginBtn.contentHorizontalAlignment = .center
+                loginBtn.clipsToBounds = true
+                loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+                self.configBGView.addSubview(loginBtn)
+                loginBtn.snp.makeConstraints{(make) -> Void in
+                    make.centerX.centerY.equalTo(configBGView)
+                    make.height.equalTo(40*AutoSizeScaleX)
+                    make.width.equalTo(200*AutoSizeScaleX)
+                }
         // Do any additional setup after loading the view.
     }
+    @objc func loginBtn(sender:UIButton!){
     
+          let loginVC = LoginViewController()
+          self.present(loginVC, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation

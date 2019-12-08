@@ -30,6 +30,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var containerView = UIView()
     var txtOTPView: DPOTPView!
     var getOTPStr : String = ""
+    var getEmail : String = ""
     //////////TIMER
     var count = 180  // 60sec if you want
     var resendTimer = Timer()
@@ -114,7 +115,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
        // passwordTextField.backgroundColor = .red
         passwordTextField.CustomTextField()
         passwordTextField.text = self.passwordTextField.text
-        passwordTextField.font = UIFont.systemFont(ofSize: 32*AutoSizeScaleX)
+        passwordTextField.font = UIFont.systemFont(ofSize: 28*AutoSizeScaleX)
         passwordTextField.borderStyle = UITextField.BorderStyle.none
         passwordTextField.autocorrectionType = UITextAutocorrectionType.no
         passwordTextField.keyboardType = UIKeyboardType.default
@@ -130,7 +131,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         passwordTextField.snp.makeConstraints{(make) -> Void in
             make.top.equalTo(fullNameTextField.snp.bottom).offset(30*AutoSizeScaleX)
             make.left.equalTo(fullNameTextField)
-            make.width.equalTo(200*AutoSizeScaleX)
+            make.width.equalTo(180*AutoSizeScaleX)
             make.height.equalTo(50*AutoSizeScaleX)
         }
         let pwdViewBtn = UIButton(type: .custom)
@@ -144,7 +145,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                pwdViewBtn.addTarget(self, action:#selector(self.viewPwdBtn), for: .touchUpInside)
                self.configBGView.addSubview(pwdViewBtn)
                pwdViewBtn.snp.makeConstraints{(make) -> Void in
-                make.top.equalTo(passwordTextField.snp.centerY)
+                make.top.equalTo(passwordTextField.snp.centerY).offset(-18*AutoSizeScaleX)
                    make.left.equalTo(passwordTextField.snp.right)
                    make.height.equalTo(50*AutoSizeScaleX)
                    make.width.equalTo(80*AutoSizeScaleX)
@@ -153,7 +154,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         verifyOTPLabel.text = "Verify OTP"
         verifyOTPLabel.textColor = UIColor.black
         verifyOTPLabel.textAlignment = .left
-        verifyOTPLabel.font = mobileNumberLabel.font.withSize(32)
+        verifyOTPLabel.font = UIFont.boldSystemFont(ofSize: 28*AutoSizeScaleX)
         configBGView.addSubview(verifyOTPLabel)
         verifyOTPLabel.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(passwordTextField.snp.bottom).offset(30*AutoSizeScaleX)
@@ -168,7 +169,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
             make.left.equalTo(verifyOTPLabel)
             make.width.equalTo(320*AutoSizeScaleX)
             make.height.equalTo(52)
-            make.top.equalTo(verifyOTPLabel.snp.bottom).offset(14*AutoSizeScaleX)
+            make.top.equalTo(verifyOTPLabel.snp.bottom)
         }
 //        verificationCodeView = KWVerificationCodeView(frame: CGRect(x: 0, y: 0, width: 300, height: 80))
 //        verificationCodeView?.digits = 5
@@ -177,9 +178,9 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
       txtOTPView = DPOTPView()
         txtOTPView.count = 4
         txtOTPView.isBottomLineTextField = true
-        txtOTPView.borderColorTextField = .black
+        txtOTPView.borderColorTextField = .blue
         txtOTPView.borderWidthTextField = 3
-        txtOTPView.selectedBorderColorTextField = .blue
+        txtOTPView.selectedBorderColorTextField = .green
         txtOTPView.dismissOnLastEntry = true
         txtOTPView.selectedBorderWidthTextField = 4
         txtOTPView.spacing = 10
@@ -195,7 +196,7 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         txtOTPView.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
-            make.width.equalTo(320*AutoSizeScaleX)
+            make.width.equalTo(250*AutoSizeScaleX)
             make.height.equalTo(80*AutoSizeScaleX)
             }
         
@@ -203,38 +204,37 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
         resendTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
         let resendBtn = UIButton(type: .custom)
                resendBtn.setTitle("0:0", for: .normal)
-               resendBtn.backgroundColor = UIColor.lightGray
               // resendBtn.layer.cornerRadius = 20
-               resendBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-               resendBtn.setTitleColor(UIColor.white, for: .normal)
-               resendBtn.contentHorizontalAlignment = .center
+               resendBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20*AutoSizeScaleX)
+               resendBtn.setTitleColor(UIColor.black, for: .normal)
+               resendBtn.contentHorizontalAlignment = .left
                resendBtn.clipsToBounds = true
                resendBtn.addTarget(self, action:#selector(self.resendOTPBtn), for: .touchUpInside)
                self.configBGView.addSubview(resendBtn)
         self.resendBtn = resendBtn
                resendBtn.snp.makeConstraints{(make) -> Void in
                    make.top.equalTo(txtOTPView.snp.bottom).offset(10*AutoSizeScaleX)
-                   make.centerX.equalTo(configBGView)
+                   make.left.equalTo(self.containerView)
                    make.height.equalTo(40*AutoSizeScaleX)
                    make.width.equalTo(150*AutoSizeScaleX)
                }
         
-        let loginBtn = UIButton(type: .custom)
-        loginBtn.setTitle("Submit", for: .normal)
-        loginBtn.backgroundColor = UIColor.lightGray
-        loginBtn.layer.cornerRadius = 20
-        loginBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
-        loginBtn.setTitleColor(UIColor.white, for: .normal)
-        loginBtn.contentHorizontalAlignment = .center
-        loginBtn.clipsToBounds = true
-        loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
-        self.configBGView.addSubview(loginBtn)
-        loginBtn.snp.makeConstraints{(make) -> Void in
-            make.top.equalTo(resendBtn.snp.bottom).offset(20*AutoSizeScaleX)
-            make.centerX.equalTo(configBGView)
-            make.height.equalTo(40*AutoSizeScaleX)
-            make.width.equalTo(130*AutoSizeScaleX)
-        }
+//        let loginBtn = UIButton(type: .custom)
+//        loginBtn.setTitle("Submit", for: .normal)
+//        loginBtn.backgroundColor = UIColor.lightGray
+//        loginBtn.layer.cornerRadius = 20
+//        loginBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+//        loginBtn.setTitleColor(UIColor.white, for: .normal)
+//        loginBtn.contentHorizontalAlignment = .center
+//        loginBtn.clipsToBounds = true
+//        loginBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+//        self.configBGView.addSubview(loginBtn)
+//        loginBtn.snp.makeConstraints{(make) -> Void in
+//            make.top.equalTo(resendBtn.snp.bottom).offset(12*AutoSizeScaleX)
+//            make.centerX.equalTo(configBGView)
+//            make.height.equalTo(40*AutoSizeScaleX)
+//            make.width.equalTo(130*AutoSizeScaleX)
+//        }
         
         
         let dontHaveAccountLabel = UILabel()
@@ -357,12 +357,25 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
                             }
                            //LOGIN FAIL
                            if(statusMessage == "OTP Verified Successfully"){
+                            if let getuserr = swiftyJsonVar["user"].dictionary{
+                                if let getToken = getuserr["token"]!.string{
+                                    let keychain = KeychainSwift()
+                                    MBProgressHUD.hide(for: self.view, animated: true)
+                                    keychain.set(getToken, forKey: "Token")
+                                }
+                                if let getUserId = getuserr["userKey"]!.string{
+                                    let keychain = KeychainSwift()
+                                    keychain.set(getUserId, forKey: "UserKey")
+                                }
+                            }
                                let alertController = UIAlertController(title: statusMessage, message: nil, preferredStyle: .alert)
-                                                              let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+                        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
                                                               UIAlertAction in
-                                            let homeVC = HomeViewController()
-                                            self.present(homeVC, animated: true, completion: nil)
-                                                              }
+                                                                
+                        let homeVC = HomeViewController()
+                        self.present(homeVC, animated: true, completion: nil)
+                            
+                            }
                                                         alertController.addAction(okAction)
                                                         self.present(alertController, animated: true, completion: nil)                           }
                             MBProgressHUD.hide(for: self.view, animated: true)
@@ -497,6 +510,10 @@ extension MobileVerifyViewController : DPOTPViewDelegate {
     func dpOTPViewAddText(_ text: String, at position: Int) {
         print("addText:- " + text + " at:- \(position)" )
         getOTPStr = text
+        if(position == 3){
+            //  forgotPwdApi()
+            verifyOTPApi()
+        }
         
     }
     
@@ -508,10 +525,7 @@ extension MobileVerifyViewController : DPOTPViewDelegate {
         print("at:-\(position)")
         print("dfdsfs:-\(txtOTPView.text ?? "<#default value#>")")
 
-        if(position == 4){
-//            let changePwdVC = ChangePwdViewController()
-//             self.present(changePwdVC, animated: true, completion: nil)
-        }
+
     }
     func dpOTPViewBecomeFirstResponder() {
         

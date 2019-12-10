@@ -720,14 +720,28 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
 
                                 if let status = swiftyJsonVar["status"].int{
                                                            ///LOGIN SUCCESS
-                                if(status == 0){
-                                    if(swiftyJsonVar["statusMessage"].string == "Mobile Number Invalid"){
+                                if(status == 1){
+                                    if(swiftyJsonVar["statusMessage"].string == "Please provide mobile number"){
                                         let facebookandGmailVerifyVC = FacebookGmailMobileVC()
                                         facebookandGmailVerifyVC.getUserName = self.getFullName
                                         facebookandGmailVerifyVC.getEmail = self.getEmailId
                                         self.present(facebookandGmailVerifyVC, animated: true, completion: nil)
                                     }
-                                    
+                                    if(swiftyJsonVar["statusMessage"].string == "Already exists"){
+                                        if let getuserr = swiftyJsonVar["user"].dictionary{
+                                            if let getToken = getuserr["token"]!.string{
+                                                let keychain = KeychainSwift()
+                                                MBProgressHUD.hide(for: self.view, animated: true)
+                                                keychain.set(getToken, forKey: "Token")
+                                            }
+                                            if let getUserId = getuserr["userKey"]!.string{
+                                                let keychain = KeychainSwift()
+                                                keychain.set(getUserId, forKey: "UserKey")
+                                            }
+                                        }
+                                        let homeVC = HomeViewController()
+                                        self.present(homeVC, animated: false, completion: nil)
+                                    }
 //                                let alertController = UIAlertController(title: "REGISTERED SUCCESSFULL", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
 //                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
 //                                                UIAlertAction in
@@ -745,21 +759,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,LoginButtonDeleg
 //                                        self.present(alertController, animated: true, completion: nil)
                                         MBProgressHUD.hide(for: self.view, animated: true)
                                 }else{
-                                    if(swiftyJsonVar["statusMessage"].string == "Already exists"){
-                                        if let getuserr = swiftyJsonVar["user"].dictionary{
-                                            if let getToken = getuserr["token"]!.string{
-                                                let keychain = KeychainSwift()
-                                                MBProgressHUD.hide(for: self.view, animated: true)
-                                                keychain.set(getToken, forKey: "Token")
-                                            }
-                                            if let getUserId = getuserr["userKey"]!.string{
-                                                let keychain = KeychainSwift()
-                                                keychain.set(getUserId, forKey: "UserKey")
-                                            }
-                                        }
-                                        let homeVC = HomeViewController()
-                                        self.present(homeVC, animated: false, completion: nil)
-                                    }
+                                    
                                     }
                                     //LOGIN FAIL
     //                            if(statusMessage == "Please enter correct password"){

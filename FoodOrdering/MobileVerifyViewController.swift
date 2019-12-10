@@ -31,6 +31,8 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
     var txtOTPView: DPOTPView!
     var getOTPStr : String = ""
     var getEmail : String = ""
+    var checkingVC : String = ""
+
     //////////TIMER
     var count = 180  // 60sec if you want
     var resendTimer = Timer()
@@ -279,6 +281,9 @@ class MobileVerifyViewController: UIViewController,UITextFieldDelegate {
 //            make.height.equalTo(40*AutoSizeScaleX)
 //        }
         
+        if(checkingVC == "FacebookGmailVC"){
+            sendOTPApiCalling()
+        }
     }
     func timeString(time: TimeInterval) -> String {
         let hour = Int(time) / 3600

@@ -26,6 +26,7 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
     var loadingIndication = MyIndicator(frame: CGRect(x: 0, y: 0, width: 50 , height: 50), image: UIImage(named: "loading1")!)
     var tickImageView = UIImageView()
     var notRegisteredLabel = UILabel()
+    var notifyVC : String = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         configMainBGView()
@@ -194,39 +195,46 @@ class FacebookGmailMobileVC: UIViewController,UITextFieldDelegate {
                                     let homeVC = HomeViewController()
                                     self.present(homeVC, animated: false, completion: nil)
                                 }
-                                
+                                if(swiftyJsonVar["statusMessage"].string == "Please verify mobile number"){
+                                   
+                                    let mobileVerigyVC = MobileVerifyViewController()
+                                    mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+                                    mobileVerigyVC.userNameLabel.text = self.getUserName
+                                    mobileVerigyVC.checkingVC = "FacebookGmailVC"
+                                    self.present(mobileVerigyVC, animated: true, completion: nil)
+                                }
                                 
                                   
-                                if let status = swiftyJsonVar["status"].bool{
-                                                           ///LOGIN SUCCESS
-                                if(status){
-                                    
-                                let alertController = UIAlertController(title: " ", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
-                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
-                                                UIAlertAction in
-                                let mobileVerigyVC = MobileVerifyViewController()
-                                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
-                                mobileVerigyVC.userNameLabel.text = self.getUserName
-                                self.present(mobileVerigyVC, animated: true, completion: nil)
-                                            }
-                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
-                                            UIAlertAction in
-                                            NSLog("Cancel Pressed")
-                                }
-                                            // Add the actions
-                                        alertController.addAction(okAction)
-                                        alertController.addAction(cancelAction)
-                                        self.present(alertController, animated: true, completion: nil)
-                                        MBProgressHUD.hide(for: self.view, animated: true)
-                                }else{
-                                   
-                                    }
-                                    //LOGIN FAIL
-    //                            if(statusMessage == "Please enter correct password"){
-    //                            self.showAlert(for: statusMessage)
-    //                            }
-                                MBProgressHUD.hide(for: self.view, animated: true)
-                            }
+//                                if let status = swiftyJsonVar["status"].bool{
+//                                                           ///LOGIN SUCCESS
+//                                if(status){
+//
+//                                let alertController = UIAlertController(title: " ", message: swiftyJsonVar["statusMessage"].string, preferredStyle: .alert)
+//                                let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {
+//                                                UIAlertAction in
+//                                let mobileVerigyVC = MobileVerifyViewController()
+//                                mobileVerigyVC.mobileNumberLabel.text = self.mobileNoTextField.text
+//                                mobileVerigyVC.userNameLabel.text = self.getUserName
+//                                self.present(mobileVerigyVC, animated: true, completion: nil)
+//                                            }
+//                                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+//                                            UIAlertAction in
+//                                            NSLog("Cancel Pressed")
+//                                }
+//                                            // Add the actions
+//                                        alertController.addAction(okAction)
+//                                        alertController.addAction(cancelAction)
+//                                        self.present(alertController, animated: true, completion: nil)
+//                                        MBProgressHUD.hide(for: self.view, animated: true)
+//                                }else{
+//
+//                                    }
+//                                    //LOGIN FAIL
+//    //                            if(statusMessage == "Please enter correct password"){
+//    //                            self.showAlert(for: statusMessage)
+//    //                            }
+//                                MBProgressHUD.hide(for: self.view, animated: true)
+//                            }
     //                            if let statusValue = swiftyJsonVar["status"].int{
     //                                if(statusValue = 400){
     //                                    self.showAlert(for: "User already Exists")

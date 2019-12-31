@@ -8,7 +8,6 @@ target 'FoodOrdering' do
    pod 'FBSDKCoreKit'
    pod 'FBSDKShareKit'
    pod 'FBSDKLoginKit'
-   pod 'paper-onboarding'
    pod 'SnapKit'
    pod 'SwiftyOnboard'
    pod 'Alamofire-SwiftyJSON'
@@ -18,6 +17,12 @@ target 'FoodOrdering' do
    pod 'FasterVerificationCode'
    pod 'MBProgressHUD'
    pod 'KWVerificationCodeView'
+   pod 'AFNetworking'
+   pod 'TYCyclePagerView'
+   pod 'YBPopupMenu', '~> 1.1.2'
+   pod 'Kingfisher'
+   pod 'TYCyclePagerView'
+
   # Pods for FoodOrdering
 
   target 'FoodOrderingTests' do

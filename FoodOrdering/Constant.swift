@@ -24,6 +24,8 @@ let darkGreyColor = UIColor(red: 52/255, green: 42/255, blue: 61/255, alpha: 1.0
 let overcastBlueColor = UIColor(red: 0, green: 187/255, blue: 204/255, alpha: 1.0)
 let lightGrayColor = UIColor(red: 40.0/255.0, green: 40.0/255.0, blue: 40.0/255.0, alpha: 1.0)
 let whiteSmokeColor = UIColor(red: 184.0/255.0, green: 184.0/255.0, blue: 184.0/255.0, alpha: 1.0)
+let newWhiteSmokeColor = UIColor(red: 248.0/255.0, green: 248.0/255.0, blue: 248.0/255.0, alpha: 1.0)
+
 var FETCH_USERS_URL="http://jsonplaceholder.typicode.com/users"
 var URL_USER_LOGIN =    "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/Login"
 var URL_USER_FORGOT_PWD = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/ForgotPassword"

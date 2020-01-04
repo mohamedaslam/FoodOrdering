@@ -1,14 +1,14 @@
 //
-//  TemplatesCollectionViewCell.swift
+//  MyFavCollectionViewCell.swift
 //  FoodOrdering
 //
-//  Created by Mohammed Aslam Shaik on 2019/12/31.
-//  Copyright © 2019 Mohammed Aslam Shaik. All rights reserved.
+//  Created by Mohammed Aslam Shaik on 2020/1/4.
+//  Copyright © 2020 Mohammed Aslam Shaik. All rights reserved.
 //
 
 import UIKit
 
-class TemplatesCollectionViewCell: UICollectionViewCell {
+class MyFavCollectionViewCell: UICollectionViewCell {
     var imgView: UIImageView = UIImageView()
     var titleLabel: UILabel = UILabel()
     var subtitleLabel: UILabel = UILabel()

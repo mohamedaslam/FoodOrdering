@@ -12,8 +12,21 @@ let collectionItemHeight: CGFloat = collectionItemWidth + 30 * AutoSizeScaleX
 class HomeViewController: UIViewController, UISearchBarDelegate {
     var configBGView = UIView()
     var configTopBGView = UIView()
+    var configBottomTabBGView = UIView()
     var tableView: UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
     let searchBar = UISearchBar()
+    
+    var foodCourtsCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var myfavCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var cusineCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var brandCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+     var otherCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let foodCourtCollectionViewCellId = "foodCourtCollectionViewCellId"
+    let myFavCollectionViewCellId = "myFavCollectionViewCellId"
+    let cusineCollectionViewCellId = "cusineCollectionViewCellId"
+    let brandCollectionViewCellId = "brandCollectionViewCellId"
+    let otherCollectionViewCellId = "otherCollectionViewId"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,8 +94,90 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
                 
              }
              self.tableView = tableView
-     //   configureHeaderView()
+       configBottomTabBarView()
+        //configTopView()
         // Do any additional setup after loading the view.
+    }
+    func configBottomTabBarView(){
+        let configBottomTabBGView = UIView()
+        configBottomTabBGView.backgroundColor = UIColor.red
+        configBottomTabBGView.layer.cornerRadius = 35;
+        configBottomTabBGView.layer.masksToBounds = true;
+        self.configBGView.addSubview(configBottomTabBGView)
+                      //self.configTopBGView = configTopBGView
+            configBottomTabBGView.snp.makeConstraints { (make) -> Void in
+                make.left.equalTo(self.configBGView).offset(30*AutoSizeScaleX)
+                make.right.equalTo(self.configBGView).offset(-30*AutoSizeScaleX)
+            make.bottom.equalTo(-20*AutoSizeScaleX)
+            make.height.equalTo(70*AutoSizeScaleX)
+        }
+        self.configBottomTabBGView = configBottomTabBGView
+        
+        let homeBtn = UIButton(type: .custom)
+               homeBtn.backgroundColor = UIColor.lightGray
+               homeBtn.layer.cornerRadius = 20
+               homeBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               homeBtn.setTitleColor(UIColor.white, for: .normal)
+               homeBtn.contentHorizontalAlignment = .center
+               homeBtn.clipsToBounds = true
+               homeBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               self.configTopBGView.addSubview(homeBtn)
+               homeBtn.snp.makeConstraints{(make) -> Void in
+                make.width.height.equalTo(30*AutoSizeScaleX)
+               }
+        
+        
+        let addRecipeBtn = UIButton(type: .custom)
+               addRecipeBtn.backgroundColor = UIColor.lightGray
+               addRecipeBtn.layer.cornerRadius = 20
+               addRecipeBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               addRecipeBtn.setTitleColor(UIColor.white, for: .normal)
+               addRecipeBtn.contentHorizontalAlignment = .center
+               addRecipeBtn.clipsToBounds = true
+               addRecipeBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               self.configTopBGView.addSubview(addRecipeBtn)
+               addRecipeBtn.snp.makeConstraints{(make) -> Void in
+                make.left.top.equalTo(self.configBottomTabBGView)
+                   make.width.height.equalTo(30*AutoSizeScaleX)
+               }
+        
+        
+        let tableBookBtn = UIButton(type: .custom)
+               tableBookBtn.backgroundColor = UIColor.lightGray
+               tableBookBtn.layer.cornerRadius = 20
+               tableBookBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               tableBookBtn.setTitleColor(UIColor.white, for: .normal)
+               tableBookBtn.contentHorizontalAlignment = .center
+               tableBookBtn.clipsToBounds = true
+               tableBookBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               self.configTopBGView.addSubview(tableBookBtn)
+               tableBookBtn.snp.makeConstraints{(make) -> Void in
+                make.top.equalTo(self.configBottomTabBGView)
+                make.left.equalTo(addRecipeBtn)
+                   make.width.height.equalTo(20*AutoSizeScaleX)
+               }
+        
+        let cartBtn = UIButton(type: .custom)
+               cartBtn.backgroundColor = UIColor.lightGray
+               cartBtn.layer.cornerRadius = 20
+               cartBtn.titleLabel?.font = .systemFont(ofSize:18*AutoSizeScaleX)
+               cartBtn.setTitleColor(UIColor.white, for: .normal)
+               cartBtn.contentHorizontalAlignment = .center
+               cartBtn.clipsToBounds = true
+               cartBtn.addTarget(self, action:#selector(self.loginBtn), for: .touchUpInside)
+               self.configTopBGView.addSubview(cartBtn)
+               cartBtn.snp.makeConstraints{(make) -> Void in
+               make.top.equalTo(self.configBottomTabBGView)
+                make.right.equalTo(self.configBottomTabBGView)
+                   make.width.height.equalTo(20*AutoSizeScaleX)
+               }
+        let stackView = UIStackView(arrangedSubviews: [homeBtn,addRecipeBtn,tableBookBtn,cartBtn])
+               stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+               self.configBottomTabBGView.addSubview(stackView)
+               stackView.snp.makeConstraints{(make) -> Void in
+                   make.top.bottom.left.right.equalTo(self.configBottomTabBGView)
+               }
     }
     func configTopView(){
         let configTopBGView = UIView()
@@ -226,37 +321,6 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
         }
     }
 
-//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//      let  headerCell = tableView.dequeueReusableCellWithIdentifier("HeaderCell") as! CustomHeaderCell
-//      headerCell.backgroundColor = UIColor.cyanColor()
-//
-//      switch (section) {
-//      case 0:
-//        // Do your customization
-//        //return sectionHeaderView
-//      case 1:
-//        // Do your customization
-//        //return sectionHeaderView
-//      case 2:
-//        // Do your customization
-//        //return sectionHeaderView
-//      default:
-//        //return sectionHeaderView
-//      }
-//
-//      return headerCell
-//    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -276,33 +340,25 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 200.0 * AutoSizeScaleX
+        switch section {
+        case 0:
+             return 260.0 * AutoSizeScaleX
+        case 1:
+            return 260.0 * AutoSizeScaleX
+        case 2:
+            return 240.0 * AutoSizeScaleX
+        default:
+            return 250.0 * AutoSizeScaleX
+        }
+       
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let header: UIView = UIView(frame: CGRect(x: 10.0*AutoSizeScaleX, y: 0.0, width: SCREEN_WIDTH-20*AutoSizeScaleX, height: 160 * AutoSizeScaleX))
+        let header: UIView = UIView(frame: CGRect(x: 10.0*AutoSizeScaleX, y: 0.0, width: SCREEN_WIDTH-20*AutoSizeScaleX, height: 200 * AutoSizeScaleX))
         header.backgroundColor = newWhiteSmokeColor
                
-               
-        
-        
-        ///////////////////////////------------------------------------------------------------
-
-//     let layout = UICollectionViewFlowLayout()
-//    layout.scrollDirection = .horizontal
-//                       //layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//
-//    let headerView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 120), collectionViewLayout: layout)
-//    headerView.backgroundColor = .blue
-//    headerView.isPagingEnabled = true
-//    headerView.isUserInteractionEnabled = true
-//    headerView.dataSource = self
-//    headerView.delegate = self
-//    headerView.showsHorizontalScrollIndicator = false
-//        headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
-///////////////////////////------------------------------------------------------------
-         switch (section) {
+               switch (section) {
               case 0:
 
                 let titleLabel: UILabel = UILabel()
@@ -344,16 +400,17 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
            layout.scrollDirection = .horizontal
                               //layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
        
-           let headerView = UICollectionView(frame: CGRect(x: 4, y: 40, width: view.frame.width, height: 130), collectionViewLayout: layout)
-           headerView.backgroundColor = .white
+           let headerView = UICollectionView(frame: CGRect(x: 4, y: 40, width: view.frame.width, height: 200), collectionViewLayout: layout)
+           headerView.backgroundColor = .red
            headerView.isPagingEnabled = true
            headerView.isUserInteractionEnabled = true
            headerView.dataSource = self
            headerView.delegate = self
            headerView.showsHorizontalScrollIndicator = false
            header.addSubview(headerView)
-           headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
-               
+                self.foodCourtsCollectionView = headerView
+           headerView.register(FoodCourtCollectionViewCell.self, forCellWithReuseIdentifier: "foodCourtCollectionViewCellId")
+              
             let recommendedRestaurantsLabel: UILabel = UILabel()
                recommendedRestaurantsLabel.text = "Recommended Restaurants"
                recommendedRestaurantsLabel.textColor = UIColor.black
@@ -406,7 +463,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                       layout.scrollDirection = .horizontal
                                          //layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
                   
-                      let headerView = UICollectionView(frame: CGRect(x: 4, y: 40, width: view.frame.width, height: 130), collectionViewLayout: layout)
+                      let headerView = UICollectionView(frame: CGRect(x: 4, y: 40, width: view.frame.width, height: 200), collectionViewLayout: layout)
                       headerView.backgroundColor = .white
                       headerView.isPagingEnabled = true
                       headerView.isUserInteractionEnabled = true
@@ -414,7 +471,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                       headerView.delegate = self
                       headerView.showsHorizontalScrollIndicator = false
                       header.addSubview(headerView)
-                      headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
+                      headerView.register(MyFavCollectionViewCell.self, forCellWithReuseIdentifier: "myFavCollectionViewCellId")
+            self.myfavCollectionView = headerView
                         let recommendedRestaurantsLabel: UILabel = UILabel()
                                     recommendedRestaurantsLabel.text = "Recommended Restaurants"
                                     recommendedRestaurantsLabel.textColor = UIColor.black
@@ -476,7 +534,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                       headerView.delegate = self
                       headerView.showsHorizontalScrollIndicator = false
                       header.addSubview(headerView)
-                      headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
+                      headerView.register(CusineCollectionViewCell.self, forCellWithReuseIdentifier: "cusineCollectionViewCellId")
+            self.cusineCollectionView = headerView
                         let recommendedRestaurantsLabel: UILabel = UILabel()
                                     recommendedRestaurantsLabel.text = "Recommended Restaurants"
                                     recommendedRestaurantsLabel.textColor = UIColor.black
@@ -488,54 +547,61 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                                          make.height.equalTo(20*AutoSizeScaleX)
                                  }
                   return header
-
+               case 3:
+                let titleLabel: UILabel = UILabel()
+                                         titleLabel.text = "Brand you would love"
+                                         titleLabel.textColor = UIColor.black
+                                         titleLabel.font = UIFont.systemFont(ofSize: 20 * AutoSizeScaleX)
+                                         header.addSubview(titleLabel)
+                                         titleLabel.snp.makeConstraints { (make) in
+                                             make.top.equalTo(header.snp.top).offset(4*AutoSizeScaleX)
+                                             make.left.right.equalTo(header)
+                                             make.height.equalTo(16*AutoSizeScaleX)
+                                         }
+                                       
+                                        let moreBtn: UIButton = UIButton(type: .custom)
+                                        moreBtn.tag = section
+                                        moreBtn.setTitle("See all", for: .normal)
+                                        moreBtn.setTitleColor(.red, for: .normal)
+                                       // moreBtn.setImage(UIImage(named: "general_arrow_orange"), for: .normal)
+                                        moreBtn.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                                        moreBtn.addTarget(self, action: #selector(moreBtnAction(sender:)), for: .touchUpInside)
+                                        header.addSubview(moreBtn)
+                                        moreBtn.snp.makeConstraints { (make) in
+                                            make.right.equalTo(header)
+                                           make.top.equalTo(4*AutoSizeScaleX)
+                                           make.height.equalTo(20*AutoSizeScaleX)
+                                            make.width.equalTo(60 * AutoSizeScaleX)
+                                        }
+                                        /////////
+                                      let layout = UICollectionViewFlowLayout()
+                                     layout.scrollDirection = .horizontal
+                                                        //layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                                 
+                                     let headerView = UICollectionView(frame: CGRect(x: 0, y: 40, width: view.frame.width, height: 160), collectionViewLayout: layout)
+                                     headerView.backgroundColor = .white
+                                     headerView.isPagingEnabled = true
+                                     headerView.isUserInteractionEnabled = true
+                                     headerView.dataSource = self
+                                     headerView.delegate = self
+                                     headerView.showsHorizontalScrollIndicator = false
+                                     header.addSubview(headerView)
+                                     headerView.register(BrandsCollectionViewCell.self, forCellWithReuseIdentifier: "brandCollectionViewCellId")
+                           self.brandCollectionView = headerView
+                                       let recommendedRestaurantsLabel: UILabel = UILabel()
+                                                   recommendedRestaurantsLabel.text = "Recommended Restaurants"
+                                                   recommendedRestaurantsLabel.textColor = UIColor.black
+                                                   recommendedRestaurantsLabel.font = UIFont.boldSystemFont(ofSize: 18*AutoSizeScaleX)
+                                                   header.addSubview(recommendedRestaurantsLabel)
+                                                   recommendedRestaurantsLabel.snp.makeConstraints { (make) in
+                                                        make.top.equalTo(headerView.snp.bottom)
+                                                        make.left.right.equalTo(header)
+                                                        make.height.equalTo(20*AutoSizeScaleX)
+                                                }
+                                 return header
          default: break
-                //return sectionHeaderView
               }
-        
-
-             //tableView.tableHeaderView = headerView
-       // let picBookCateDataModel: PicBookCateDataModel = PicBookDataManager.shared.cateArr[section]
-//        let header = UIView()
-//              switch (section) {
-//              case 0:
-//                configureHeaderView()
-//              case 1:
-//            configureHeaderView()
-//              case 2:
-//                configureHeaderView()
-////                let header: UIView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: SCREEN_WIDTH, height: 60.0 * AutoSizeScaleX))
-////                      header.backgroundColor = .blue
-////
-////                      let lab: UILabel = UILabel()
-////                      //lab.text = picBookCateDataModel.cateName
-////                      lab.font = .systemFont(ofSize: 20 * AutoSizeScaleX, weight: .bold)
-////                      header.addSubview(lab)
-////                      lab.snp.makeConstraints { (make) in
-////                          make.left.equalTo(header).offset(17.5 * AutoSizeScaleX)
-////                          make.centerY.equalTo(header).offset(10 * AutoSizeScaleX)
-////                      }
-////
-////                      let moreBtn: UIButton = UIButton(type: .custom)
-////                      moreBtn.tag = section
-////                      moreBtn.setTitle("更多", for: .normal)
-////                      moreBtn.setTitleColor(.lightGray, for: .normal)
-////                    //  moreBtn.setImage(UIImage(named: "general_arrow_orange"), for: .normal)
-////                     // moreBtn.imageEdgeInsets = UIEdgeInsets(top: 20 * AutoSizeScaleX, left: IsSmallScreen ? 48 * AutoSizeScaleX : 45 * AutoSizeScaleX, bottom: 0, right: 0)
-////                    //  moreBtn.titleEdgeInsets = UIEdgeInsets(top: 20 * AutoSizeScaleX, left: IsSmallScreen ? -28 * AutoSizeScaleX : -25 * AutoSizeScaleX, bottom: 0, right: 0)
-////                      moreBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-////                      moreBtn.addTarget(self, action: #selector(moreBtnAction(sender:)), for: .touchUpInside)
-////                      header.addSubview(moreBtn)
-////                      moreBtn.snp.makeConstraints { (make) in
-////                          make.right.top.bottom.equalTo(header)
-////                          make.width.equalTo(80 * AutoSizeScaleX)
-////                      }
-//              default: break
-//                //return sectionHeaderView
-//              }
-      
         return header
-       // return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -583,7 +649,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
         headerView.dataSource = self
         headerView.delegate = self
-        headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
+       // headerView.register(TemplatesCollectionViewCell.self, forCellWithReuseIdentifier: "weekCollectionViewCellId")
         
         headerView.showsHorizontalScrollIndicator = false
 
@@ -600,17 +666,34 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "weekCollectionViewCellId", for: indexPath) as! TemplatesCollectionViewCell
-          
-       // let cell: TemplatesCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: weekCollectionViewCellId, for: indexPath) as! WeekCollectionViewCell
-            cell.contentView.backgroundColor = newWhiteSmokeColor
-    
-
-        return cell 
+        if collectionView == self.foodCourtsCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "foodCourtCollectionViewCellId", for: indexPath) as! FoodCourtCollectionViewCell
+                cell.contentView.backgroundColor = newWhiteSmokeColor
+            return cell
+        }
+        if collectionView == self.myfavCollectionView{
+               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myFavCollectionViewCellId", for: indexPath) as! MyFavCollectionViewCell
+            return cell 
+        }
+        if collectionView == self.cusineCollectionView{
+           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cusineCollectionViewCellId", for: indexPath) as! CusineCollectionViewCell
+            return cell
+        }
+        else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "brandCollectionViewCellId", for: indexPath) as! BrandsCollectionViewCell
+            return cell
+        }
     }
 
     // MARK: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == self.foodCourtsCollectionView {
+                   return CGSize(width: 140, height: 190)
+        } else if collectionView == self.myfavCollectionView {
+                   return CGSize(width: 140, height: 190)
+        } else if collectionView == self.cusineCollectionView{
+            return CGSize(width: 100, height: 100)
+        }
         return CGSize(width: 100, height: 100)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

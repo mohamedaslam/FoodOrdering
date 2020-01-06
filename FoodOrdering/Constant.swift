@@ -30,6 +30,8 @@ var FETCH_USERS_URL="http://jsonplaceholder.typicode.com/users"
 var URL_USER_LOGIN =    "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/Login"
 var URL_USER_FORGOT_PWD = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/ForgotPassword"
 var URL_USER_REGISTER = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/AddUser"
+var URL_GET_RESTAURANTS = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Restaurant/GetRestaurants"
+
 var URL_USER_DELETE = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/DeleteAllUsers"
 let URL_USER_RESEND_OTP = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/ResndOTP"
 let URL_USER_VERIFY_OTP = "http://heimeyapi-dev.ap-south-1.elasticbeanstalk.com/api/Users/VerifyOTP"

@@ -26,7 +26,7 @@ class HomeViewController: UIViewController, UISearchBarDelegate {
     let cusineCollectionViewCellId = "cusineCollectionViewCellId"
     let brandCollectionViewCellId = "brandCollectionViewCellId"
     let otherCollectionViewCellId = "otherCollectionViewId"
-    
+     var categories = ["Action", "Drama", "Science Fiction", "Kids", "Horror"]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -617,19 +617,31 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellID = "PicBookCellID"
-        var cell: RestaurantsDetailsTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? RestaurantsDetailsTableViewCell
-        if cell == nil {
-            cell = RestaurantsDetailsTableViewCell(style: .default, reuseIdentifier: cellID)
-            cell?.selectionStyle = .none
-            cell?.backgroundColor = .orange
-            //cell?.delegate = self
+        
+        if (indexPath.row == 0){
+        // let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoryTableViewCell
+            let cellID = "CategoryCollectionViewCell"
+                       var cell: CategoryTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? CategoryTableViewCell
+                       if cell == nil {
+                           cell = CategoryTableViewCell(style: .default, reuseIdentifier: cellID)
+                           cell?.selectionStyle = .none
+                           cell?.backgroundColor = .green
+                           //cell?.delegate = self
+                       }
+            return cell!
+        }else{
+
+            let cellID = "PicBookCellID"
+            var cell: RestaurantsDetailsTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? RestaurantsDetailsTableViewCell
+            if cell == nil {
+                cell = RestaurantsDetailsTableViewCell(style: .default, reuseIdentifier: cellID)
+                cell?.selectionStyle = .none
+                cell?.backgroundColor = .orange
+                //cell?.delegate = self
+            }
+            return cell!
         }
-       
-              
- 
-        return cell!
-    }
+        }
     
     @objc func moreBtnAction(sender: UIButton) {
         

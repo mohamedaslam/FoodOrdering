@@ -46,6 +46,9 @@
 		18666506239BD61C00FE4916 /* Arrow Copy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18666503239BD61B00FE4916 /* Arrow Copy@2x.png */; };
 		18666507239BD61C00FE4916 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 18666504239BD61B00FE4916 /* back.png */; };
 		80DF961DAD2D903D673107B0 /* Pods_FoodOrderingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3550015D3CEB9DCB859D6453 /* Pods_FoodOrderingTests.framework */; };
+		A820AC9323C35F8400FE0CA1 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A820AC9223C35F8400FE0CA1 /* CategoryTableViewCell.swift */; };
+		A820AC9523C35FC300FE0CA1 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A820AC9423C35FC300FE0CA1 /* CategoryCollectionViewCell.swift */; };
+		A820AC9723C366BE00FE0CA1 /* MainHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A820AC9623C366BE00FE0CA1 /* MainHomeViewController.swift */; };
 		A854AF53238D5577003ABA32 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF52238D5577003ABA32 /* loading.png */; };
 		A854AF55238D55F3003ABA32 /* loading1.png in Resources */ = {isa = PBXBuildFile; fileRef = A854AF54238D55F3003ABA32 /* loading1.png */; };
 		A862D353239A9194001B94A0 /* MainScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A862D352239A9194001B94A0 /* MainScreen.jpg */; };
@@ -147,6 +150,9 @@
 		4060B60EC1AA44BBAB463332 /* Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4E85DFC8DA8D9754B4E98997 /* Pods-FoodOrderingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrderingTests.release.xcconfig"; path = "Target Support Files/Pods-FoodOrderingTests/Pods-FoodOrderingTests.release.xcconfig"; sourceTree = "<group>"; };
 		A7F2FFBF6FA3E4F2047E77E2 /* Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; path = "Target Support Files/Pods-FoodOrdering-FoodOrderingUITests/Pods-FoodOrdering-FoodOrderingUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A820AC9223C35F8400FE0CA1 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
+		A820AC9423C35FC300FE0CA1 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		A820AC9623C366BE00FE0CA1 /* MainHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHomeViewController.swift; sourceTree = "<group>"; };
 		A854AF52238D5577003ABA32 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		A854AF54238D55F3003ABA32 /* loading1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading1.png; sourceTree = "<group>"; };
 		A862D352239A9194001B94A0 /* MainScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MainScreen.jpg; sourceTree = "<group>"; };
@@ -337,11 +343,14 @@
 				A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */,
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
 				182E0D30238AA73A00D8E27D /* HomeViewController.swift */,
+				A820AC9623C366BE00FE0CA1 /* MainHomeViewController.swift */,
 				A86335C223BF37F000CDC0EF /* RestaurantsDetailsTableViewCell.swift */,
 				A8708B6D23C03056006F567F /* FoodCourtCollectionViewCell.swift */,
 				A8708B6F23C03062006F567F /* MyFavCollectionViewCell.swift */,
 				A8708B7123C0306E006F567F /* CusineCollectionViewCell.swift */,
 				A8708B7323C0340E006F567F /* BrandsCollectionViewCell.swift */,
+				A820AC9223C35F8400FE0CA1 /* CategoryTableViewCell.swift */,
+				A820AC9423C35FC300FE0CA1 /* CategoryCollectionViewCell.swift */,
 				A8AB562E238FBE2F00311FC0 /* ForgotPwdViewController.swift */,
 				A8AB5632238FEBA900311FC0 /* ChangePwdViewController.swift */,
 				A8B1A6AA2386738C00C2D797 /* Constant.swift */,
@@ -702,12 +711,15 @@
 				A8B1A6A5238663E100C2D797 /* RegisterViewController.swift in Sources */,
 				18055FA8238A49640018B3DE /* VerificationCodeView.swift in Sources */,
 				A8B1A675238663BB00C2D797 /* ViewController.swift in Sources */,
+				A820AC9523C35FC300FE0CA1 /* CategoryCollectionViewCell.swift in Sources */,
 				A8708B6E23C03056006F567F /* FoodCourtCollectionViewCell.swift in Sources */,
 				18055FA6238A49640018B3DE /* VerificationCodeFields.swift in Sources */,
 				182E0D31238AA73A00D8E27D /* HomeViewController.swift in Sources */,
+				A820AC9323C35F8400FE0CA1 /* CategoryTableViewCell.swift in Sources */,
 				A8B1A6A1238663CC00C2D797 /* LaunchViewController.swift in Sources */,
 				A86335C323BF37F000CDC0EF /* RestaurantsDetailsTableViewCell.swift in Sources */,
 				A8AB5631238FE8F400311FC0 /* DPOTPView.swift in Sources */,
+				A820AC9723C366BE00FE0CA1 /* MainHomeViewController.swift in Sources */,
 				A8B1A6A7238663F200C2D797 /* MobileVerifyViewController.swift in Sources */,
 				A882852F23969AAA0044E0DC /* FacebookGmailMobileVC.swift in Sources */,
 				A8B1A673238663BB00C2D797 /* AppDelegate.swift in Sources */,

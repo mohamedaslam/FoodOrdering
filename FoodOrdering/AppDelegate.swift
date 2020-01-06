@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Thread.sleep(forTimeInterval: 3.0)
-        let rootVC = HomeViewController()
+        let rootVC = MainHomeViewController()
         //let navController = UINavigationController(rootViewController: rootVC)
         window?.rootViewController = rootVC
         GIDSignIn.sharedInstance().clientID = "6359015885-ta1id9oaphn7ui8kki0606hjctd51833.apps.googleusercontent.com"

@@ -91,7 +91,7 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
 //                    make.width.equalTo(200*AutoSizeScaleX)
 //                }
         let tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView.backgroundColor = .green
+        tableView.backgroundColor = .white
              tableView.separatorStyle = .none
              tableView.dataSource = self
              tableView.delegate = self
@@ -103,7 +103,7 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
              self.configBGView.addSubview(tableView)
              tableView.snp.makeConstraints { (make) in
 //                 make.edges.equalTo(self.view)
-                make.top.equalTo(150*AutoSizeScaleX)
+                make.top.equalTo(130*AutoSizeScaleX)
                 make.left.equalTo(10*AutoSizeScaleX)
                 make.right.equalTo(-10*AutoSizeScaleX)
                 make.bottom.equalTo(self.view)
@@ -118,6 +118,7 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
     func configBottomTabBarView(){
         let configBottomTabBGView = UIView()
         configBottomTabBGView.backgroundColor = UIColor.red
+        configBottomTabBGView.isHidden = true
         configBottomTabBGView.layer.cornerRadius = 35;
         configBottomTabBGView.layer.masksToBounds = true;
         self.configBGView.addSubview(configBottomTabBGView)
@@ -364,6 +365,10 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                          var restuarantInfoModelArr: [RestaurantDataModel] = [RestaurantDataModel]()
                         for restaurantInfo in swiftyJsonVar["restaurantHomescreen"].arrayValue
                            {
+                            if  let sessionTypeInfo = restaurantInfo["sessionType"].string{
+                            print("RESDATAAA1")
+                              self.sessionTypeArray.append(sessionTypeInfo)
+                            }
                             for categoriesInfo in restaurantInfo["categories"].arrayValue
                             {
                                  print(categoriesInfo)
@@ -372,14 +377,22 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                                 categoryModelArr.append(categoryDataModel)
 
                             }
+                            if categoryModelArr.count != 0 {
+                              self.categoryArray.removeAll()
+                              self.categoryArray.append(contentsOf: categoryModelArr)
+                            }
                            // if  let restaurantArrayInfo = restaurantInfo["restaurants"].arrayObject
                             for restaurantArrayInfo in restaurantInfo["restaurants"].arrayValue
                             {
                                 print(restaurantArrayInfo["restaurantID"].string!)
                                 print("restaurantArrayInfo")
-                                let restaurantDataModel = RestaurantDataModel.init(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantID"].string!, restaurantImage: restaurantArrayInfo["restaurantID"].string!, restaurantRatings: restaurantArrayInfo["restaurantID"].string!, restaurantTime: restaurantArrayInfo["restaurantID"].string!, currentStatus: restaurantArrayInfo["restaurantID"].string!, promotion: restaurantArrayInfo["restaurantID"].string!, isUserfavorites: restaurantArrayInfo["restaurantID"].bool!)
+                                let restaurantDataModel = RestaurantDataModel.init(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantName"].string!, restaurantImage: restaurantArrayInfo["restaurantImage"].string!, restaurantRatings: restaurantArrayInfo["restaurantRatings"].string!, restaurantTime: restaurantArrayInfo["restaurantTime"].string!, currentStatus: restaurantArrayInfo["currentStatus"].string!, promotion: restaurantArrayInfo["promotion"].string!, isUserfavorites: restaurantArrayInfo["isUserfavorites"].bool!)
                              //   let model: PicBookCateDataModel = PicBookCateDataModel.init(cateId: dic["cateId"]?.int, cateName: dic["cateName"]?.string, cateIcon: dic["cateIcon"]?.string, updateTime: dic["updateTime"]?.int, bookCount: dic["bookCount"]?.int, books: bookModelArr)
                               restuarantInfoModelArr.append(restaurantDataModel)
+                            }
+                            if restuarantInfoModelArr.count != 0 {
+                                self.restaurantArray.removeAll()
+                                self.restaurantArray.append(contentsOf: restuarantInfoModelArr)
                             }
                                // self.sessionTypeArray.append(sessionTypeStr)
                                 print("sessionTypesessionType")
@@ -390,8 +403,9 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                         if self.sessionTypeArray.count > 0 {
                           self.tableView.reloadData()
                              }
-                         print(self.sessionTypeArray)
-                         print("self.sessionTypeArray")
+                        
+                    
+                         print("RestaurantArray")
 //                        if let resData = swiftyJsonVar["restaurantHomescreen"].arrayObject
 //                        {
 //                            print(resData)
@@ -443,12 +457,9 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.sessionTypeArray.count
     }
-    
 
-  
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200 * AutoSizeScaleX
+        return 230 * AutoSizeScaleX
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -463,7 +474,7 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
                        if cell == nil {
                            cell = CategoryTableViewCell(style: .default, reuseIdentifier: cellID)
                            cell?.selectionStyle = .none
-                           cell?.backgroundColor = .green
+                        cell?.backgroundColor = .clear
                            //cell?.delegate = self
                        }
             return cell!
@@ -475,7 +486,7 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
                               if cell == nil {
                                   cell = CategoryTableViewCell(style: .default, reuseIdentifier: cellID)
                                   cell?.selectionStyle = .none
-                                  cell?.backgroundColor = .green
+                                  cell?.backgroundColor = .clear
                                   //cell?.delegate = self
                               }
                    return cell!

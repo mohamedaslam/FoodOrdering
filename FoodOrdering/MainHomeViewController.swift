@@ -19,7 +19,18 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
     var tableView: UITableView = UITableView.init(frame: CGRect.zero, style: .grouped)
     let searchBar = UISearchBar()
     var arrayTeam = [[String:AnyObject]]() //Array of dictionary
+    //var sessionTypeArray:[Any] = []
+    var sessionTypeArray : [String] = []
+
     var arraySession = [[String:AnyObject]]() //Array of dictionary
+    
+    public var restaurantMainArray: Array = [RestaurantMainDataModel]()
+    public var restaurantArray: Array = [RestaurantDataModel]()
+    public var categoryArray: Array = [CategoryDataModel]()
+    
+    public var restaurantMainDataModel: RestaurantMainDataModel?
+    public var restaurantDataModel: RestaurantDataModel?
+    public var categoryDataModel: CategoryDataModel?
 
     var foodCourtsCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
     var myfavCollectionView: UICollectionView = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -342,27 +353,63 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                
                switch response.result {
                case .success:
-                  // print(response)
+                 print(response)
                   // print("TRACKresponse")
                    
                    if let result = response.result.value{
                        let swiftyJsonVar = JSON(result)
                     if swiftyJsonVar["status"].bool != nil{
                          print("SUCESSSS")
-                        if let resData = swiftyJsonVar["restaurantHomescreen"].arrayObject
-                        {
-                           // if let sessionType = swiftyJsonVar["sessionType"].arrayObject
-                            print(resData)
-                            print("RESDATAAA")
-                            self.arrayTeam = resData as! [[String:AnyObject]]
-                              //  self.arrayTeam = resData as! [[String:AnyObject]]
+                         var categoryModelArr: [CategoryDataModel] = [CategoryDataModel]()
+                         var restuarantInfoModelArr: [RestaurantDataModel] = [RestaurantDataModel]()
+                        for restaurantInfo in swiftyJsonVar["restaurantHomescreen"].arrayValue
+                           {
+                            for categoriesInfo in restaurantInfo["categories"].arrayValue
+                            {
+                                 print(categoriesInfo)
+                                 print("categoriesInfo")
+                                let categoryDataModel = CategoryDataModel(categoryID: categoriesInfo["categoryID"].string!, categoryName: categoriesInfo["categoryImage"].string!, categoryImage: categoriesInfo["categoryName"].string!)
+                                categoryModelArr.append(categoryDataModel)
+
+                            }
+                           // if  let restaurantArrayInfo = restaurantInfo["restaurants"].arrayObject
+                            for restaurantArrayInfo in restaurantInfo["restaurants"].arrayValue
+                            {
+                                print(restaurantArrayInfo["restaurantID"].string!)
+                                print("restaurantArrayInfo")
+                                let restaurantDataModel = RestaurantDataModel.init(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantID"].string!, restaurantImage: restaurantArrayInfo["restaurantID"].string!, restaurantRatings: restaurantArrayInfo["restaurantID"].string!, restaurantTime: restaurantArrayInfo["restaurantID"].string!, currentStatus: restaurantArrayInfo["restaurantID"].string!, promotion: restaurantArrayInfo["restaurantID"].string!, isUserfavorites: restaurantArrayInfo["restaurantID"].bool!)
+                             //   let model: PicBookCateDataModel = PicBookCateDataModel.init(cateId: dic["cateId"]?.int, cateName: dic["cateName"]?.string, cateIcon: dic["cateIcon"]?.string, updateTime: dic["updateTime"]?.int, bookCount: dic["bookCount"]?.int, books: bookModelArr)
+                              restuarantInfoModelArr.append(restaurantDataModel)
+                            }
+                               // self.sessionTypeArray.append(sessionTypeStr)
+                                print("sessionTypesessionType")
+                                //self.restaurantMainDataModel = RestaurantMainDataModel(sessionType: restaurantInfo["sessionType"].string, sessionName: restaurantInfo["sessionType"].string, promotions: restaurantInfo["sessionType"].string, categories:nil , restaurants:nil )
+                               
+                           
                         }
+                        if self.sessionTypeArray.count > 0 {
+                          self.tableView.reloadData()
+                             }
+                         print(self.sessionTypeArray)
+                         print("self.sessionTypeArray")
+//                        if let resData = swiftyJsonVar["restaurantHomescreen"].arrayObject
+//                        {
+//                            print(resData)
+//                            print("RESDATAAA")
+//
+//                            if let sessionType = resData["sessionType"]!.string{
+//                          //  print(sessionType)
+//                            print("RESDATAAA1")
+//                            self.arrayTeam = resData as! [[String:AnyObject]]
+//                           }
+//                              //  self.arrayTeam = resData as! [[String:AnyObject]]
+//                        }
                        }
                        
                    }
                case .failure(let error):
                    print("FAILURE")
-                   print(response.response)
+                   print(response.response!)
                    let message : String
                    if let httpStatusCode = response.response?.statusCode {
                        switch(httpStatusCode) {
@@ -383,7 +430,7 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                }
                MBProgressHUD.hide(for: self.view, animated: true)
            }
-        print(self.arrayTeam)
+        print(self.sessionTypeArray)
         print("ARRAY TEAMMM")
        }
     
@@ -394,7 +441,7 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return 6
+        return self.sessionTypeArray.count
     }
     
 
@@ -406,7 +453,10 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (indexPath.row == 0){
+        print(self.sessionTypeArray[indexPath.row])
+               print("ARRAy")
+        if (self.sessionTypeArray[indexPath.row] == "FCCateory"){
+      //  if (indexPath.row == 0){
         // let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoryTableViewCell
             let cellID = "CategoryCollectionViewCell"
                        var cell: CategoryTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? CategoryTableViewCell
@@ -418,7 +468,7 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
                        }
             return cell!
         }
-        if (indexPath.row == 4){
+        if (self.sessionTypeArray[indexPath.row] == "FCUserFavorites"){
                // let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoryTableViewCell
                    let cellID = "CategoryCollectionViewCell"
                               var cell: CategoryTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? CategoryTableViewCell

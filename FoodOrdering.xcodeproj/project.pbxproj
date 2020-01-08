@@ -57,6 +57,7 @@
 		A8708B7023C03062006F567F /* MyFavCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8708B6F23C03062006F567F /* MyFavCollectionViewCell.swift */; };
 		A8708B7223C0306E006F567F /* CusineCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8708B7123C0306E006F567F /* CusineCollectionViewCell.swift */; };
 		A8708B7423C0340E006F567F /* BrandsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8708B7323C0340E006F567F /* BrandsCollectionViewCell.swift */; };
+		A88035E023C573A1001D69B8 /* ShowRestaurantDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88035DF23C573A1001D69B8 /* ShowRestaurantDataModel.swift */; };
 		A882852F23969AAA0044E0DC /* FacebookGmailMobileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */; };
 		A8A70EAA2398DA27004EE9F9 /* LoginScreen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */; };
 		A8A70EAC2398F736004EE9F9 /* Number validation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A8A70EAB2398F736004EE9F9 /* Number validation.jpg */; };
@@ -161,6 +162,7 @@
 		A8708B6F23C03062006F567F /* MyFavCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFavCollectionViewCell.swift; sourceTree = "<group>"; };
 		A8708B7123C0306E006F567F /* CusineCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CusineCollectionViewCell.swift; sourceTree = "<group>"; };
 		A8708B7323C0340E006F567F /* BrandsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandsCollectionViewCell.swift; sourceTree = "<group>"; };
+		A88035DF23C573A1001D69B8 /* ShowRestaurantDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowRestaurantDataModel.swift; sourceTree = "<group>"; };
 		A882852E23969AAA0044E0DC /* FacebookGmailMobileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookGmailMobileVC.swift; sourceTree = "<group>"; };
 		A8A70EA92398DA27004EE9F9 /* LoginScreen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoginScreen.jpg; sourceTree = "<group>"; };
 		A8A70EAB2398F736004EE9F9 /* Number validation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Number validation.jpg"; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				A8B1A6A6238663F200C2D797 /* MobileVerifyViewController.swift */,
 				182E0D30238AA73A00D8E27D /* HomeViewController.swift */,
 				A820AC9623C366BE00FE0CA1 /* MainHomeViewController.swift */,
+				A88035DF23C573A1001D69B8 /* ShowRestaurantDataModel.swift */,
 				A86335C223BF37F000CDC0EF /* RestaurantsDetailsTableViewCell.swift */,
 				A8708B6D23C03056006F567F /* FoodCourtCollectionViewCell.swift */,
 				A8708B6F23C03062006F567F /* MyFavCollectionViewCell.swift */,
@@ -716,6 +719,7 @@
 				18055FA6238A49640018B3DE /* VerificationCodeFields.swift in Sources */,
 				182E0D31238AA73A00D8E27D /* HomeViewController.swift in Sources */,
 				A820AC9323C35F8400FE0CA1 /* CategoryTableViewCell.swift in Sources */,
+				A88035E023C573A1001D69B8 /* ShowRestaurantDataModel.swift in Sources */,
 				A8B1A6A1238663CC00C2D797 /* LaunchViewController.swift in Sources */,
 				A86335C323BF37F000CDC0EF /* RestaurantsDetailsTableViewCell.swift in Sources */,
 				A8AB5631238FE8F400311FC0 /* DPOTPView.swift in Sources */,

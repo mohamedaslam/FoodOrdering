@@ -362,7 +362,7 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                     if swiftyJsonVar["status"].bool != nil{
                          print("SUCESSSS")
                          var categoryModelArr: [CategoryDataModel] = [CategoryDataModel]()
-                         var restuarantInfoModelArr: [RestaurantDataModel] = [RestaurantDataModel]()
+                       //  var restuarantInfoModelArr: [RestaurantDataModel] = [RestaurantDataModel]()
                         for restaurantInfo in swiftyJsonVar["restaurantHomescreen"].arrayValue
                            {
                             if  let sessionTypeInfo = restaurantInfo["sessionType"].string{
@@ -386,14 +386,15 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                             {
                                 print(restaurantArrayInfo["restaurantID"].string!)
                                 print("restaurantArrayInfo")
-                                let restaurantDataModel = RestaurantDataModel.init(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantName"].string!, restaurantImage: restaurantArrayInfo["restaurantImage"].string!, restaurantRatings: restaurantArrayInfo["restaurantRatings"].string!, restaurantTime: restaurantArrayInfo["restaurantTime"].string!, currentStatus: restaurantArrayInfo["currentStatus"].string!, promotion: restaurantArrayInfo["promotion"].string!, isUserfavorites: restaurantArrayInfo["isUserfavorites"].bool!)
+                                self.restaurantDataModel = RestaurantDataModel(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantName"].string!, restaurantImage: restaurantArrayInfo["restaurantImage"].string!, restaurantRatings: restaurantArrayInfo["restaurantRatings"].string!, restaurantTime: restaurantArrayInfo["restaurantTime"].string!, currentStatus: restaurantArrayInfo["currentStatus"].string!, promotion: restaurantArrayInfo["promotion"].string!, isUserfavorites: restaurantArrayInfo["isUserfavorites"].bool!)
+//                                let restaurantDataModel = RestaurantDataModel.init(restaurantID: restaurantArrayInfo["restaurantID"].string!, restaurantName: restaurantArrayInfo["restaurantName"].string!, restaurantImage: restaurantArrayInfo["restaurantImage"].string!, restaurantRatings: restaurantArrayInfo["restaurantRatings"].string!, restaurantTime: restaurantArrayInfo["restaurantTime"].string!, currentStatus: restaurantArrayInfo["currentStatus"].string!, promotion: restaurantArrayInfo["promotion"].string!, isUserfavorites: restaurantArrayInfo["isUserfavorites"].bool!)
                              //   let model: PicBookCateDataModel = PicBookCateDataModel.init(cateId: dic["cateId"]?.int, cateName: dic["cateName"]?.string, cateIcon: dic["cateIcon"]?.string, updateTime: dic["updateTime"]?.int, bookCount: dic["bookCount"]?.int, books: bookModelArr)
-                              restuarantInfoModelArr.append(restaurantDataModel)
+                              //restuarantInfoModelArr.append(restaurantDataModel)
                             }
-                            if restuarantInfoModelArr.count != 0 {
-                                self.restaurantArray.removeAll()
-                                self.restaurantArray.append(contentsOf: restuarantInfoModelArr)
-                            }
+//                            if restuarantInfoModelArr.count != 0 {
+//                                self.restaurantArray.removeAll()
+//                                self.restaurantArray.append(contentsOf: restuarantInfoModelArr)
+//                            }
                                // self.sessionTypeArray.append(sessionTypeStr)
                                 print("sessionTypesessionType")
                                 //self.restaurantMainDataModel = RestaurantMainDataModel(sessionType: restaurantInfo["sessionType"].string, sessionName: restaurantInfo["sessionType"].string, promotions: restaurantInfo["sessionType"].string, categories:nil , restaurants:nil )
@@ -402,6 +403,8 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                         }
                         if self.sessionTypeArray.count > 0 {
                           self.tableView.reloadData()
+                            print(self.restaurantArray)
+                                   print("ARRATEAMMM")
                              }
                         
                     
@@ -445,6 +448,9 @@ class MainHomeViewController: UIViewController, UISearchBarDelegate {
                MBProgressHUD.hide(for: self.view, animated: true)
            }
         print(self.sessionTypeArray)
+        
+        print(restaurantMainDataModel?.sessionName as Any)
+        print(self.restaurantDataModel?.restaurantName as Any)
         print("ARRAY TEAMMM")
        }
     
@@ -464,11 +470,12 @@ extension MainHomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print(self.sessionTypeArray[indexPath.row])
+    
                print("ARRAy")
         if (self.sessionTypeArray[indexPath.row] == "FCCateory"){
       //  if (indexPath.row == 0){
         // let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CategoryTableViewCell
+        
             let cellID = "CategoryCollectionViewCell"
                        var cell: CategoryTableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID) as? CategoryTableViewCell
                        if cell == nil {

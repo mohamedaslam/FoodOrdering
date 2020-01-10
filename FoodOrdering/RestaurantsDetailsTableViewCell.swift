@@ -43,6 +43,7 @@ class RestaurantsDetailsTableViewCell: UITableViewCell  {
 
         let iconImgView: UIImageView = UIImageView()
         iconImgView.backgroundColor = .black
+        iconImgView.image = UIImage(named: "foodimage")
         iconImgView.layer.cornerRadius = 7 * AutoSizeScaleX
         iconImgView.clipsToBounds = true
         configBGView.addSubview(iconImgView)
@@ -67,6 +68,21 @@ class RestaurantsDetailsTableViewCell: UITableViewCell  {
             make.height.equalTo(20*AutoSizeScaleX)
         }
         self.titleLabel = titleLabel
+        
+        let viewMoreBtn: UIButton = {
+               let viewMoreBtn = UIButton()
+              // viewMoreBtn.setTitle("View More", for: .normal)
+            viewMoreBtn.setBackgroundImage(UIImage(named: "ico-heart-selected2"), for: .normal)
+               viewMoreBtn.titleLabel?.font = .systemFont(ofSize:14*AutoSizeScaleX)
+               return viewMoreBtn
+           }()
+        addSubview(viewMoreBtn)
+        viewMoreBtn.snp.makeConstraints { (make) -> Void in
+                   make.right.equalTo(self).offset(-8*AutoSizeScaleX)
+                   make.top.equalTo(titleLabel.snp.top)
+                   make.width.equalTo(28*AutoSizeScaleX)
+                   make.height.equalTo(28*AutoSizeScaleX)
+               }
         
        let categoryLabel: UILabel = UILabel()
         categoryLabel.textColor = .black
@@ -95,11 +111,13 @@ class RestaurantsDetailsTableViewCell: UITableViewCell  {
             make.height.equalTo(20*AutoSizeScaleX)
         }
         self.openStatusLabel = openStatusLabel
-        
+        let stringValue = "Open Now Closes in 03:00hrs"
         let openingTimeLabel: UILabel = UILabel()
         openingTimeLabel.textColor = .black
-        openingTimeLabel.text = "Open Now Closes in 03:00hrs"
-
+        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: stringValue)
+        attributedString.setColorForText(textForAttribute: "Open Now", withColor: UIColor.green)
+        attributedString.setColorForText(textForAttribute: "Closes in 03:00hrs", withColor: UIColor.orange)
+        openingTimeLabel.attributedText = attributedString
         openingTimeLabel.font = UIFont.systemFont(ofSize: 14 * AutoSizeScaleX)
         configBGView.addSubview(openingTimeLabel)
         openingTimeLabel.snp.makeConstraints { (make) in
@@ -113,7 +131,6 @@ class RestaurantsDetailsTableViewCell: UITableViewCell  {
         let ratingLabel: UILabel = UILabel()
         ratingLabel.textColor = .black
         ratingLabel.text = "3.8(665 people)"
-
         ratingLabel.font = UIFont.systemFont(ofSize: 14 * AutoSizeScaleX)
         configBGView.addSubview(ratingLabel)
         ratingLabel.snp.makeConstraints { (make) in
@@ -145,17 +162,7 @@ class RestaurantsDetailsTableViewCell: UITableViewCell  {
         }
         self.discountLabel = discountLabel
         
-        let codeLabel: UILabel = UILabel()
-        codeLabel.textColor = .black
-        codeLabel.text = "Code QEXCN0034"
-        codeLabel.textAlignment = .right
-        codeLabel.font = UIFont.systemFont(ofSize: 14 * AutoSizeScaleX)
-        configBottonCellBGView.addSubview(codeLabel)
-        codeLabel.snp.makeConstraints { (make) in
-            make.right.equalTo(configBottonCellBGView)
-            make.top.height.width.equalTo(discountLabel)
-        }
-        self.codeLabel = codeLabel
+      
         
        
     }
@@ -179,4 +186,17 @@ extension UIView {
             return layer.shadowOpacity > 0
         }
     }
+}
+extension NSMutableAttributedString {
+
+    func setColorForText(textForAttribute: String, withColor color: UIColor) {
+        let range: NSRange = self.mutableString.range(of: textForAttribute, options: .caseInsensitive)
+
+        // Swift 4.2 and above
+        self.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
+
+        // Swift 4.1 and below
+        self.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
+    }
+
 }

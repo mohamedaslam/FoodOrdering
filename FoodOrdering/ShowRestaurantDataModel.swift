@@ -62,8 +62,7 @@ class CategoryDataModel: NSObject {
        var categoryID: String?
        var categoryName: String?
        var categoryImage: String?
-      
-       
+
        init(categoryID: String?,
             categoryName: String?,
             categoryImage: String?) {
